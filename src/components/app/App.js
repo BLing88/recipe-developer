@@ -1,8 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import "./App.css";
+import { testRecipe } from "../../static-recipe";
 
 const App = () => {
-  return <div className="app">App</div>;
+  // const [recipe, setRecipe] = useState({});
+
+  return (
+    <div className="app">
+      <div className="recipe-title">{testRecipe.title}</div>
+    </div>
+  );
 };
 
 export { App };

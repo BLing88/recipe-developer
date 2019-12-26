@@ -5,4 +5,4 @@ const App = () => {
   return <div className="app">App</div>;
 };
 
-ReactDOM.render(<App />);
+export { App };

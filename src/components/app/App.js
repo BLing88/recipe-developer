@@ -8,8 +8,13 @@ const App = () => {
 
   return (
     <div className="app">
-      <div className="recipe-title">{testRecipe.title}</div>
+      <h1 className="recipe-title">{testRecipe.title}</h1>
       <Ingredients ingredients={testRecipe.ingredients} />
+      <ol className="recipe-instructions">
+        {testRecipe.instructions.map(instruction => (
+          <li key={instruction}>{instruction}</li>
+        ))}
+      </ol>
     </div>
   );
 };

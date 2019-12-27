@@ -10,5 +10,8 @@ test("it lists every ingredient", () => {
 
   testRecipe.ingredients.forEach(ingredient => {
     expect(getByText(ingredient.name, { exact: false })).toBeInTheDocument();
+    expect(
+      getByText(ingredient.quantity, { exact: false })
+    ).toBeInTheDocument();
   });
 });

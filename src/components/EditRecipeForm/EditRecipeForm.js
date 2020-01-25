@@ -10,9 +10,9 @@ const EditRecipeForm = () => {
 
   return (
     <form onSubmit={event => updateRecipeHandler(event)}>
-      <label htmlFor="update-title">Update title</label>
+      <label htmlFor="update-name">Update name</label>
       <input
-        id="update-title"
+        id="update-name"
         type="text"
         value={name}
         onChange={e => setName(e.target.value)}

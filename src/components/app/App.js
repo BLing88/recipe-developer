@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
-import { Ingredients } from "../Ingredients";
-import { Instructions } from "../Instructions";
+import { Recipe } from "../Recipe";
+import { EditRecipeForm } from "../EditRecipeForm";
 import { testRecipe } from "../../static-recipe";
 
 const App = () => {
-  // const [recipe, setRecipe] = useState({});
+  const [recipe, setRecipe] = useState(testRecipe);
 
   return (
     <div className="app">
-      <h1 className="recipe-title">{testRecipe.title}</h1>
-      <Ingredients ingredients={testRecipe.ingredients} />
-      <Instructions instructions={testRecipe.instructions} />
+      <Recipe recipe={recipe} />
+      <EditRecipeForm />
     </div>
   );
 };

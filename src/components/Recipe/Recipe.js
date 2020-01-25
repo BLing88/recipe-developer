@@ -4,10 +4,10 @@ import { Ingredients } from "../Ingredients";
 import { Instructions } from "../Instructions";
 
 const Recipe = ({ recipe }) => {
-  const { title, ingredients, instructions } = recipe;
+  const { name, ingredients, instructions } = recipe;
   return (
     <div className="recipe">
-      <h1 className="recipe-title">{title}</h1>
+      <h1 className="recipe-name">{name}</h1>
       <Ingredients ingredients={ingredients} />
       <Instructions instructions={instructions} />
     </div>

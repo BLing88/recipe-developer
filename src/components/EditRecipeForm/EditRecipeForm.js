@@ -1,11 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-const updateRecipeHandler = event => {
-  event.preventDefault();
-};
-
-const EditRecipeForm = () => {
+const EditRecipeForm = ({ updateRecipeHandler }) => {
   const [name, setName] = useState("");
 
   return (
@@ -21,6 +17,9 @@ const EditRecipeForm = () => {
       <input type="submit" id="edit-recipe-submit" value="Submit" />
     </form>
   );
+};
+EditRecipeForm.propTypes = {
+  updateRecipeHandler: PropTypes.func.isRequired
 };
 
 export { EditRecipeForm };

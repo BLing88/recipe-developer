@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 
 const Notes = ({ notes }) => {
   return (
-    <div className="recipe-notes">
+    <div className="notes-section">
       <h2>Notes</h2>
-      {notes.map((note, i) => (
-        <li key={i}>{note}</li>
-      ))}
+      <ul className="recipe-notes">
+        {notes.map((note, i) => (
+          <li key={i}>{note}</li>
+        ))}
+      </ul>
     </div>
   );
 };

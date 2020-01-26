@@ -2,14 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Ingredients } from "../Ingredients";
 import { Instructions } from "../Instructions";
+import { Notes } from "../Notes";
 
 const Recipe = ({ recipe }) => {
-  const { name, ingredients, instructions } = recipe;
+  const { name, ingredients, instructions, notes } = recipe;
   return (
     <div className="recipe">
       <h1 className="recipe-name">{name}</h1>
       <Ingredients ingredients={ingredients} />
       <Instructions instructions={instructions} />
+      <Notes notes={notes} />
     </div>
   );
 };

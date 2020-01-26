@@ -6,7 +6,7 @@ const testRecipe = {
     { name: "chocolate", quantity: "3 oz" }
   ],
   instructions: ["Chop apples", "Melt chocolate"],
-  notes: []
+  notes: ["Needs salt"]
 };
 
 export { testRecipe };

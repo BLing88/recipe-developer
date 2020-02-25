@@ -2,14 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const Ingredients = ({ ingredients }) => (
-  <div className="ingredients">
+  <section className="ingredients">
     <h2>Ingredients</h2>
     <ul className="ingredients-list">
       {ingredients.map(ingredient => (
         <li key={ingredient.id}>{ingredient.ingredient}</li>
       ))}
     </ul>
-  </div>
+  </section>
 );
 Ingredients.propTypes = {
   ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,

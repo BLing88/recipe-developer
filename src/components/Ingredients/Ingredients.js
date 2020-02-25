@@ -14,7 +14,7 @@ const Ingredients = ({ ingredients }) => (
   </div>
 );
 Ingredients.propTypes = {
-  ingredients: PropTypes.array.isRequired
+  ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export { Ingredients };

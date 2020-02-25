@@ -12,7 +12,7 @@ const Instructions = ({ instructions }) => (
   </div>
 );
 Instructions.propTypes = {
-  instructions: PropTypes.array.isRequired,
+  instructions: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export { Instructions };

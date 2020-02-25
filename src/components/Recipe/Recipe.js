@@ -16,7 +16,7 @@ const Recipe = ({ recipe }) => {
       {/* abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz */}
       <Ingredients ingredients={ingredients} />
       <Instructions instructions={instructions} />
-      <Notes notes={notes.map(n => n.note)} />
+      <Notes notes={notes} />
     </article>
   );
 };

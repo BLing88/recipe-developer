@@ -6,15 +6,15 @@ const Notes = ({ notes }) => {
     <div className="notes-section">
       <h2>Notes</h2>
       <ul className="recipe-notes">
-        {notes.map((note, i) => (
-          <li key={i}>{note}</li>
+        {notes.map(note => (
+          <li key={note.id}>{note.note}</li>
         ))}
       </ul>
     </div>
   );
 };
 Notes.propTypes = {
-  notes: PropTypes.array.isRequired
+  notes: PropTypes.array.isRequired,
 };
 
 export { Notes };

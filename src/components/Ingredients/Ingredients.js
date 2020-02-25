@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./Ingredients.css";
 
 const Ingredients = ({ ingredients }) => (
   <section className="ingredients">

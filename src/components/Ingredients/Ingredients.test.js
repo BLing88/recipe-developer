@@ -13,7 +13,8 @@ test("it lists every ingredient", () => {
     testIngredients.map(ingredient => ingredient.ingredient)
   );
   Array.from(ingredientSet).forEach(ingredient => {
-    const queries = getAllByText(ingredient, { exact: false });
+    const ingredientRegex = new RegExp(ingredient, "i");
+    const queries = getAllByText(ingredientRegex);
     queries.forEach(ingredient => expect(ingredient).toBeInTheDocument());
   });
 });

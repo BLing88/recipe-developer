@@ -19,7 +19,7 @@ export const buildTestIngredients = (overrides = { number: 15 }) => {
 
 export const buildTestNotes = (overrides = { number: 15 }) => {
   const { number } = overrides;
-  const randomInt = faker.random.number(number);
+  const randomInt = number || faker.random.number(number);
   let notes = [];
   for (let i = 0; i < randomInt; i++) {
     notes.push({

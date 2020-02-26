@@ -1,4 +1,4 @@
-import { buildArray, buildTestIngredients } from "../generate";
+import { buildArray, buildTestIngredients, buildTestNotes } from "../generate";
 
 describe("buildArray ", () => {
   test("constructs array of squared numbers", () => {
@@ -23,6 +23,17 @@ describe("buildTestIngredients", () => {
     ingredients.forEach(ingredient => {
       expect(ingredient).toHaveProperty("ingredient");
       expect(ingredient).toHaveProperty("id");
+    });
+  });
+});
+
+describe("buildTestNotes", () => {
+  test("constructs array of note objects", () => {
+    const notes = buildTestNotes({ number: 14 });
+    expect(notes).toHaveLength(14);
+    notes.forEach(note => {
+      expect(note).toHaveProperty("note");
+      expect(note).toHaveProperty("id");
     });
   });
 });

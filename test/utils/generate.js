@@ -15,28 +15,20 @@ export const buildTestIngredients = overrides => {
 
 export const buildTestNotes = overrides => {
   const { number } = overrides;
-  const randomInt = number || faker.random.number(number);
-  let notes = [];
-  for (let i = 0; i < randomInt; i++) {
-    notes.push({
-      note: faker.lorem.sentences(),
-      id: faker.random.uuid(),
-    });
-  }
-  return notes;
+  const numberOfNotes = number || faker.random.number(15);
+  return buildArray(numberOfNotes, () => ({
+    note: faker.lorem.sentences(),
+    id: faker.random.uuid(),
+  }));
 };
 
 export const buildTestInstructions = overrides => {
   const { number } = overrides;
-  const randomInt = faker.random.number(number);
-  let instructions = [];
-  for (let i = 0; i < randomInt; i++) {
-    instructions.push({
-      instruction: faker.lorem.sentences(),
-      id: faker.random.uuid(),
-    });
-  }
-  return instructions;
+  const numberOfInstructions = number || faker.random.number(15);
+  return buildArray(numberOfInstructions, () => ({
+    instruction: faker.lorem.sentences(),
+    id: faker.random.uuid(),
+  }));
 };
 
 export const buildTestRecipe = (overrides = {}) => ({

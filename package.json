@@ -22,6 +22,11 @@
     "check-format": "npm run prettier -- --list-different",
     "validate": "npm-run-all --parallel check-format lint"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^utils/generate": "<rootDir>/test/utils/generate"
+    }
+  },
   "eslintConfig": {
     "extends": "react-app"
   },

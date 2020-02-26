@@ -1,8 +1,12 @@
 import faker from "faker";
-// import { v4 as randomId } from "uuid";
 
-export const buildTestIngredients = () => {
-  const randomInt = faker.random.number(15);
+const buildArray = (number, fn) => {
+  return Array.from({ length: number }, x => fn(x));
+};
+
+export const buildTestIngredients = (overrides = { number: 15 }) => {
+  const { number } = overrides;
+  const randomInt = faker.random.number(number);
   let ingredients = [];
   for (let i = 0; i < randomInt; i++) {
     ingredients.push({
@@ -11,6 +15,32 @@ export const buildTestIngredients = () => {
     });
   }
   return ingredients;
+};
+
+export const buildTestNotes = (overrides = { number: 15 }) => {
+  const { number } = overrides;
+  const randomInt = faker.random.number(number);
+  let notes = [];
+  for (let i = 0; i < randomInt; i++) {
+    notes.push({
+      note: faker.lorem.sentences(),
+      id: faker.random.uuid(),
+    });
+  }
+  return notes;
+};
+
+export const buildTestInstructions = (overrides = { number: 15 }) => {
+  const { number } = overrides;
+  const randomInt = faker.random.number(number);
+  let instructions = [];
+  for (let i = 0; i < randomInt; i++) {
+    instructions.push({
+      instruction: faker.lorem.sentences(),
+      id: faker.random.uuid(),
+    });
+  }
+  return instructions;
 };
 
 export const buildTestRecipe = (overrides = {}) => ({

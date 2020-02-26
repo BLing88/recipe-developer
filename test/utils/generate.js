@@ -6,15 +6,11 @@ export const buildArray = (length, fn) => {
 
 export const buildTestIngredients = overrides => {
   const { number } = overrides;
-  const randomInt = number || faker.random.number(15);
-  let ingredients = [];
-  for (let i = 0; i < randomInt; i++) {
-    ingredients.push({
-      ingredient: faker.commerce.productMaterial(),
-      id: faker.random.uuid(),
-    });
-  }
-  return ingredients;
+  const numberOfIngredients = number || faker.random.number(15);
+  return buildArray(numberOfIngredients, () => ({
+    ingredient: faker.commerce.productMaterial(),
+    id: faker.random.uuid(),
+  }));
 };
 
 export const buildTestNotes = overrides => {

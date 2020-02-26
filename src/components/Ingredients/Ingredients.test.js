@@ -1,9 +1,7 @@
 import React from "react";
 import { Ingredients } from "./Ingredients";
-// import { testRecipe } from "../../static-recipe";
 import { render } from "@testing-library/react";
 
-// import { buildTestIngredients } from "../../../test/utils/generate";
 import { buildTestIngredients } from "test/utils/generate";
 
 test("it lists every ingredient", () => {

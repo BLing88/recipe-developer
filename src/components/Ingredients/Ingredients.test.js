@@ -4,7 +4,7 @@ import { Ingredients } from "./Ingredients";
 import { render } from "@testing-library/react";
 
 // import { buildTestIngredients } from "../../../test/utils/generate";
-import { buildTestIngredients } from "utils/generate";
+import { buildTestIngredients } from "test/utils/generate";
 
 test("it lists every ingredient", () => {
   const testIngredients = buildTestIngredients();

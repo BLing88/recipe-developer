@@ -24,7 +24,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^utils": "<rootDir>/test/utils/"
+      "^test/utils/generate": "<rootDir>/test/utils/generate"
     }
   },
   "eslintConfig": {

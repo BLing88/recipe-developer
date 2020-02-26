@@ -1,14 +1,21 @@
 import React from "react";
 import { Instructions } from "./Instructions";
-import { testRecipe } from "../../static-recipe";
 import { render } from "@testing-library/react";
 
+import { buildTestInstructions } from "test/utils/generate";
+
 test("it lists every instruction", () => {
-  const { getByText } = render(
-    <Instructions instructions={testRecipe.instructions} />
+  const testInstructions = buildTestInstructions();
+
+  const { getAllByText } = render(
+    <Instructions instructions={testInstructions} />
   );
 
-  testRecipe.instructions.forEach(instruction => {
-    expect(getByText(instruction)).toBeInTheDocument();
+  const instructionSet = new Set(
+    testInstructions.map(instruction => instruction.instruction)
+  );
+  Array.from(instructionSet).forEach(instruction => {
+    const queries = getAllByText(new RegExp(instruction, "i"));
+    queries.forEach(instruction => expect(instruction).toBeInTheDocument());
   });
 });

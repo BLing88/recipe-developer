@@ -1,4 +1,9 @@
-import { buildArray, buildTestIngredients, buildTestNotes } from "../generate";
+import {
+  buildArray,
+  buildTestIngredients,
+  buildTestNotes,
+  buildTestRecipe,
+} from "../generate";
 
 describe("buildArray ", () => {
   test("constructs array of squared numbers", () => {
@@ -35,5 +40,16 @@ describe("buildTestNotes", () => {
       expect(note).toHaveProperty("note");
       expect(note).toHaveProperty("id");
     });
+  });
+});
+
+describe("buildTestRecipe", () => {
+  test("constructs a recipe object", () => {
+    const recipe = buildTestRecipe();
+    expect(recipe).toHaveProperty("name");
+    expect(recipe).toHaveProperty("id");
+    expect(recipe).toHaveProperty("ingredients");
+    expect(recipe).toHaveProperty("instructions");
+    expect(recipe).toHaveProperty("notes");
   });
 });

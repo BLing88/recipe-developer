@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import PropTypes from "prop-types";
 import createAuth0Client from "@auth0/auth0-spa-js";
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
@@ -36,7 +37,7 @@ export const Auth0Provider = ({
       setIsAuthenticated(isAuthenticated);
 
       if (isAuthenticated) {
-        const user = auth0FromHook.getUser();
+        const user = await auth0FromHook.getUser();
         setUser(user);
       }
 
@@ -44,6 +45,7 @@ export const Auth0Provider = ({
     };
 
     initAuth0();
+    // eslint-disable-next-line
   }, []);
 
   const loginWithPopup = async (params = {}) => {
@@ -90,4 +92,8 @@ export const Auth0Provider = ({
       {children}
     </Auth0Context.Provider>
   );
+};
+Auth0Provider.propTypes = {
+  children: PropTypes.node,
+  onRedirectCallback: PropTypes.func,
 };

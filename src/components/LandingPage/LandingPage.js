@@ -3,12 +3,16 @@ import PropTypes from "prop-types";
 
 const LandingPage = ({ loginWithRedirect, signup }) => {
   return (
-    <main>
-      <h1>Recipe Developer</h1>
-      <button onClick={() => loginWithRedirect()}>Login</button>
+    <main className="landing-page">
+      <h1 className="app-name">Recipe Developer</h1>
+      <button className="login-btn" onClick={() => loginWithRedirect()}>
+        Login
+      </button>
       <section>
         Don&apos;t have an account?
-        <button onClick={() => signup()}>Sign up</button>
+        <button className="signup-btn" onClick={() => signup()}>
+          Sign up
+        </button>
       </section>
     </main>
   );

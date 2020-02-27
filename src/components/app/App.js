@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./App.css";
 import { Recipe } from "../Recipe";
+import { NavBar } from "../NavBar";
 // import { EditRecipeForm } from "../EditRecipeForm";
 import { testRecipe } from "../../static-recipe";
 
-import { NavBar } from "../NavBar/NavBar";
 import { useAuth0 } from "../../react-auth0-spa";
 
 const App = () => {
@@ -25,12 +25,10 @@ const App = () => {
 
   return (
     <div className="app">
-      <nav className="app-header">
+      <header className="app-header">
+        {/* Welcome {user.name} */}
         <NavBar />
-        <button>My recipes</button>
-        <button>Create recipe</button>
-        <button>My profile</button>
-      </nav>
+      </header>
       <Recipe recipe={recipe} />
       {/* <EditRecipeForm updateRecipeHandler={updateRecipeHandler} /> */}
     </div>

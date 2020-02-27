@@ -4,41 +4,30 @@ import { render } from "@testing-library/react";
 import { LandingPage } from "./LandingPage";
 
 const renderLandingPage = () => {
-  const mockLoginWithRedirect = jest.fn().mockName("loginWithRedirect");
-  const mockSignup = jest.fn().mockName("signup");
+  const loginWithRedirect = jest.fn().mockName("loginWithRedirect");
+  const signup = jest.fn().mockName("signup");
   const queries = render(
-    <LandingPage
-      loginWithRedirect={mockLoginWithRedirect}
-      signup={mockSignup}
-    />
+    <LandingPage loginWithRedirect={loginWithRedirect} signup={signup} />
   );
-  return { mockLoginWithRedirect, mockSignup, ...queries };
+  return { loginWithRedirect, signup, ...queries };
 };
 
 describe("Landing page", () => {
   test("has a login button", () => {
-    const {
-      mockLoginWithRedirect,
-      mockSignup,
-      getByText,
-    } = renderLandingPage();
+    const { loginWithRedirect, signup, getByText } = renderLandingPage();
     const loginButton = getByText(/login/i);
     user.click(loginButton);
-    expect(mockLoginWithRedirect).toHaveBeenCalledTimes(1);
-    expect(mockLoginWithRedirect).toHaveBeenCalledWith(/*nothing*/);
-    expect(mockSignup).not.toHaveBeenCalled();
+    expect(loginWithRedirect).toHaveBeenCalledTimes(1);
+    expect(loginWithRedirect).toHaveBeenCalledWith(/*nothing*/);
+    expect(signup).not.toHaveBeenCalled();
   });
 
   test("has a sign up button", () => {
-    const {
-      mockLoginWithRedirect,
-      mockSignup,
-      getByText,
-    } = renderLandingPage();
+    const { loginWithRedirect, signup, getByText } = renderLandingPage();
     const signupButton = getByText(/sign up/i);
     user.click(signupButton);
-    expect(mockSignup).toHaveBeenCalledTimes(1);
-    expect(mockSignup).toHaveBeenCalledWith(/*nothing*/);
-    expect(mockLoginWithRedirect).not.toHaveBeenCalled();
+    expect(signup).toHaveBeenCalledTimes(1);
+    expect(signup).toHaveBeenCalledWith(/*nothing*/);
+    expect(loginWithRedirect).not.toHaveBeenCalled();
   });
 });

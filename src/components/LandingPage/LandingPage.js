@@ -7,7 +7,7 @@ const LandingPage = ({ loginWithRedirect, signup }) => {
       <h1>Recipe Developer</h1>
       <button onClick={() => loginWithRedirect()}>Login</button>
       <section>
-        Don&aps;t have an account?{" "}
+        Don&aps;t have an account?
         <button onClick={() => signup()}>Sign up</button>
       </section>
     </main>

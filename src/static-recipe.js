@@ -1,6 +1,7 @@
 const testRecipe = {
   name: "Gimbap",
   id: "testRecipe",
+  author: "test author",
   ingredients: [
     { ingredient: "1 apple", id: 1 },
     { ingredient: "3 ounces chocolate", id: 2 },

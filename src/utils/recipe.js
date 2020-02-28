@@ -1,8 +1,15 @@
 import { v4 as randomId } from "uuid";
 
-export const buildRecipe = ({ name, ingredients, instructions, notes }) => {
+export const buildRecipe = ({
+  name,
+  author,
+  ingredients,
+  instructions,
+  notes,
+}) => {
   return {
     name,
+    author,
     id: `recipe-${randomId()}`,
     ingredients: ingredients.map(ingredient => ({
       ingredient,
@@ -20,6 +27,8 @@ export const buildRecipe = ({ name, ingredients, instructions, notes }) => {
 };
 
 export const nameOfRecipe = recipe => recipe.name;
+
+export const authorOfRecipe = recipe => recipe.author;
 
 export const idOfRecipe = recipe => recipe.id;
 

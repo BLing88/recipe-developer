@@ -48,6 +48,7 @@ describe("buildTestRecipe", () => {
     const recipe = buildTestRecipe();
     expect(recipe).toHaveProperty("name");
     expect(recipe).toHaveProperty("id");
+    expect(recipe).toHaveProperty("author");
     expect(recipe).toHaveProperty("ingredients");
     expect(recipe).toHaveProperty("instructions");
     expect(recipe).toHaveProperty("notes");

@@ -1,9 +1,14 @@
 const { getAllRecipes, getRecipe } = require("./dynamodb");
 
-const allRecipes = async ({ authorId }) => {
+const allRecipes = async (_, { authorId }) => {
   return await getAllRecipes(authorId);
 };
 
-const recipe = async ({ recipeId }) => {
+const recipe = async (_, { recipeId }) => {
   return await getRecipe(recipeId);
+};
+
+module.exports = {
+  allRecipes,
+  recipe,
 };

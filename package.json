@@ -1,11 +1,19 @@
 {
   "name": "recipe-developer-server",
   "version": "1.0.0",
-  "description": "Server for Recipe Developer",
+  "description": "GraphQL server for Recipe Developer",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^2.10.1",
+    "apollo-server-lambda": "^2.10.1",
+    "graphql": "^14.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
 }

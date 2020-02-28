@@ -1,5 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 
+const { allRecipes, recipe } = require("./queries");
+
 const typeDefs = gql`
   type Recipe {
     id: ID!
@@ -32,7 +34,12 @@ const typeDefs = gql`
   }
 `;
 
-const resolvers = {};
+const resolvers = {
+  Query: {
+    allRecipes,
+    recipe,
+  },
+};
 
 const server = new ApolloServer({
   typeDefs,

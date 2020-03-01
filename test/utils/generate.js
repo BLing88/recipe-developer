@@ -40,3 +40,9 @@ export const buildTestRecipe = overrides => ({
   notes: buildTestNotes(),
   ...overrides,
 });
+
+export const buildTestUser = (overrides = {}) => ({
+  name: faker.name.findName(),
+  nickname: faker.name.firstName(),
+  ...overrides,
+});

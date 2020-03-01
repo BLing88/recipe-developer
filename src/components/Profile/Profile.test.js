@@ -25,7 +25,7 @@ describe("Profile", () => {
     );
   });
 
-  test("If user has no recipes, show create recipe message", () => {
+  test("shows create recipe message if user has no recipes,", () => {
     const recipes = [];
     const { getByText } = renderProfile({ recipes });
 

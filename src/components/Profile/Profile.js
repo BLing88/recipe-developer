@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Recipe } from "../Recipe";
 
 const Profile = ({ recipes }) => (
   <article className="user-profile">
@@ -14,7 +13,7 @@ const Profile = ({ recipes }) => (
     </ul>
   </article>
 );
-Recipe.propTypes = {
+Profile.propTypes = {
   recipes: PropTypes.array.isRequired,
 };
 

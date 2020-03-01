@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
-import { Recipe } from "../Recipe";
-import { NavBar } from "../NavBar";
+import { LandingPage } from "../LandingPage";
+import { AuthenticatedApp } from "../AuthenticatedApp";
 // import { EditRecipeForm } from "../EditRecipeForm";
 import { testRecipe } from "../../static-recipe";
 
@@ -10,7 +10,7 @@ import { useAuth0 } from "../../react-auth0-spa";
 const App = () => {
   // eslint-disable-next-line
   const [recipe, setRecipe] = useState(testRecipe);
-  const { loading } = useAuth0();
+  const { loading, user, isAuthenticated, loginWithRedirect } = useAuth0();
   // const updateRecipeHandler = event => {
   //   event.preventDefault();
   //   // TODO
@@ -19,20 +19,22 @@ const App = () => {
   //   // setRecipe(updatedRecipe)
   // };
 
-  if (loading) {
-    return <div>Loading...</div>;
+  if (!user) {
+    return (
+      <LandingPage
+        loginWithRedirect={loginWithRedirect}
+        signup={loginWithRedirect}
+      />
+    );
+  } else if (loading) {
+    return <main>Redirecting...</main>;
   }
 
-  return (
-    <div className="app">
-      <header className="app-header">
-        {/* Welcome {user.name} */}
-        <NavBar />
-      </header>
-      <Recipe recipe={recipe} />
-      {/* <EditRecipeForm updateRecipeHandler={updateRecipeHandler} /> */}
-    </div>
-  );
+  if (isAuthenticated) {
+    console.log(user);
+    return <AuthenticatedApp user={user} />;
+  }
 };
 
+export default App;
 export { App };

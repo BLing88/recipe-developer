@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 const Profile = ({ recipes }) => (
   <article className="user-profile">
+    <h1>My Profile</h1>
     <h2>My Recipes</h2>
     <ul className="recipe-list">
       {recipes.length ? (

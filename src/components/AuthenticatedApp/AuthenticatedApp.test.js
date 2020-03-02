@@ -24,7 +24,7 @@ const GET_USER_RECIPES = gql`
 `;
 
 describe("AuthenticatedApp", () => {
-  test("shows loading Profile", async () => {
+  test("loads Profile", async () => {
     const mockLogout = jest.fn().mockName("logout");
     const user = buildTestUser();
     mockUseAuth0.mockReturnValue({
@@ -68,6 +68,4 @@ describe("AuthenticatedApp", () => {
       expect(getByText(recipe.name)).toBeInTheDocument()
     );
   });
-
-  //   test("loads user recipes", () =>)
 });

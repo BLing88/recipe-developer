@@ -1,8 +1,6 @@
 import React, { useReducer } from "react";
 import PropTypes from "prop-types";
 
-import { buildRecipe } from "../../utils/recipe";
-
 const defaultState = {
   name: "",
   ingredients: [""],

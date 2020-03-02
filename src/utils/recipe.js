@@ -3,9 +3,9 @@ import { v4 as randomId } from "uuid";
 export const buildRecipe = ({
   name,
   author,
-  ingredients,
-  instructions,
-  notes,
+  ingredients = [],
+  instructions = [],
+  notes = [],
 }) => {
   return {
     name,

@@ -16,6 +16,9 @@ const DELETE_INGREDIENT = "DELETE_INGREDIENT";
 const UPDATE_INSTRUCTIONS_INPUT = "UPDATE_INSTRUCTIONS_INPUT";
 const ADD_INSTRUCTION = "ADD_INSTRUCTION";
 const DELETE_INSTRUCTION = "DELETE_INSTRUCTION";
+const UPDATE_NOTES_INPUT = "UPDATE_NOTES_INPUT";
+const ADD_NOTE = "ADD_NOTE";
+const DELETE_NOTE = "DELETE_NOTE";
 const reducer = (state, action) => {
   switch (action.type) {
     case UPDATE_NAME_INPUT:
@@ -68,6 +71,27 @@ const reducer = (state, action) => {
           numOfInstructions === 1
             ? [""]
             : [...state.instructions.slice(0, numOfInstructions - 1)],
+      };
+    case UPDATE_NOTES_INPUT:
+      return {
+        ...state,
+        notes: [
+          ...state.notes.slice(0, action.noteNumber),
+          action.note,
+          ...state.notes.slice(action.noteNumber + 1),
+        ],
+      };
+    case ADD_NOTE:
+      return {
+        ...state,
+        notes: [...state.notes, ""],
+      };
+    case DELETE_NOTE:
+      const numOfNotes = state.notes.length;
+      return {
+        ...state,
+        notes:
+          numOfNotes === 1 ? [""] : [...state.notes.slice(0, numOfNotes - 1)],
       };
     default:
       return state;
@@ -170,6 +194,46 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
           }}
         >
           Delete instruction
+        </button>
+      </section>
+
+      <section>
+        Notes
+        <ul>
+          {state.notes.map((note, i) => (
+            <li key={i}>
+              <label htmlFor={`recipe-notes-${i + 1}`}>note {i + 1}:</label>
+              <input
+                id={`recipe-notes-${i + 1}`}
+                type="text"
+                value={note}
+                onChange={e => {
+                  e.preventDefault();
+                  dispatch({
+                    type: UPDATE_NOTES_INPUT,
+                    noteNumber: i,
+                    note: e.target.value,
+                  });
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={e => {
+            e.preventDefault();
+            dispatch({ type: ADD_NOTE });
+          }}
+        >
+          Add note
+        </button>
+        <button
+          onClick={e => {
+            e.preventDefault();
+            dispatch({ type: DELETE_NOTE });
+          }}
+        >
+          Delete note
         </button>
       </section>
 

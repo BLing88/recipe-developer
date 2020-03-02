@@ -41,6 +41,12 @@ describe("CreateRecipeForm", () => {
     expect(recipeInstructionsInput).toHaveValue("");
     user.type(recipeInstructionsInput, instructions[0].instruction);
     expect(recipeInstructionsInput).toHaveValue(instructions[0].instruction);
+
+    const recipeNotesInput = getByLabelText(/note 1/i);
+    expect(recipeNotesInput).toBeInTheDocument();
+    expect(recipeNotesInput).toHaveValue("");
+    user.type(recipeNotesInput, notes[0].note);
+    expect(recipeNotesInput).toHaveValue(notes[0].note);
   });
 
   test("can add and delete multiple ingredients", () => {

@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import { LandingPage } from "../LandingPage";
 import { AuthenticatedApp } from "../AuthenticatedApp";
 // import { EditRecipeForm } from "../EditRecipeForm";
-import { testRecipe } from "../../static-recipe";
+import { CreateRecipeForm } from "../CreateRecipeForm";
 
 import { useAuth0 } from "../../react-auth0-spa";
 
 const App = () => {
-  // eslint-disable-next-line
-  const [recipe, setRecipe] = useState(testRecipe);
   const { loading, user, isAuthenticated, loginWithRedirect } = useAuth0();
   // const updateRecipeHandler = event => {
   //   event.preventDefault();
@@ -20,6 +18,7 @@ const App = () => {
   // };
 
   if (!user) {
+    // return <CreateRecipeForm />;
     return (
       <LandingPage
         loginWithRedirect={loginWithRedirect}

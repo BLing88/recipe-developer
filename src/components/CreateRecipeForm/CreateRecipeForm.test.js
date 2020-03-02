@@ -10,7 +10,9 @@ expect.extend(toHaveNoViolations);
 
 describe("CreateRecipeForm", () => {
   test("has an accessible form", async () => {
-    const { container } = render(<CreateRecipeForm />);
+    const { container } = render(
+      <CreateRecipeForm createRecipeHandler={jest.fn()} />
+    );
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
@@ -18,7 +20,9 @@ describe("CreateRecipeForm", () => {
   test("has inputs for name, ingredients, instructions, and notes", () => {
     const testRecipe = buildTestRecipe();
     const { name, ingredients, notes, instructions } = testRecipe;
-    const { getByLabelText } = render(<CreateRecipeForm />);
+    const { getByLabelText } = render(
+      <CreateRecipeForm createRecipeHandler={jest.fn()} />
+    );
 
     const recipeNameInput = getByLabelText(/name/i);
     expect(recipeNameInput).toBeInTheDocument();
@@ -35,9 +39,9 @@ describe("CreateRecipeForm", () => {
 
   test("can add and delete multiple ingredients", () => {
     const testRecipe = buildTestRecipe();
-    // const ingredients = testRecipe.ingredients.map(i => i.ingredient);
+    const ingredients = testRecipe.ingredients.map(i => i.ingredient);
     const { getByLabelText, getByText, queryByText } = render(
-      <CreateRecipeForm />
+      <CreateRecipeForm createRecipeHandler={jest.fn()} />
     );
 
     const addIngredientButton = getByText(/add ingredient/i);
@@ -45,17 +49,24 @@ describe("CreateRecipeForm", () => {
 
     const recipeIngredientsInput1 = getByLabelText(/ingredient 1/i);
     expect(recipeIngredientsInput1).toBeInTheDocument();
-    expect(recipeIngredientsInput1).toHaveTextContent("");
+    expect(recipeIngredientsInput1).toHaveValue("");
     user.click(addIngredientButton);
     const recipeIngredientsInput2 = getByLabelText(/ingredient 2/i);
     expect(recipeIngredientsInput2).toBeInTheDocument();
-    expect(recipeIngredientsInput2).toHaveTextContent("");
+    expect(recipeIngredientsInput2).toHaveValue("");
 
     const deleteIngredientButton = getByText(/delete ingredient/i);
     expect(deleteIngredientButton).toBeInTheDocument();
     user.click(deleteIngredientButton);
     expect(queryByText(/ingredient 2/i)).toBeNull();
     user.click(deleteIngredientButton);
-    expect(recipeIngredientsInput1).toHaveTextContent("");
+    expect(recipeIngredientsInput1).toHaveValue("");
+
+    ingredients.forEach((ingredient, i) => {
+      const input = getByLabelText(new RegExp(`ingredient ${i + 1}`, "i"));
+      user.type(input, ingredient);
+      user.click(addIngredientButton);
+      expect(input).toHaveValue(ingredient);
+    });
   });
 });

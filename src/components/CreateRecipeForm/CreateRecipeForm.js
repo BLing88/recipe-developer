@@ -117,7 +117,7 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
   );
 };
 CreateRecipeForm.propTypes = {
-  createRecipeHandler: ptfr,
+  createRecipeHandler: PropTypes.func.isRequired,
 };
 
 export default CreateRecipeForm;

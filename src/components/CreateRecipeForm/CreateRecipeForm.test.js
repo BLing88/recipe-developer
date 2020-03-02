@@ -83,4 +83,43 @@ describe("CreateRecipeForm", () => {
     expect(firstInput).toBeInTheDocument();
     expect(firstInput).toHaveValue("");
   });
+
+  test("can add and delete multiple instructions", () => {
+    const testRecipe = buildTestRecipe();
+    const instructions = testRecipe.instructions.map(i => i.instruction);
+    const { getByLabelText, getByText, queryByText } = render(
+      <CreateRecipeForm createRecipeHandler={jest.fn()} />
+    );
+
+    const addInstructionButton = getByText(/add instruction/i);
+    expect(addInstructionButton).toBeInTheDocument();
+    const deleteInstructionButton = getByText(/delete instruction/i);
+    expect(deleteInstructionButton).toBeInTheDocument();
+
+    instructions.forEach((instruction, i) => {
+      const input = getByLabelText(new RegExp(`^step ${i + 1}:$`, "i"));
+      user.type(input, instruction);
+      expect(input).toHaveValue(instruction);
+      user.click(addInstructionButton);
+    });
+
+    user.click(deleteInstructionButton);
+
+    instructions
+      .slice()
+      .reverse()
+      .forEach((instruction, i) => {
+        user.click(deleteInstructionButton);
+        if (i < instructions.length - 1) {
+          expect(
+            queryByText(new RegExp(`^step ${instructions.length - i}:$`, "i"))
+          ).not.toBeInTheDocument();
+        }
+        expect(queryByText(instruction)).not.toBeInTheDocument();
+      });
+
+    const firstInput = getByLabelText(/^step 1:$/i);
+    expect(firstInput).toBeInTheDocument();
+    expect(firstInput).toHaveValue("");
+  });
 });

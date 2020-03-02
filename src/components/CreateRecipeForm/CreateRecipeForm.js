@@ -55,6 +55,20 @@ const reducer = (state, action) => {
           ...state.instructions.slice(action.instructionNumber + 1),
         ],
       };
+    case ADD_INSTRUCTION:
+      return {
+        ...state,
+        instructions: [...state.instructions, ""],
+      };
+    case DELETE_INSTRUCTION:
+      const numOfInstructions = state.instructions.length;
+      return {
+        ...state,
+        instructions:
+          numOfInstructions === 1
+            ? [""]
+            : [...state.instructions.slice(0, numOfInstructions - 1)],
+      };
     default:
       return state;
   }

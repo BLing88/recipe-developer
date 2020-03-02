@@ -54,7 +54,7 @@ describe("AuthenticatedApp", () => {
 
     const { getByText, queryByText, findByText } = render(
       <MockedProvider addTypename={false} mocks={mocks}>
-        <AuthenticatedApp user={user} />
+        <AuthenticatedApp />
       </MockedProvider>
     );
 

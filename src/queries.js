@@ -1,7 +1,7 @@
-const { getAllRecipes, getRecipe } = require("./dynamodb");
+const { getAllRecipesById, getRecipe } = require("./dynamodb");
 
-const allRecipes = async (_, { authorId }) => {
-  return await getAllRecipes(authorId);
+const getAllRecipes = async (_, { authorId }) => {
+  return await getAllRecipesById(authorId);
 };
 
 const recipe = async (_, { recipeId }) => {
@@ -9,6 +9,6 @@ const recipe = async (_, { recipeId }) => {
 };
 
 module.exports = {
-  allRecipes,
+  getAllRecipes,
   recipe,
 };

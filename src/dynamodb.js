@@ -1,6 +1,6 @@
 const { db } = require("./static-db");
 
-const getAllRecipes = authorId => {
+const getAllRecipesById = authorId => {
   return new Promise(resolve =>
     resolve(db.filter(recipe => recipe.author === authorId))
   );
@@ -13,6 +13,6 @@ const getRecipe = recipeId => {
 };
 
 module.exports = {
-  getAllRecipes,
+  getAllRecipesById,
   getRecipe,
 };

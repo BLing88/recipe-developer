@@ -6,13 +6,16 @@ import { buildRecipe } from "../../utils/recipe";
 const defaultState = {
   name: "",
   ingredients: [""],
-  instructions: [],
-  notes: [],
+  instructions: [""],
+  notes: [""],
 };
 const UPDATE_NAME_INPUT = "UPDATE_NAME_INPUT";
 const UPDATE_INGREDIENTS_INPUT = "UPDATE_INGREDIENTS_INPUT";
 const ADD_INGREDIENT = "ADD_INGREDIENT";
 const DELETE_INGREDIENT = "DELETE_INGREDIENT";
+const UPDATE_INSTRUCTIONS_INPUT = "UPDATE_INSTRUCTIONS_INPUT";
+const ADD_INSTRUCTION = "ADD_INSTRUCTION";
+const DELETE_INSTRUCTION = "DELETE_INSTRUCTION";
 const reducer = (state, action) => {
   switch (action.type) {
     case UPDATE_NAME_INPUT:
@@ -42,6 +45,15 @@ const reducer = (state, action) => {
           numOfIngredients === 1
             ? [""]
             : [...state.ingredients.slice(0, numOfIngredients - 1)],
+      };
+    case UPDATE_INSTRUCTIONS_INPUT:
+      return {
+        ...state,
+        instructions: [
+          ...state.instructions.slice(0, action.instructionNumber),
+          action.instruction,
+          ...state.instructions.slice(action.instructionNumber + 1),
+        ],
       };
     default:
       return state;
@@ -104,6 +116,49 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
           Delete ingredient
         </button>
       </section>
+
+      <section>
+        Instructions
+        <ul>
+          {state.instructions.map((instruction, i) => (
+            <li key={i}>
+              <label htmlFor={`recipe-instructions-${i + 1}`}>
+                step {i + 1}:
+              </label>
+              <input
+                id={`recipe-instructions-${i + 1}`}
+                type="text"
+                value={instruction}
+                onChange={e => {
+                  e.preventDefault();
+                  dispatch({
+                    type: UPDATE_INSTRUCTIONS_INPUT,
+                    instructionNumber: i,
+                    instruction: e.target.value,
+                  });
+                }}
+              />
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={e => {
+            e.preventDefault();
+            dispatch({ type: ADD_INSTRUCTION });
+          }}
+        >
+          Add instruction
+        </button>
+        <button
+          onClick={e => {
+            e.preventDefault();
+            dispatch({ type: DELETE_INSTRUCTION });
+          }}
+        >
+          Delete instruction
+        </button>
+      </section>
+
       <button
         onClick={e => {
           e.preventDefault();

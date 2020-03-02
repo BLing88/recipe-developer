@@ -7,6 +7,8 @@ import gql from "graphql-tag";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
 
+import { buildRecipe } from "../../utils/recipe";
+
 const AuthenticatedApp = () => {
   const [recipes, setRecipes] = useState([]);
   const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
@@ -27,6 +29,14 @@ const AuthenticatedApp = () => {
     },
   });
 
+  const createRecipeHandler = recipeData => {
+    const recipe = buildRecipe({
+      ...recipeData,
+      author: user.id,
+    });
+    setIsCreatingRecipe(false);
+  };
+
   useEffect(() => {
     if (!loading && !error) {
       data && setRecipes(data.getAllRecipes);
@@ -43,7 +53,7 @@ const AuthenticatedApp = () => {
         <NavBar />
       </header>
       {isCreatingRecipe ? (
-        <CreateRecipeForm createRecipeHandler={() => {}} />
+        <CreateRecipeForm createRecipeHandler={createRecipeHandler} />
       ) : (
         <Profile
           user={user}

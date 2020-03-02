@@ -1,4 +1,7 @@
 import React, { useReducer } from "react";
+import PropTypes from "prop-types";
+
+import { buildRecipe } from "../../utils/recipe";
 
 const defaultState = {
   name: "",
@@ -44,7 +47,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-const CreateRecipeForm = () => {
+const CreateRecipeForm = ({ createRecipeHandler }) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
 
   return (
@@ -101,8 +104,20 @@ const CreateRecipeForm = () => {
           Delete ingredient
         </button>
       </section>
+      <button
+        onClick={e => {
+          e.preventDefault();
+          createRecipeHandler({ ...state });
+        }}
+        type="submit"
+      >
+        Create recipe
+      </button>
     </form>
   );
+};
+CreateRecipeForm.propTypes = {
+  createRecipeHandler: ptfr,
 };
 
 export default CreateRecipeForm;

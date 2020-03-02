@@ -35,7 +35,7 @@ describe("CreateRecipeForm", () => {
 
   test("can add and delete multiple ingredients", () => {
     const testRecipe = buildTestRecipe();
-    const ingredients = testRecipe.ingredients.map(i => i.ingredient);
+    // const ingredients = testRecipe.ingredients.map(i => i.ingredient);
     const { getByLabelText, getByText, queryByText } = render(
       <CreateRecipeForm />
     );

@@ -102,7 +102,7 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
 
   return (
     <form data-testid="create-recipe-form">
-      <label htmlFor="recipe-name">Name</label>
+      <label htmlFor="recipe-name">Recipe name</label>
       <input
         id="recipe-name"
         type="text"

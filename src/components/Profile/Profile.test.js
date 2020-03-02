@@ -12,7 +12,12 @@ const renderProfile = (overrides = {}) => {
     buildArray(overrides.numberOfRecipes || 5, () =>
       buildTestRecipe({ author })
     );
-  return render(<Profile recipes={userRecipes} />);
+  return render(
+    <Profile
+      recipes={userRecipes}
+      setIsCreatingRecipe={overrides.setIsCreatingRecipe || jest.fn()}
+    />
+  );
 };
 
 describe("Profile", () => {
@@ -31,14 +36,5 @@ describe("Profile", () => {
     const { getByText } = renderProfile({ recipes });
 
     expect(getByText(/Create recipe/i)).toBeInTheDocument();
-  });
-
-  test("Shows create recipe form when create recipe button is clicked", () => {
-    const recipes = [];
-    const { getByText, getByTestId } = renderProfile({ recipes });
-
-    const createRecipeButton = getByText(/Create recipe/i);
-    user.click(createRecipeButton);
-    expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
 });

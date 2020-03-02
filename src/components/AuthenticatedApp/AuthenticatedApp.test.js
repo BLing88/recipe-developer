@@ -7,6 +7,7 @@ import {
   buildArray,
   buildTestRecipe,
 } from "test/utils/generate";
+import testUser from "@testing-library/user-event";
 
 jest.mock("../../react-auth0-spa");
 import { useAuth0 as mockUseAuth0 } from "../../react-auth0-spa";
@@ -22,6 +23,50 @@ const GET_USER_RECIPES = gql`
     }
   }
 `;
+
+const renderLoadedProfile = async (overrides = {}) => {
+  const mockLogout = jest.fn().mockName("logout");
+  const user = buildTestUser();
+  mockUseAuth0.mockReturnValue({
+    user,
+    logout: mockLogout,
+  });
+
+  const recipes =
+    overrides.recipes ||
+    buildArray(10, () => buildTestRecipe({ author: user }));
+  const mocks = [
+    {
+      request: {
+        query: GET_USER_RECIPES,
+        variables: {
+          authorId: user.id,
+        },
+      },
+      result: () => {
+        return {
+          data: {
+            getAllRecipes: recipes,
+          },
+          error: null,
+        };
+      },
+    },
+  ];
+
+  const queries = render(
+    <MockedProvider addTypename={false} mocks={mocks}>
+      <AuthenticatedApp />
+    </MockedProvider>
+  );
+  await wait(); // wait for MockedProvider's promise to resolve
+
+  return {
+    user,
+    mockLogout,
+    ...queries,
+  };
+};
 
 describe("AuthenticatedApp", () => {
   test("loads Profile", async () => {
@@ -67,5 +112,14 @@ describe("AuthenticatedApp", () => {
     recipes.forEach(recipe =>
       expect(getByText(recipe.name)).toBeInTheDocument()
     );
+  });
+
+  test("Shows create recipe form when create recipe button is clicked", async () => {
+    const recipes = [];
+    const { getByTestId } = await renderLoadedProfile({ recipes });
+
+    const createRecipeButton = getByTestId("no-recipes-create-btn");
+    testUser.click(createRecipeButton);
+    expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
 });

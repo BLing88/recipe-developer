@@ -5,9 +5,11 @@ import { Profile } from "../Profile";
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useAuth0 } from "../../react-auth0-spa";
+import { CreateRecipeForm } from "../CreateRecipeForm";
 
 const AuthenticatedApp = () => {
   const [recipes, setRecipes] = useState([]);
+  const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
   const { user } = useAuth0();
 
   const GET_USER_RECIPES = gql`
@@ -31,15 +33,25 @@ const AuthenticatedApp = () => {
     }
   }, [loading, data, error]);
 
+  if (loading) {
+    return <div className="loading-profile">Loading profile...</div>;
+  }
+
   return (
     <div className="app">
       <header className="app-header">
         <NavBar />
       </header>
-      {loading ? (
-        <div className="loading-profile">Loading profile...</div>
+      {isCreatingRecipe ? (
+        <CreateRecipeForm createRecipeHandler={() => {}} />
       ) : (
-        <Profile user={user} recipes={recipes} />
+        <Profile
+          user={user}
+          setIsCreatingRecipe={() =>
+            setIsCreatingRecipe(isCreatingRecipe => !isCreatingRecipe)
+          }
+          recipes={recipes}
+        />
       )}
     </div>
   );

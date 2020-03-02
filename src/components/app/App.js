@@ -32,7 +32,7 @@ const App = () => {
 
   if (isAuthenticated) {
     console.log(user);
-    return <AuthenticatedApp user={user} />;
+    return <AuthenticatedApp />;
   }
 };
 

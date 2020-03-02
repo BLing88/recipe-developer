@@ -4,11 +4,11 @@ import { Profile } from "../Profile";
 
 import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
-// import { useAuth0 } from "../../react-auth0-spa";
+import { useAuth0 } from "../../react-auth0-spa";
 
-const AuthenticatedApp = ({ user }) => {
+const AuthenticatedApp = () => {
   const [recipes, setRecipes] = useState([]);
-  //   const { user } = useAuth0();
+  const { user } = useAuth0();
 
   const GET_USER_RECIPES = gql`
     query getAllRecipes($authorId: ID!) {

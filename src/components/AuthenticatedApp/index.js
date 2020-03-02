@@ -1,1 +1,1 @@
-export { AuthenticatedApp as default } from "./AuthenticatedApp";
+export { AuthenticatedApp } from "./AuthenticatedApp";

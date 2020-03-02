@@ -128,4 +128,43 @@ describe("CreateRecipeForm", () => {
     expect(firstInput).toBeInTheDocument();
     expect(firstInput).toHaveValue("");
   });
+
+  test("can add and delete multiple notes", () => {
+    const testRecipe = buildTestRecipe();
+    const notes = testRecipe.notes.map(i => i.note);
+    const { getByLabelText, getByText, queryByText } = render(
+      <CreateRecipeForm createRecipeHandler={jest.fn()} />
+    );
+
+    const addNoteButton = getByText(/add note/i);
+    expect(addNoteButton).toBeInTheDocument();
+    const deleteNoteButton = getByText(/delete note/i);
+    expect(deleteNoteButton).toBeInTheDocument();
+
+    notes.forEach((note, i) => {
+      const input = getByLabelText(new RegExp(`^note ${i + 1}:$`, "i"));
+      user.type(input, note);
+      expect(input).toHaveValue(note);
+      user.click(addNoteButton);
+    });
+
+    user.click(deleteNoteButton);
+
+    notes
+      .slice()
+      .reverse()
+      .forEach((note, i) => {
+        user.click(deleteNoteButton);
+        if (i < notes.length - 1) {
+          expect(
+            queryByText(new RegExp(`^note ${notes.length - i}:$`, "i"))
+          ).not.toBeInTheDocument();
+        }
+        expect(queryByText(note)).not.toBeInTheDocument();
+      });
+
+    const firstInput = getByLabelText(/^note 1:$/i);
+    expect(firstInput).toBeInTheDocument();
+    expect(firstInput).toHaveValue("");
+  });
 });

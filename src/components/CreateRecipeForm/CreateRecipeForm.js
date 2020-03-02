@@ -48,7 +48,7 @@ const CreateRecipeForm = () => {
   const [state, dispatch] = useReducer(reducer, defaultState);
 
   return (
-    <form>
+    <form data-testid="create-recipe-form">
       <label htmlFor="recipe-name">Name</label>
       <input
         id="recipe-name"

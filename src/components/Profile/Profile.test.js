@@ -1,5 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react";
+import user from "@testing-library/user-event";
 
 import { Profile } from "./Profile";
 import { buildArray, buildTestRecipe } from "test/utils/generate";
@@ -30,5 +31,14 @@ describe("Profile", () => {
     const { getByText } = renderProfile({ recipes });
 
     expect(getByText(/Create recipe/i)).toBeInTheDocument();
+  });
+
+  test("Shows create recipe form when create recipe button is clicked", () => {
+    const recipes = [];
+    const { getByText, getByTestId } = renderProfile({ recipes });
+
+    const createRecipeButton = getByText(/Create recipe/i);
+    user.click(createRecipeButton);
+    expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
 });

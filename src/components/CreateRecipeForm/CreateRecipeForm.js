@@ -163,9 +163,8 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
               <label htmlFor={`recipe-instructions-${i + 1}`}>
                 step {i + 1}:
               </label>
-              <input
+              <textarea
                 id={`recipe-instructions-${i + 1}`}
-                type="text"
                 value={instruction}
                 onChange={e => {
                   e.preventDefault();
@@ -203,9 +202,8 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
           {state.notes.map((note, i) => (
             <li key={i}>
               <label htmlFor={`recipe-notes-${i + 1}`}>note {i + 1}:</label>
-              <input
+              <textarea
                 id={`recipe-notes-${i + 1}`}
-                type="text"
                 value={note}
                 onChange={e => {
                   e.preventDefault();

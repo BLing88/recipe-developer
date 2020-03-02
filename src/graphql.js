@@ -24,7 +24,7 @@ const typeDefs = gql`
 
   type Note {
     id: ID!
-    note: String
+    note: String!
   }
 
   type Query {

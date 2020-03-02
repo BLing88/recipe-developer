@@ -7,9 +7,9 @@ const typeDefs = gql`
     id: ID!
     name: String!
     author: ID!
-    ingredients: [Ingredient]!
-    instructions: [Instruction]!
-    notes: [Note]!
+    ingredients: [Ingredient]
+    instructions: [Instruction]
+    notes: [Note]
   }
 
   type Ingredient {

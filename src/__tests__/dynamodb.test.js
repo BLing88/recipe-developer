@@ -75,6 +75,15 @@ afterEach(async () => {
   });
 });
 
+const setExistingRecipe = async () => {
+  const recipe = buildTestRecipe();
+  await updateRecipe({
+    ...recipe,
+    db: dynamoDB,
+  });
+  return recipe;
+};
+
 describe("DynamoDB", () => {
   test("set and get recipe", async () => {
     const recipe = buildTestRecipe();
@@ -88,29 +97,24 @@ describe("DynamoDB", () => {
   });
 
   test("updates name of existing recipe", async () => {
-    const recipe = buildTestRecipe();
+    const oldRecipe = await setExistingRecipe();
     const newName = faker.commerce.productName();
-    const newRecipe = { ...recipe, recipeName: newName };
-    await updateRecipe({
-      ...recipe,
-      db: dynamoDB,
-    });
+    const newRecipe = { ...oldRecipe, recipeName: newName };
+
     const updatedRecipe = await updateRecipe(newRecipe);
     expect(updatedRecipe).toEqual(newRecipe);
-    expect(nameOfRecipe(updatedRecipe)).not.toEqual(nameOfRecipe(recipe));
+    expect(nameOfRecipe(updatedRecipe)).not.toEqual(nameOfRecipe(oldRecipe));
   });
 
   test("updates ingredients of existing recipe", async () => {
-    const recipe = buildTestRecipe();
+    const oldRecipe = await setExistingRecipe();
     const newIngredients = buildTestIngredients();
-    const newRecipe = { ...recipe, ingredients: newIngredients };
-    await updateRecipe({
-      ...recipe,
-      db: dynamoDB,
-    });
+    const newRecipe = { ...oldRecipe, ingredients: newIngredients };
+
     const updatedRecipe = await updateRecipe(newRecipe);
+    expect(updatedRecipe).toEqual(newRecipe);
     expect(ingredientsOfRecipe(updatedRecipe)).not.toEqual(
-      ingredientsOfRecipe(recipe)
+      ingredientsOfRecipe(oldRecipe)
     );
   });
 });

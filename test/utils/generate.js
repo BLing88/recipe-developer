@@ -8,7 +8,7 @@ export const buildTestIngredients = (overrides = {}) => {
   const numberOfIngredients = overrides.number || 1 + faker.random.number(15);
   return buildArray(numberOfIngredients, () => ({
     ingredient: faker.commerce.productMaterial(),
-    id: faker.random.uuid(),
+    ingredientId: faker.random.uuid(),
     ...overrides,
   }));
 };

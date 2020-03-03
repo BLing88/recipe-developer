@@ -2,12 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./Ingredients.css";
 
+import { idOfIngredient } from "utils/recipe";
+
 const Ingredients = ({ ingredients }) => (
   <section className="ingredients">
     <h2>Ingredients</h2>
     <ul className="ingredients-list">
       {ingredients.map(ingredient => (
-        <li key={ingredient.id}>{ingredient.ingredient}</li>
+        <li key={idOfIngredient(ingredient)}>{ingredient.ingredient}</li>
       ))}
     </ul>
   </section>

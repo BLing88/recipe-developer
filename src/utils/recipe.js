@@ -13,7 +13,7 @@ export const buildRecipe = ({
     recipeId: `recipe-${randomId()}`,
     ingredients: ingredients.map(ingredient => ({
       ingredient,
-      id: randomId(),
+      ingredientId: randomId(),
     })),
     instructions: instructions.map(instruction => ({
       instruction,
@@ -33,6 +33,8 @@ export const authorOfRecipe = recipe => recipe.authorId;
 export const idOfRecipe = recipe => recipe.recipeId;
 
 export const ingredientsOfRecipe = recipe => recipe.ingredients;
+
+export const idOfIngredient = ingredient => ingredient.ingredientId;
 
 export const instructionsOfRecipe = recipe => recipe.instructions;
 

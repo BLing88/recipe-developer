@@ -76,16 +76,11 @@ afterEach(async () => {
 
 test("set and get recipe", async () => {
   const recipe = buildTestRecipe();
-  await updateRecipe({
-    author: "test author",
-    recipeName: "test recipe",
-    id: "1",
+  const updateResult = await updateRecipe({
+    ...recipe,
     db: dynamoDB,
   });
-  const result = await getRecipe({ authorId: "test author", recipeId: "1" });
-  expect(result.Item).toEqual({
-    recipeId: "1",
-    recipeName: "test recipe",
-    authorId: "test author",
-  });
+  const getResult = await getRecipe({ ...recipe });
+  expect(updateResult.Attributes).toEqual(getResult.Item);
+  expect(updateResult.Attributes).toEqual(recipe);
 });

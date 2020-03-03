@@ -25,6 +25,7 @@ const getRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
           recipeId,
           authorId,
         },
+        ReturnValues: "ALL_NEW",
       },
       (err, data) => {
         if (err) {
@@ -38,7 +39,15 @@ const getRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
   });
 };
 
-const updateRecipe = ({ author: authorId, id: recipeId, db = dynamoDB }) => {
+const updateRecipe = ({
+  authorId,
+  recipeName,
+  recipeId,
+  ingredients,
+  instructions,
+  notes,
+  db = dynamoDB,
+}) => {
   return new Promise((resolve, reject) => {
     const updateParams = {
       TableName: `recipe-developer-recipes-dev-${process.env.PORT}`,
@@ -46,12 +55,15 @@ const updateRecipe = ({ author: authorId, id: recipeId, db = dynamoDB }) => {
         recipeId,
         authorId,
       },
-      // ReturnValues: "ALL_NEW"
-      // UpdateExpression: "set authorId = :authorId, recipeId = :recipeId",
-      // ExpressionAttributeValues: {
-      //   ":authorId": authorId,
-      //   ":recipeId": recipeId,
-      // },
+      ReturnValues: "ALL_NEW",
+      UpdateExpression:
+        "set recipeName=:recipeName, ingredients=:ingredients, instructions=:instructions, notes=:notes",
+      ExpressionAttributeValues: {
+        ":recipeName": recipeName,
+        ":ingredients": ingredients,
+        ":instructions": instructions,
+        ":notes": notes,
+      },
     };
     db.update(updateParams, (err, data) => {
       if (err) {

@@ -142,7 +142,7 @@ describe("DynamoDB", () => {
 
   test("updates notes of existing recipe", async () => {
     const oldRecipe = await setExistingRecipe();
-    const newNotes = buildTestInstructions();
+    const newNotes = buildTestNotes();
     const newRecipe = { ...oldRecipe, notes: newNotes };
 
     const updatedRecipe = await updateRecipe(newRecipe);

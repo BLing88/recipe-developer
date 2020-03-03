@@ -1,8 +1,16 @@
 const { getRecipe, updateRecipe } = require("../dynamodb");
 const AWS = require("aws-sdk");
-import { buildTestRecipe, buildTestIngredients } from "generate";
+import {
+  buildTestRecipe,
+  buildTestIngredients,
+  buildTestInstructions,
+} from "generate";
 import faker from "faker";
-import { nameOfRecipe, ingredientsOfRecipe } from "recipe";
+import {
+  nameOfRecipe,
+  ingredientsOfRecipe,
+  instructionsOfRecipe,
+} from "recipe";
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -115,6 +123,18 @@ describe("DynamoDB", () => {
     expect(updatedRecipe).toEqual(newRecipe);
     expect(ingredientsOfRecipe(updatedRecipe)).not.toEqual(
       ingredientsOfRecipe(oldRecipe)
+    );
+  });
+
+  test("updates instructions of existing recipe", async () => {
+    const oldRecipe = await setExistingRecipe();
+    const newInstructions = buildTestInstructions();
+    const newRecipe = { ...oldRecipe, instructions: newInstructions };
+
+    const updatedRecipe = await updateRecipe(newRecipe);
+    expect(updatedRecipe).toEqual(newRecipe);
+    expect(instructionsOfRecipe(updatedRecipe)).not.toEqual(
+      instructionsOfRecipe(oldRecipe)
     );
   });
 });

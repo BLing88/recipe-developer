@@ -4,26 +4,26 @@ const { getAllRecipes, recipe } = require("./queries");
 
 const typeDefs = gql`
   type Recipe {
-    id: ID!
-    name: String!
-    author: ID!
+    recipeId: ID!
+    recipeName: String!
+    authorId: ID!
     ingredients: [Ingredient]
     instructions: [Instruction]
     notes: [Note]
   }
 
   type Ingredient {
-    id: ID!
+    ingredientId: ID!
     ingredient: String!
   }
 
   type Instruction {
-    id: ID!
+    instructionId: ID!
     instruction: String!
   }
 
   type Note {
-    id: ID!
+    noteId: ID!
     note: String!
   }
 

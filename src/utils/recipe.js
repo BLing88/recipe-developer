@@ -21,7 +21,7 @@ export const buildRecipe = ({
     })),
     notes: notes.map(note => ({
       note,
-      id: randomId(),
+      noteId: randomId(),
     })),
   };
 };
@@ -39,3 +39,5 @@ export const idOfIngredient = ingredient => ingredient.ingredientId;
 export const instructionsOfRecipe = recipe => recipe.instructions;
 
 export const notesOfRecipe = recipe => recipe.notes;
+
+export const idOfNote = note => note.noteId;

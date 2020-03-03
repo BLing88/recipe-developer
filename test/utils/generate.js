@@ -17,7 +17,7 @@ export const buildTestNotes = (overrides = {}) => {
   const numberOfNotes = overrides.number || 1 + faker.random.number(15);
   return buildArray(numberOfNotes, () => ({
     note: faker.lorem.sentences(),
-    id: faker.random.uuid(),
+    noteId: faker.random.uuid(),
     ...overrides,
   }));
 };

@@ -1,13 +1,14 @@
 import React from "react";
-import { Recipe } from ".";
-import { testRecipe } from "../../static-recipe";
 import { render } from "@testing-library/react";
+import { Recipe } from ".";
+import { buildTestRecipe } from "test/utils/generate";
+import { nameOfRecipe } from "utils/recipe";
 
 test("Given recipe it shows title, ingredients, instructions", () => {
-  const { recipeName } = testRecipe;
-  const { getByText } = render(<Recipe recipe={testRecipe} />);
+  const recipe = buildTestRecipe();
+  const { getByText } = render(<Recipe recipe={recipe} />);
 
-  expect(getByText(recipeName)).toBeInTheDocument();
+  expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument();
   expect(getByText("Ingredients")).toBeInTheDocument();
   expect(getByText("Instructions")).toBeInTheDocument();
 });

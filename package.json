@@ -18,7 +18,8 @@
     "apollo-server": "^2.10.1",
     "apollo-server-lambda": "^2.10.1",
     "aws-sdk": "^2.630.0",
-    "graphql": "^14.6.0"
+    "graphql": "^14.6.0",
+    "uuid": "^7.0.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-regenerator": "^7.8.3",

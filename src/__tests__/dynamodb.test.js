@@ -8,7 +8,8 @@ const localDevConfig = {
   endpoint: "http://localhost:8000",
 };
 
-import { buildTestRecipe } from "generate";
+import { buildTestRecipe, buildTestIngredients } from "generate";
+import faker from "faker";
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient(localDevConfig);
 const db = new AWS.DynamoDB(localDevConfig);
@@ -81,6 +82,30 @@ test("set and get recipe", async () => {
     db: dynamoDB,
   });
   const getResult = await getRecipe({ ...recipe });
-  expect(updateResult.Attributes).toEqual(getResult.Item);
-  expect(updateResult.Attributes).toEqual(recipe);
+  expect(updateResult).toEqual(getResult);
+  expect(updateResult).toEqual(recipe);
+});
+
+test("updates name of existing recipe", async () => {
+  const recipe = buildTestRecipe();
+  const newName = faker.commerce.productName();
+  const newRecipe = { ...recipe, recipeName: newName };
+  await updateRecipe({
+    ...recipe,
+    db: dynamoDB,
+  });
+  const updatedRecipe = await updateRecipe(newRecipe);
+  expect(updatedRecipe).toEqual(newRecipe);
+});
+
+test("updates ingredients of existing recipe", async () => {
+  const recipe = buildTestRecipe();
+  const newIngredients = buildTestIngredients();
+  const newRecipe = { ...recipe, ingredients: newIngredients };
+  await updateRecipe({
+    ...recipe,
+    db: dynamoDB,
+  });
+  const updatedRecipe = await updateRecipe(newRecipe);
+  expect(updatedRecipe).toEqual(newRecipe);
 });

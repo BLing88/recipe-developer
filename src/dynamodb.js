@@ -32,7 +32,7 @@ const getRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
           console.log(err);
           reject(err);
         } else {
-          resolve(data);
+          resolve(data.Item);
         }
       }
     );
@@ -70,7 +70,7 @@ const updateRecipe = ({
         console.log(err);
         reject(err);
       } else {
-        resolve(data);
+        resolve(data.Attributes);
       }
     });
   });

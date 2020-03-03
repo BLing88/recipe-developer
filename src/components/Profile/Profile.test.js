@@ -4,6 +4,7 @@ import user from "@testing-library/user-event";
 
 import { Profile } from "./Profile";
 import { buildArray, buildTestRecipe } from "test/utils/generate";
+import { idOfRecipe, nameOfRecipe } from "utils/recipe";
 
 const renderProfile = (overrides = {}) => {
   const author = overrides.author || "test author";
@@ -27,7 +28,7 @@ describe("Profile", () => {
 
     expect(getByText(/^My Recipes$/i)).toBeInTheDocument();
     recipes.forEach(recipe =>
-      expect(getByText(recipe.name)).toBeInTheDocument()
+      expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument()
     );
   });
 

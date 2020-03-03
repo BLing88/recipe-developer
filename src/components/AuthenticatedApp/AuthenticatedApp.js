@@ -17,8 +17,8 @@ const AuthenticatedApp = () => {
   const GET_USER_RECIPES = gql`
     query getAllRecipes($authorId: ID!) {
       getAllRecipes(authorId: $authorId) {
-        name
-        id
+        recipeName
+        recipeId
       }
     }
   `;

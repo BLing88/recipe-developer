@@ -31,7 +31,8 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^test/utils/generate": "<rootDir>/test/utils/generate"
+      "^test/utils/generate": "<rootDir>/test/utils/generate",
+      "^utils/recipe": "<rootDir>/src/utils/recipe"
     }
   },
   "eslintConfig": {

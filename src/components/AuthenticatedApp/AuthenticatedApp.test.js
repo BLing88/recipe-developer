@@ -1,5 +1,6 @@
 import React from "react";
 import { AuthenticatedApp } from "./AuthenticatedApp";
+import { idOfRecipe, nameOfRecipe } from "utils/recipe";
 
 import { render, wait } from "@testing-library/react";
 import {
@@ -18,8 +19,8 @@ import gql from "graphql-tag";
 const GET_USER_RECIPES = gql`
   query getAllRecipes($authorId: ID!) {
     getAllRecipes(authorId: $authorId) {
-      name
-      id
+      recipeName
+      recipeId
     }
   }
 `;
@@ -110,7 +111,7 @@ describe("AuthenticatedApp", () => {
     expect(profile).toBeInTheDocument();
     expect(queryByText(/Loading profile/i)).toBeNull();
     recipes.forEach(recipe =>
-      expect(getByText(recipe.name)).toBeInTheDocument()
+      expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument()
     );
   });
 

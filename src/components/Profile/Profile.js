@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { idOfRecipe, nameOfRecipe } from "utils/recipe";
+
 const Profile = ({ recipes, setIsCreatingRecipe }) => {
   return (
     <article className="user-profile">
@@ -10,7 +12,7 @@ const Profile = ({ recipes, setIsCreatingRecipe }) => {
           <h2>My Recipes</h2>
           <ul className="recipe-list">
             {recipes.map(recipe => (
-              <li key={recipe.id}>{recipe.name}</li>
+              <li key={idOfRecipe(recipe)}>{nameOfRecipe(recipe)}</li>
             ))}
           </ul>
         </>

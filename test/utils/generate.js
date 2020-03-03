@@ -32,8 +32,8 @@ export const buildTestInstructions = (overrides = {}) => {
 };
 
 export const buildTestRecipe = overrides => ({
-  name: faker.commerce.productName(),
-  id: faker.random.uuid(),
+  recipeName: faker.commerce.productName(),
+  recipeId: faker.random.uuid(),
   author: faker.name.findName(),
   ingredients: buildTestIngredients(),
   instructions: buildTestInstructions(),

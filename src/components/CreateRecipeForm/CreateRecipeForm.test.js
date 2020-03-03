@@ -19,7 +19,7 @@ describe("CreateRecipeForm", () => {
 
   test("has inputs for name, ingredients, instructions, and notes", () => {
     const testRecipe = buildTestRecipe();
-    const { name, ingredients, notes, instructions } = testRecipe;
+    const { recipeName, ingredients, notes, instructions } = testRecipe;
     const { getByLabelText } = render(
       <CreateRecipeForm createRecipeHandler={jest.fn()} />
     );
@@ -27,8 +27,8 @@ describe("CreateRecipeForm", () => {
     const recipeNameInput = getByLabelText(/name/i);
     expect(recipeNameInput).toBeInTheDocument();
     expect(recipeNameInput).toHaveTextContent("");
-    user.type(recipeNameInput, name);
-    expect(recipeNameInput).toHaveValue(name);
+    user.type(recipeNameInput, recipeName);
+    expect(recipeNameInput).toHaveValue(recipeName);
 
     const recipeIngredientsInput = getByLabelText(/ingredient 1/i);
     expect(recipeIngredientsInput).toBeInTheDocument();

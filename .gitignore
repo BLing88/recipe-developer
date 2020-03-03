@@ -1,3 +1,6 @@
 node_modules
 dist
 .serverless
+DynamoDBLocal_lib
+DynamoDBLocal.jar
+shared-local-instance.db

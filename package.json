@@ -4,16 +4,19 @@
   "description": "GraphQL server for Recipe Developer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --watch",
+    "start-local-db": "java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -inMemory"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^2.10.1",
     "apollo-server-lambda": "^2.10.1",
+    "aws-sdk": "^2.630.0",
     "graphql": "^14.6.0"
   },
   "devDependencies": {
+    "jest": "^25.1.0",
     "nodemon": "^2.0.2"
   }
 }

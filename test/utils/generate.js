@@ -26,7 +26,7 @@ export const buildTestInstructions = (overrides = {}) => {
   const numberOfInstructions = overrides.number || 1 + faker.random.number(15);
   return buildArray(numberOfInstructions, () => ({
     instruction: faker.lorem.sentences(),
-    id: faker.random.uuid(),
+    instructionId: faker.random.uuid(),
     ...overrides,
   }));
 };

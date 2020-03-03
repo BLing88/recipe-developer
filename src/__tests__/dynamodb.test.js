@@ -95,7 +95,7 @@ const setExistingRecipe = async () => {
 };
 
 describe("DynamoDB", () => {
-  test("set and get recipe", async () => {
+  test("sets and gets recipe", async () => {
     const recipe = buildTestRecipe();
     const updateResult = await updateRecipe({
       ...recipe,

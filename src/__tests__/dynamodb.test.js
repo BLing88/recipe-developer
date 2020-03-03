@@ -4,12 +4,14 @@ import {
   buildTestRecipe,
   buildTestIngredients,
   buildTestInstructions,
+  buildTestNotes,
 } from "generate";
 import faker from "faker";
 import {
   nameOfRecipe,
   ingredientsOfRecipe,
   instructionsOfRecipe,
+  notesOfRecipe,
 } from "recipe";
 
 const localDevConfig = {
@@ -136,5 +138,15 @@ describe("DynamoDB", () => {
     expect(instructionsOfRecipe(updatedRecipe)).not.toEqual(
       instructionsOfRecipe(oldRecipe)
     );
+  });
+
+  test("updates notes of existing recipe", async () => {
+    const oldRecipe = await setExistingRecipe();
+    const newNotes = buildTestInstructions();
+    const newRecipe = { ...oldRecipe, notes: newNotes };
+
+    const updatedRecipe = await updateRecipe(newRecipe);
+    expect(updatedRecipe).toEqual(newRecipe);
+    expect(notesOfRecipe(updatedRecipe)).not.toEqual(notesOfRecipe(oldRecipe));
   });
 });

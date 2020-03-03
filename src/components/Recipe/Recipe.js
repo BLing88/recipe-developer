@@ -6,10 +6,10 @@ import { Instructions } from "../Instructions";
 import { Notes } from "../Notes";
 
 const Recipe = ({ recipe }) => {
-  const { name, ingredients, instructions, notes } = recipe;
+  const { recipeName, ingredients, instructions, notes } = recipe;
   return (
     <article className="recipe">
-      <h1 className="recipe-name">{name}</h1>
+      <h1 className="recipe-name">{recipeName}</h1>
       <picture className="recipe-image">
         <img src={require("../../assets/gimbap-mobile.png")} alt="gimbap" />
       </picture>

@@ -8,6 +8,8 @@ const localDevConfig = {
   endpoint: "http://localhost:8000",
 };
 
+import { buildTestRecipe } from "generate";
+
 const dynamoDB = new AWS.DynamoDB.DocumentClient(localDevConfig);
 const db = new AWS.DynamoDB(localDevConfig);
 
@@ -72,13 +74,18 @@ afterEach(async () => {
   });
 });
 
-test("set recipe", async () => {
+test("set and get recipe", async () => {
+  const recipe = buildTestRecipe();
   await updateRecipe({
     author: "test author",
-    name: "test recipe",
+    recipeName: "test recipe",
     id: "1",
     db: dynamoDB,
   });
   const result = await getRecipe({ authorId: "test author", recipeId: "1" });
-  console.log(result.Item);
+  expect(result.Item).toEqual({
+    recipeId: "1",
+    recipeName: "test recipe",
+    authorId: "test author",
+  });
 });

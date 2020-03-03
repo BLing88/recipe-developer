@@ -7,6 +7,11 @@
     "test": "jest --watch",
     "start-local-db": "java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -inMemory"
   },
+  "jest": {
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    }
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -16,6 +21,9 @@
     "graphql": "^14.6.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.8.6",
+    "babel-jest": "^25.1.0",
+    "faker": "^4.1.0",
     "jest": "^25.1.0",
     "nodemon": "^2.0.2"
   }

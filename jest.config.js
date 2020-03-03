@@ -1,4 +1,5 @@
 module.exports = {
   testEnvironment: "jest-environment-node",
-  setupFilesAfterEnv: [require.resolve("./test/setup-env")],
+  setupFilesAfterEnv: ["./test/setup-env"],
+  moduleDirectories: ["node_modules", "test/utils"],
 };

@@ -15,7 +15,12 @@ import {
   idOfRecipe,
 } from "recipe";
 
-const { getRecipe, updateRecipe, getAllRecipesById } = require("../dynamodb");
+const {
+  getRecipe,
+  updateRecipe,
+  getAllRecipesById,
+  deleteRecipe,
+} = require("../dynamodb");
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -165,5 +170,13 @@ describe("DynamoDB", () => {
     expect(recipes).toEqual(expect.arrayContaining(allRecipes));
     expect(allRecipes).toEqual(expect.arrayContaining(recipes));
     expect(recipes.length).toEqual(allRecipes.length);
+  });
+
+  test("deletes existing recipe", async () => {
+    const oldRecipe = await setExistingRecipe();
+    const wasDeleted = await deleteRecipe({ ...oldRecipe, db: dynamoDB });
+    expect(wasDeleted).toEqual(oldRecipe);
+    const checkDeleted = await getRecipe({ ...oldRecipe, db: dynamoDB });
+    expect(checkDeleted).not.toBeDefined();
   });
 });

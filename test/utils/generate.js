@@ -41,8 +41,18 @@ export const buildTestRecipe = overrides => ({
   ...overrides,
 });
 
-export const buildTestUser = (overrides = {}) => ({
-  name: faker.name.findName(),
-  nickname: faker.name.firstName(),
-  ...overrides,
-});
+export const buildTestUser = (overrides = {}) => {
+  const userId = overrides.userId || faker.random.uuid();
+  const numberOfRecipes =
+    overrides.numberOfRecipes || 1 + faker.random.number(15);
+  return {
+    userId: userId,
+    username: faker.name.findName(),
+    recipes: buildArray(numberOfRecipes, () =>
+      buildTestRecipe({
+        authorId: userId,
+      })
+    ),
+    ...overrides,
+  };
+};

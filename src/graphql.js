@@ -7,9 +7,9 @@ const typeDefs = gql`
     recipeId: ID!
     recipeName: String!
     authorId: ID!
-    ingredients: [Ingredient]
-    instructions: [Instruction]
-    notes: [Note]
+    ingredients: [Ingredient!]!
+    instructions: [Instruction!]!
+    notes: [Note!]!
   }
 
   type Ingredient {
@@ -28,7 +28,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    getAllRecipes(authorId: ID!): [Recipe]!
+    getAllRecipes(authorId: ID!): [Recipe!]!
 
     recipe(recipeId: ID!): Recipe
   }

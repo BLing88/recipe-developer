@@ -98,13 +98,15 @@ const setExistingRecipe = async () => {
 };
 
 describe("DynamoDB", () => {
-  test("sets and gets recipe", async () => {
+  test("creates and gets new recipe", async () => {
     const recipe = buildTestRecipe();
+    const beforeCreate = await getRecipe({ ...recipe, db: dynamoDB });
+    expect(beforeCreate).not.toBeDefined();
     const updateResult = await updateRecipe({
       ...recipe,
       db: dynamoDB,
     });
-    const getResult = await getRecipe({ ...recipe });
+    const getResult = await getRecipe({ ...recipe, db: dynamoDB });
     expect(updateResult).toEqual(getResult);
     expect(updateResult).toEqual(recipe);
   });

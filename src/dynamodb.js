@@ -9,18 +9,35 @@ const localDevConfig = {
 };
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient(localDevConfig);
+const RECIPE_TABLE = `recipe-developer-recipes-dev-${process.env.PORT}`;
+const USER_TABLE = `recipe-developer-users-dev-${process.env.PORT}`;
 
-const getAllRecipesById = authorId => {
-  return new Promise(resolve =>
-    resolve(db.filter(recipe => recipe.author === authorId))
-  );
+const getAllRecipesById = ({ userId, db = dynamoDB }) => {
+  const filterParams = {
+    TableName: RECIPE_TABLE,
+    KeyConditionExpression: "authorId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": userId,
+    },
+  };
+
+  return new Promise((resolve, reject) => {
+    db.query(filterParams, (err, items) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        resolve(items.Items);
+      }
+    });
+  });
 };
 
 const getRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
   return new Promise((resolve, reject) => {
     db.get(
       {
-        TableName: `recipe-developer-recipes-dev-${process.env.PORT}`,
+        TableName: RECIPE_TABLE,
         Key: {
           recipeId,
           authorId,
@@ -50,7 +67,7 @@ const updateRecipe = ({
 }) => {
   return new Promise((resolve, reject) => {
     const updateParams = {
-      TableName: `recipe-developer-recipes-dev-${process.env.PORT}`,
+      TableName: RECIPE_TABLE,
       Key: {
         recipeId,
         authorId,

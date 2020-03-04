@@ -1,10 +1,10 @@
-const { getRecipe, updateRecipe } = require("../dynamodb");
 const AWS = require("aws-sdk");
 import {
   buildTestRecipe,
   buildTestIngredients,
   buildTestInstructions,
   buildTestNotes,
+  buildTestUser,
 } from "generate";
 import faker from "faker";
 import {
@@ -12,7 +12,10 @@ import {
   ingredientsOfRecipe,
   instructionsOfRecipe,
   notesOfRecipe,
+  idOfRecipe,
 } from "recipe";
+
+const { getRecipe, updateRecipe, getAllRecipesById } = require("../dynamodb");
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -29,21 +32,21 @@ beforeEach(async () => {
     TableName: `recipe-developer-recipes-dev-${process.env.PORT}`,
     AttributeDefinitions: [
       {
-        AttributeName: "recipeId",
+        AttributeName: "authorId",
         AttributeType: "S",
       },
       {
-        AttributeName: "authorId",
+        AttributeName: "recipeId",
         AttributeType: "S",
       },
     ],
     KeySchema: [
       {
-        AttributeName: "recipeId",
+        AttributeName: "authorId",
         KeyType: "HASH",
       },
       {
-        AttributeName: "authorId",
+        AttributeName: "recipeId",
         KeyType: "RANGE",
       },
     ],
@@ -148,5 +151,17 @@ describe("DynamoDB", () => {
     const updatedRecipe = await updateRecipe(newRecipe);
     expect(updatedRecipe).toEqual(newRecipe);
     expect(notesOfRecipe(updatedRecipe)).not.toEqual(notesOfRecipe(oldRecipe));
+  });
+
+  test("gets all recipes by a user", async () => {
+    const user = buildTestUser();
+    const recipes = user.recipes;
+    for (let recipe of recipes) {
+      await updateRecipe({ ...recipe, db: dynamoDB });
+    }
+    const allRecipes = await getAllRecipesById({ ...user });
+    expect(recipes).toEqual(expect.arrayContaining(allRecipes));
+    expect(allRecipes).toEqual(expect.arrayContaining(recipes));
+    expect(recipes.length).toEqual(allRecipes.length);
   });
 });

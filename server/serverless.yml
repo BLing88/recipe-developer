@@ -1,0 +1,21 @@
+org: bling88
+app: recipe-developer-dev
+service: recipe-developer
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+    stage: dev
+
+functions:
+    graphql:
+        handler: src/graphql.handler
+        events:
+            - http:
+                path: graphql
+                method: GET
+                cors: true
+            - http:
+                path: graphql
+                method: POST
+                cors: true

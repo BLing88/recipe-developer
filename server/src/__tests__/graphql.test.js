@@ -1,11 +1,10 @@
-const { ApolloServer, gql } = require("apollo-server-lambda");
-const { createTestClient } = require("apollo-server-testing");
-const { getAllRecipes, getRecipe } = require("../query-resolvers");
+import { createTestClient } from "apollo-server-testing";
 import { updateRecipe } from "../dynamodb";
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 import faker from "faker";
 import { buildArray, buildTestRecipe } from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
+import { server } from "../graphql";
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -16,22 +15,6 @@ const localDevConfig = {
 
 const dynamoDB = new AWS.DynamoDB.DocumentClient(localDevConfig);
 const db = new AWS.DynamoDB(localDevConfig);
-
-const { typeDefsString } = require("../typeDefs");
-const typeDefs = gql`
-  ${typeDefsString}
-`;
-const resolvers = {
-  Query: {
-    getAllRecipes,
-    getRecipe,
-  },
-};
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
 
 const testAuthorId = faker.random.uuid();
 let testRecipes = [];

@@ -1,13 +1,16 @@
-const { ApolloServer } = require("apollo-server-lambda");
+const { ApolloServer, gql } = require("apollo-server-lambda");
 
-const { getAllRecipes, recipe } = require("./query-resolvers");
+const { getAllRecipes, getRecipe } = require("./query-resolvers");
 
-const typeDefs = require("./typeDefs");
+const { typeDefsString } = require("./typeDefs");
+const typeDefs = gql`
+  ${typeDefsString}
+`;
 
 const resolvers = {
   Query: {
     getAllRecipes,
-    recipe,
+    getRecipe,
   },
 };
 
@@ -32,4 +35,5 @@ const handler = server.createHandler({
 
 module.exports = {
   handler,
+  server,
 };

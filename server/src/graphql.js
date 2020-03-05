@@ -1,38 +1,8 @@
-const { ApolloServer, gql } = require("apollo-server-lambda");
+const { ApolloServer } = require("apollo-server-lambda");
 
 const { getAllRecipes, recipe } = require("./queries");
 
-const typeDefs = gql`
-  type Recipe {
-    recipeId: ID!
-    recipeName: String!
-    authorId: ID!
-    ingredients: [Ingredient!]!
-    instructions: [Instruction!]!
-    notes: [Note!]!
-  }
-
-  type Ingredient {
-    ingredientId: ID!
-    ingredient: String!
-  }
-
-  type Instruction {
-    instructionId: ID!
-    instruction: String!
-  }
-
-  type Note {
-    noteId: ID!
-    note: String!
-  }
-
-  type Query {
-    getAllRecipes(authorId: ID!): [Recipe!]!
-
-    getRecipe(authorId: ID!, recipeId: ID!): Recipe
-  }
-`;
+const typeDefs = require("./typeDefs");
 
 const resolvers = {
   Query: {

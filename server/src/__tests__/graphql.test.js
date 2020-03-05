@@ -5,7 +5,7 @@ import { updateRecipe } from "../dynamodb";
 const AWS = require("aws-sdk");
 import faker from "faker";
 import { buildArray, buildTestRecipe } from "generate";
-import { GET_RECIPE } from "../queries";
+import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -129,5 +129,24 @@ describe("server", () => {
       });
       expect(res.data.getRecipe).toEqual(recipe);
     }
+  });
+
+  test("gets all recipes for a user", async () => {
+    const { query } = createTestClient(server);
+    const res = await query({
+      query: GET_ALL_RECIPES,
+      variables: {
+        authorId: testAuthorId,
+      },
+    });
+
+    const resRecipes = res.data.getAllRecipes;
+    const expectedResult = testRecipes.map(recipe => ({
+      recipeId: recipe.recipeId,
+      recipeName: recipe.recipeName,
+    }));
+    expect(resRecipes.length).toBe(testRecipes.length);
+    expect(resRecipes).toEqual(expect.arrayContaining(expectedResult));
+    expect(expectedResult).toEqual(expect.arrayContaining(resRecipes));
   });
 });

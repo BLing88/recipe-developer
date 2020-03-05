@@ -22,7 +22,7 @@ const GET_RECIPE = gql`
   }
 `;
 
-const GET_USER_RECIPES = gql`
+const GET_ALL_RECIPES = gql`
   query getAllRecipes($authorId: ID!) {
     getAllRecipes(authorId: $authorId) {
       recipeName
@@ -33,5 +33,5 @@ const GET_USER_RECIPES = gql`
 
 module.exports = {
   GET_RECIPE,
-  GET_USER_RECIPES,
+  GET_ALL_RECIPES,
 };

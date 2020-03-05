@@ -117,7 +117,7 @@ afterEach(async () => {
 });
 
 describe("server", () => {
-  test("Gets a recipe", async () => {
+  test("gets a recipe by author and recipe ids", async () => {
     const { query } = createTestClient(server);
     for (let recipe of testRecipes) {
       const res = await query({

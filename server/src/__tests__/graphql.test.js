@@ -136,14 +136,14 @@ describe("server", () => {
 
   test("adds new recipe to db", async () => {
     const newRecipe = buildTestRecipe({ authorId: testAuthorId });
-    const before = await query({
+    const beforeCreateRes = await query({
       query: GET_RECIPE,
       variables: {
         authorId: testAuthorId,
         recipeId: newRecipe.recipeId,
       },
     });
-    expect(before.data.getRecipe).toBeNull();
+    expect(beforeCreateRes.data.getRecipe).toBeNull();
     const numRecipesBeforeRes = await query({
       query: GET_ALL_RECIPES,
       variables: {
@@ -152,13 +152,13 @@ describe("server", () => {
     });
     const numRecipesBefore = numRecipesBeforeRes.data.getAllRecipes.length;
 
-    const addRes = await mutate({
+    const createRes = await mutate({
       mutation: CREATE_RECIPE,
       variables: {
         recipeInput: newRecipe,
       },
     });
-    expect(addRes.data.createRecipe).toEqual(newRecipe);
+    expect(createRes.data.createRecipe).toEqual(newRecipe);
 
     const numRecipesAfterRes = await query({
       query: GET_ALL_RECIPES,
@@ -169,13 +169,13 @@ describe("server", () => {
     const numRecipesAfter = numRecipesAfterRes.data.getAllRecipes.length;
     expect(numRecipesAfter).toBe(numRecipesBefore + 1);
 
-    const checkQuery = await query({
+    const checkCreateQuery = await query({
       query: GET_RECIPE,
       variables: {
         authorId: testAuthorId,
         recipeId: newRecipe.recipeId,
       },
     });
-    expect(checkQuery.data.getRecipe).toEqual(newRecipe);
+    expect(checkCreateQuery.data.getRecipe).toEqual(newRecipe);
   });
 });

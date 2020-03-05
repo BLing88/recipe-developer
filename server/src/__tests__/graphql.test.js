@@ -1,10 +1,11 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 const { createTestClient } = require("apollo-server-testing");
-const { getAllRecipes, getRecipe } = require("../queries");
+const { getAllRecipes, getRecipe } = require("../query-resolvers");
 import { updateRecipe } from "../dynamodb";
 const AWS = require("aws-sdk");
 import faker from "faker";
 import { buildArray, buildTestRecipe } from "generate";
+import { GET_RECIPE } from "../queries";
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -114,37 +115,6 @@ afterEach(async () => {
     );
   });
 });
-
-const GET_USER_RECIPES = gql`
-  query getAllRecipes($authorId: ID!) {
-    getAllRecipes(authorId: $authorId) {
-      recipeName
-      recipeId
-    }
-  }
-`;
-
-const GET_RECIPE = gql`
-  query getRecipe($authorId: ID!, $recipeId: ID!) {
-    getRecipe(authorId: $authorId, recipeId: $recipeId) {
-      recipeName
-      recipeId
-      authorId
-      ingredients {
-        ingredient
-        ingredientId
-      }
-      instructions {
-        instruction
-        instructionId
-      }
-      notes {
-        note
-        noteId
-      }
-    }
-  }
-`;
 
 describe("server", () => {
   test("Gets a recipe", async () => {

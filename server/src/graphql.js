@@ -1,6 +1,6 @@
 const { ApolloServer } = require("apollo-server-lambda");
 
-const { getAllRecipes, recipe } = require("./queries");
+const { getAllRecipes, recipe } = require("./query-resolvers");
 
 const typeDefs = require("./typeDefs");
 

@@ -1,14 +1,37 @@
-const { getAllRecipesById, getRecipeById } = require("./dynamodb");
+const { gql } = require("apollo-server-lambda");
 
-const getAllRecipes = async (_, { authorId }, context) => {
-  return await getAllRecipesById({ authorId });
-};
+const GET_RECIPE = gql`
+  query getRecipe($authorId: ID!, $recipeId: ID!) {
+    getRecipe(authorId: $authorId, recipeId: $recipeId) {
+      recipeName
+      recipeId
+      authorId
+      ingredients {
+        ingredient
+        ingredientId
+      }
+      instructions {
+        instruction
+        instructionId
+      }
+      notes {
+        note
+        noteId
+      }
+    }
+  }
+`;
 
-const getRecipe = async (_, { authorId, recipeId, context }) => {
-  return await getRecipeById({ authorId, recipeId });
-};
+const GET_USER_RECIPES = gql`
+  query getAllRecipes($authorId: ID!) {
+    getAllRecipes(authorId: $authorId) {
+      recipeName
+      recipeId
+    }
+  }
+`;
 
 module.exports = {
-  getAllRecipes,
-  getRecipe,
+  GET_RECIPE,
+  GET_USER_RECIPES,
 };

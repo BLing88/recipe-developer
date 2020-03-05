@@ -4,6 +4,7 @@ import AWS from "aws-sdk";
 import faker from "faker";
 import { buildArray, buildTestRecipe } from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
+import { CREATE_RECIPE } from "../mutations";
 import { server } from "../graphql";
 
 const localDevConfig = {
@@ -18,6 +19,8 @@ const db = new AWS.DynamoDB(localDevConfig);
 
 const testAuthorId = faker.random.uuid();
 let testRecipes = [];
+
+const { query, mutate } = createTestClient(server);
 
 const setExistingRecipes = async () => {
   const numberOfRecipes = 1 + faker.random.number(15);
@@ -100,8 +103,7 @@ afterEach(async () => {
 });
 
 describe("server", () => {
-  test("gets a recipe by author and recipe ids", async () => {
-    const { query } = createTestClient(server);
+  test("gets recipe by author and recipe ids", async () => {
     for (let recipe of testRecipes) {
       const res = await query({
         query: GET_RECIPE,
@@ -115,7 +117,6 @@ describe("server", () => {
   });
 
   test("gets all recipes for a user", async () => {
-    const { query } = createTestClient(server);
     const res = await query({
       query: GET_ALL_RECIPES,
       variables: {
@@ -131,5 +132,24 @@ describe("server", () => {
     expect(resRecipes.length).toBe(testRecipes.length);
     expect(resRecipes).toEqual(expect.arrayContaining(expectedResult));
     expect(expectedResult).toEqual(expect.arrayContaining(resRecipes));
+  });
+
+  test("adds new recipe to db", async () => {
+    const newRecipe = buildTestRecipe({ authorId: testAuthorId });
+    const before = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: newRecipe.recipeId,
+      },
+    });
+    expect(before.data.getRecipe).toBeNull();
+    const addRes = await mutate({
+      mutation: CREATE_RECIPE,
+      variables: {
+        recipeInput: newRecipe,
+      },
+    });
+    expect(addRes.data.createRecipe).toEqual(newRecipe);
   });
 });

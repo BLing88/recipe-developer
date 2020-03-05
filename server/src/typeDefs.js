@@ -1,4 +1,3 @@
-// const { gql } = require("apollo-server-lambda");
 const typeDefsString = `
   type Recipe {
     recipeId: ID!
@@ -28,6 +27,34 @@ const typeDefsString = `
     getAllRecipes(authorId: ID!): [Recipe!]!
 
     getRecipe(authorId: ID!, recipeId: ID!): Recipe
+  }
+
+  type Mutation {
+    createRecipe(recipeInput: RecipeInput!): Recipe
+  }
+
+  input RecipeInput {
+    recipeId: ID!
+    recipeName: String!
+    authorId: ID!
+    ingredients: [IngredientInput!]!
+    instructions: [InstructionInput!]!
+    notes: [NoteInput!]!
+  }
+
+  input IngredientInput {
+    ingredientId: ID!
+    ingredient: String!
+  }
+
+  input InstructionInput {
+    instructionId: ID!
+    instruction: String!
+  }
+
+  input NoteInput {
+    noteId: ID!
+    note: String!
   }
 `;
 

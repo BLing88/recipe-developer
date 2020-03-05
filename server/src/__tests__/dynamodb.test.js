@@ -16,7 +16,7 @@ import {
 } from "recipe";
 
 const {
-  getRecipe,
+  getRecipeById,
   updateRecipe,
   getAllRecipesById,
   deleteRecipe,
@@ -105,13 +105,13 @@ const setExistingRecipe = async () => {
 describe("DynamoDB", () => {
   test("creates and gets new recipe", async () => {
     const recipe = buildTestRecipe();
-    const beforeCreate = await getRecipe({ ...recipe, db: dynamoDB });
+    const beforeCreate = await getRecipeById({ ...recipe, db: dynamoDB });
     expect(beforeCreate).not.toBeDefined();
     const updateResult = await updateRecipe({
       ...recipe,
       db: dynamoDB,
     });
-    const getResult = await getRecipe({ ...recipe, db: dynamoDB });
+    const getResult = await getRecipeById({ ...recipe, db: dynamoDB });
     expect(updateResult).toEqual(getResult);
     expect(updateResult).toEqual(recipe);
   });
@@ -176,7 +176,7 @@ describe("DynamoDB", () => {
     const oldRecipe = await setExistingRecipe();
     const wasDeleted = await deleteRecipe({ ...oldRecipe, db: dynamoDB });
     expect(wasDeleted).toEqual(oldRecipe);
-    const checkDeleted = await getRecipe({ ...oldRecipe, db: dynamoDB });
+    const checkDeleted = await getRecipeById({ ...oldRecipe, db: dynamoDB });
     expect(checkDeleted).not.toBeDefined();
   });
 });

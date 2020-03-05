@@ -33,7 +33,7 @@ const getAllRecipesById = ({ userId, db = dynamoDB }) => {
   });
 };
 
-const getRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
+const getRecipeById = ({ authorId, recipeId, db = dynamoDB }) => {
   return new Promise((resolve, reject) => {
     db.get(
       {
@@ -116,7 +116,7 @@ const deleteRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
 
 module.exports = {
   getAllRecipesById,
-  getRecipe,
+  getRecipeById,
   updateRecipe,
   deleteRecipe,
 };

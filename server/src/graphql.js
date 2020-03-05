@@ -30,7 +30,7 @@ const typeDefs = gql`
   type Query {
     getAllRecipes(authorId: ID!): [Recipe!]!
 
-    recipe(authorId: ID!, recipeId: ID!): Recipe
+    getRecipe(authorId: ID!, recipeId: ID!): Recipe
   }
 `;
 

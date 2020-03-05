@@ -144,6 +144,14 @@ describe("server", () => {
       },
     });
     expect(before.data.getRecipe).toBeNull();
+    const numRecipesBeforeRes = await query({
+      query: GET_ALL_RECIPES,
+      variables: {
+        authorId: testAuthorId,
+      },
+    });
+    const numRecipesBefore = numRecipesBeforeRes.data.getAllRecipes.length;
+
     const addRes = await mutate({
       mutation: CREATE_RECIPE,
       variables: {
@@ -151,5 +159,23 @@ describe("server", () => {
       },
     });
     expect(addRes.data.createRecipe).toEqual(newRecipe);
+
+    const numRecipesAfterRes = await query({
+      query: GET_ALL_RECIPES,
+      variables: {
+        authorId: testAuthorId,
+      },
+    });
+    const numRecipesAfter = numRecipesAfterRes.data.getAllRecipes.length;
+    expect(numRecipesAfter).toBe(numRecipesBefore + 1);
+
+    const checkQuery = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: newRecipe.recipeId,
+      },
+    });
+    expect(checkQuery.data.getRecipe).toEqual(newRecipe);
   });
 });

@@ -166,7 +166,7 @@ describe("DynamoDB", () => {
     for (let recipe of recipes) {
       await updateRecipe({ ...recipe, db: dynamoDB });
     }
-    const allRecipes = await getAllRecipesById({ ...user });
+    const allRecipes = await getAllRecipesById({ authorId: user.userId });
     expect(recipes).toEqual(expect.arrayContaining(allRecipes));
     expect(allRecipes).toEqual(expect.arrayContaining(recipes));
     expect(recipes.length).toEqual(allRecipes.length);

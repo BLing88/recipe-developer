@@ -12,12 +12,12 @@ const dynamoDB = new AWS.DynamoDB.DocumentClient(localDevConfig);
 const RECIPE_TABLE = `recipe-developer-recipes-dev-${process.env.PORT}`;
 const USER_TABLE = `recipe-developer-users-dev-${process.env.PORT}`;
 
-const getAllRecipesById = ({ userId, db = dynamoDB }) => {
+const getAllRecipesById = ({ authorId, db = dynamoDB }) => {
   const filterParams = {
     TableName: RECIPE_TABLE,
-    KeyConditionExpression: "authorId = :userId",
+    KeyConditionExpression: "authorId = :authorId",
     ExpressionAttributeValues: {
-      ":userId": userId,
+      ":authorId": authorId,
     },
   };
 

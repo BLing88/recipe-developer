@@ -6,6 +6,7 @@ const {
   updateRecipeName,
   updateIngredients,
   updateInstructions,
+  updateNotes,
 } = require("./mutation-resolvers");
 
 const { typeDefsString } = require("./typeDefs");
@@ -23,6 +24,7 @@ const resolvers = {
     updateRecipeName,
     updateIngredients,
     updateInstructions,
+    updateNotes,
   },
 };
 

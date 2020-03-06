@@ -34,6 +34,7 @@ const typeDefsString = `
     updateRecipeName(authorId: ID!, recipeId: ID!, newRecipeName: String!): String
     updateIngredients(authorId: ID!, recipeId: ID!, ingredients: [IngredientInput!]!): [Ingredient]
     updateInstructions(authorId: ID!, recipeId: ID!, instructions: [InstructionInput!]!): [Instruction]
+    updateNotes(authorId: ID!, recipeId: ID!, notes: [NoteInput!]!): [Note]
   }
 
   input RecipeInput {

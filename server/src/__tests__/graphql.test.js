@@ -7,6 +7,7 @@ import {
   buildTestRecipe,
   buildTestIngredients,
   buildTestInstructions,
+  buildTestNotes,
 } from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
 import {
@@ -14,6 +15,7 @@ import {
   UPDATE_RECIPE_NAME,
   UPDATE_INGREDIENTS,
   UPDATE_INSTRUCTIONS,
+  UPDATE_NOTES,
 } from "../mutations";
 import { server } from "../graphql";
 
@@ -303,5 +305,37 @@ describe("server", () => {
     expect(newInstructions).toEqual(
       expect.arrayContaining(updatedResInstructions)
     );
+  });
+
+  test("updates just notes", async () => {
+    const newNotes = buildTestNotes();
+    const targetRecipe = testRecipes[0];
+    const targetRecipeId = targetRecipe.recipeId;
+
+    const updateNotesRes = await mutate({
+      mutation: UPDATE_NOTES,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+        notes: newNotes,
+      },
+    });
+    const updatedNotes = updateNotesRes.data.updateNotes;
+
+    expect(updatedNotes.length).toBe(newNotes.length);
+    expect(updatedNotes).toEqual(expect.arrayContaining(newNotes));
+    expect(newNotes).toEqual(expect.arrayContaining(updatedNotes));
+
+    const checkUpdatedNotesRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    const updatedResNotes = checkUpdatedNotesRes.data.getRecipe.notes;
+    expect(updatedResNotes.length).toBe(newNotes.length);
+    expect(updatedResNotes).toEqual(expect.arrayContaining(newNotes));
+    expect(newNotes).toEqual(expect.arrayContaining(updatedResNotes));
   });
 });

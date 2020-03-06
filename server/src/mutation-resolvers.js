@@ -22,8 +22,18 @@ const updateIngredients = async (_, { authorId, recipeId, ingredients }) => {
   return res.ingredients;
 };
 
+const updateInstructions = async (_, { authorId, recipeId, instructions }) => {
+  const res = await updateRecipe({
+    authorId,
+    recipeId,
+    instructions,
+  });
+  return res.instructions;
+};
+
 module.exports = {
   createRecipe,
   updateRecipeName,
   updateIngredients,
+  updateInstructions,
 };

@@ -2,12 +2,18 @@ import { createTestClient } from "apollo-server-testing";
 import { updateRecipe } from "../dynamodb";
 import AWS from "aws-sdk";
 import faker from "faker";
-import { buildArray, buildTestRecipe, buildTestIngredients } from "generate";
+import {
+  buildArray,
+  buildTestRecipe,
+  buildTestIngredients,
+  buildTestInstructions,
+} from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
 import {
   CREATE_RECIPE,
   UPDATE_RECIPE_NAME,
   UPDATE_INGREDIENTS,
+  UPDATE_INSTRUCTIONS,
 } from "../mutations";
 import { server } from "../graphql";
 
@@ -255,6 +261,47 @@ describe("server", () => {
     );
     expect(newIngredients).toEqual(
       expect.arrayContaining(updatedResIngredients)
+    );
+  });
+
+  test("updates just instructions", async () => {
+    const newInstructions = buildTestInstructions();
+    const targetRecipe = testRecipes[0];
+    const targetRecipeId = targetRecipe.recipeId;
+
+    const updateInstructionsRes = await mutate({
+      mutation: UPDATE_INSTRUCTIONS,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+        instructions: newInstructions,
+      },
+    });
+    const updatedInstructions = updateInstructionsRes.data.updateInstructions;
+
+    expect(updatedInstructions.length).toBe(newInstructions.length);
+    expect(updatedInstructions).toEqual(
+      expect.arrayContaining(newInstructions)
+    );
+    expect(newInstructions).toEqual(
+      expect.arrayContaining(updatedInstructions)
+    );
+
+    const checkUpdatedInstructionsRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    const updatedResInstructions =
+      checkUpdatedInstructionsRes.data.getRecipe.instructions;
+    expect(updatedResInstructions.length).toBe(newInstructions.length);
+    expect(updatedResInstructions).toEqual(
+      expect.arrayContaining(newInstructions)
+    );
+    expect(newInstructions).toEqual(
+      expect.arrayContaining(updatedResInstructions)
     );
   });
 });

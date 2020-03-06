@@ -33,6 +33,7 @@ const typeDefsString = `
     createRecipe(recipeInput: RecipeInput!): Recipe
     updateRecipeName(authorId: ID!, recipeId: ID!, newRecipeName: String!): String
     updateIngredients(authorId: ID!, recipeId: ID!, ingredients: [IngredientInput!]!): [Ingredient]
+    updateInstructions(authorId: ID!, recipeId: ID!, instructions: [InstructionInput!]!): [Instruction]
   }
 
   input RecipeInput {

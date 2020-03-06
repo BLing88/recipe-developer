@@ -2,9 +2,13 @@ import { createTestClient } from "apollo-server-testing";
 import { updateRecipe } from "../dynamodb";
 import AWS from "aws-sdk";
 import faker from "faker";
-import { buildArray, buildTestRecipe } from "generate";
+import { buildArray, buildTestRecipe, buildTestIngredients } from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
-import { CREATE_RECIPE, UPDATE_RECIPE_NAME } from "../mutations";
+import {
+  CREATE_RECIPE,
+  UPDATE_RECIPE_NAME,
+  UPDATE_INGREDIENTS,
+} from "../mutations";
 import { server } from "../graphql";
 
 const localDevConfig = {
@@ -182,11 +186,12 @@ describe("server", () => {
   test("updates just recipe name", async () => {
     const newRecipeName = `New ${faker.commerce.productName()}`;
     const targetRecipe = testRecipes[0];
+    const targetRecipeId = targetRecipe.recipeId;
     const beforeChangeNameRes = await query({
       query: GET_RECIPE,
       variables: {
         authorId: testAuthorId,
-        recipeId: targetRecipe.recipeId,
+        recipeId: targetRecipeId,
       },
     });
     expect(beforeChangeNameRes.data.getRecipe.recipeName).not.toBe(
@@ -197,7 +202,7 @@ describe("server", () => {
       mutation: UPDATE_RECIPE_NAME,
       variables: {
         authorId: testAuthorId,
-        recipeId: targetRecipe.recipeId,
+        recipeId: targetRecipeId,
         newRecipeName,
       },
     });
@@ -207,12 +212,49 @@ describe("server", () => {
       query: GET_RECIPE,
       variables: {
         authorId: testAuthorId,
-        recipeId: targetRecipe.recipeId,
+        recipeId: targetRecipeId,
       },
     });
     expect(checkChangeNameRes.data.getRecipe).toEqual({
       ...targetRecipe,
       recipeName: newRecipeName,
     });
+  });
+
+  test("updates just ingredients", async () => {
+    const newIngredients = buildTestIngredients();
+    const targetRecipe = testRecipes[0];
+    const targetRecipeId = targetRecipe.recipeId;
+
+    const updateIngredientsRes = await mutate({
+      mutation: UPDATE_INGREDIENTS,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+        ingredients: newIngredients,
+      },
+    });
+    const updatedIngredients = updateIngredientsRes.data.updateIngredients;
+
+    expect(updatedIngredients.length).toBe(newIngredients.length);
+    expect(updatedIngredients).toEqual(expect.arrayContaining(newIngredients));
+    expect(newIngredients).toEqual(expect.arrayContaining(updatedIngredients));
+
+    const checkUpdatedIngredientsRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    const updatedResIngredients =
+      checkUpdatedIngredientsRes.data.getRecipe.ingredients;
+    expect(updatedResIngredients.length).toBe(newIngredients.length);
+    expect(updatedResIngredients).toEqual(
+      expect.arrayContaining(newIngredients)
+    );
+    expect(newIngredients).toEqual(
+      expect.arrayContaining(updatedResIngredients)
+    );
   });
 });

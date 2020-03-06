@@ -36,7 +36,25 @@ const UPDATE_RECIPE_NAME = gql`
   }
 `;
 
+const UPDATE_INGREDIENTS = gql`
+  mutation updateIngredients(
+    $authorId: ID!
+    $recipeId: ID!
+    $ingredients: [IngredientInput!]!
+  ) {
+    updateIngredients(
+      authorId: $authorId
+      recipeId: $recipeId
+      ingredients: $ingredients
+    ) {
+      ingredient
+      ingredientId
+    }
+  }
+`;
+
 module.exports = {
   CREATE_RECIPE,
   UPDATE_RECIPE_NAME,
+  UPDATE_INGREDIENTS,
 };

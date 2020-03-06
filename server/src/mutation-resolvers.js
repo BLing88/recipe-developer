@@ -13,7 +13,17 @@ const updateRecipeName = async (_, { authorId, recipeId, newRecipeName }) => {
   return res.recipeName;
 };
 
+const updateIngredients = async (_, { authorId, recipeId, ingredients }) => {
+  const res = await updateRecipe({
+    authorId,
+    recipeId,
+    ingredients,
+  });
+  return res.ingredients;
+};
+
 module.exports = {
   createRecipe,
   updateRecipeName,
+  updateIngredients,
 };

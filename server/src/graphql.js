@@ -1,7 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
 
 const { getAllRecipes, getRecipe } = require("./query-resolvers");
-const { createRecipe } = require("./mutation-resolvers");
+const { createRecipe, updateRecipeName } = require("./mutation-resolvers");
 
 const { typeDefsString } = require("./typeDefs");
 const typeDefs = gql`
@@ -15,6 +15,7 @@ const resolvers = {
   },
   Mutation: {
     createRecipe,
+    updateRecipeName,
   },
 };
 

@@ -58,13 +58,29 @@ const getRecipeById = ({ authorId, recipeId, db = dynamoDB }) => {
 
 const updateRecipe = ({
   authorId,
-  recipeName,
   recipeId,
+  recipeName,
   ingredients,
   instructions,
   notes,
   db = dynamoDB,
 }) => {
+  const newRecipeName = recipeName ? "recipeName=:recipeName, " : "";
+  const newIngredients = ingredients ? "ingredients=:ingredients, " : "";
+  const newInstructions = instructions ? "instructions=:instructions, " : "";
+  const newNotes = notes ? "notes=:notes, " : "";
+  const UpdateExpressionString = `set ${newRecipeName}${newIngredients}${newInstructions}${newNotes}`.slice(
+    0,
+    -2
+  );
+
+  const ExpressionAttributeValues = {
+    ...(newRecipeName && { ":recipeName": recipeName }),
+    ...(newIngredients && { ":ingredients": ingredients }),
+    ...(newInstructions && { ":instructions": instructions }),
+    ...(newNotes && { ":notes": notes }),
+  };
+
   return new Promise((resolve, reject) => {
     const updateParams = {
       TableName: RECIPE_TABLE,
@@ -73,14 +89,8 @@ const updateRecipe = ({
         authorId,
       },
       ReturnValues: "ALL_NEW",
-      UpdateExpression:
-        "set recipeName=:recipeName, ingredients=:ingredients, instructions=:instructions, notes=:notes",
-      ExpressionAttributeValues: {
-        ":recipeName": recipeName,
-        ":ingredients": ingredients,
-        ":instructions": instructions,
-        ":notes": notes,
-      },
+      UpdateExpression: UpdateExpressionString,
+      ExpressionAttributeValues,
     };
     db.update(updateParams, (err, data) => {
       if (err) {

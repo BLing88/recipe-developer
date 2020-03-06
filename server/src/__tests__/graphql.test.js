@@ -4,7 +4,7 @@ import AWS from "aws-sdk";
 import faker from "faker";
 import { buildArray, buildTestRecipe } from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
-import { CREATE_RECIPE } from "../mutations";
+import { CREATE_RECIPE, UPDATE_RECIPE_NAME } from "../mutations";
 import { server } from "../graphql";
 
 const localDevConfig = {
@@ -177,5 +177,42 @@ describe("server", () => {
       },
     });
     expect(checkCreateQuery.data.getRecipe).toEqual(newRecipe);
+  });
+
+  test("updates just recipe name", async () => {
+    const newRecipeName = `New ${faker.commerce.productName()}`;
+    const targetRecipe = testRecipes[0];
+    const beforeChangeNameRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipe.recipeId,
+      },
+    });
+    expect(beforeChangeNameRes.data.getRecipe.recipeName).not.toBe(
+      newRecipeName
+    );
+
+    const changeNameRes = await mutate({
+      mutation: UPDATE_RECIPE_NAME,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipe.recipeId,
+        newRecipeName,
+      },
+    });
+    expect(changeNameRes.data.updateRecipeName).toEqual(newRecipeName);
+
+    const checkChangeNameRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipe.recipeId,
+      },
+    });
+    expect(checkChangeNameRes.data.getRecipe).toEqual({
+      ...targetRecipe,
+      recipeName: newRecipeName,
+    });
   });
 });

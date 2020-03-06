@@ -22,6 +22,21 @@ const CREATE_RECIPE = gql`
   }
 `;
 
+const UPDATE_RECIPE_NAME = gql`
+  mutation updateRecipeName(
+    $authorId: ID!
+    $recipeId: ID!
+    $newRecipeName: String!
+  ) {
+    updateRecipeName(
+      authorId: $authorId
+      recipeId: $recipeId
+      newRecipeName: $newRecipeName
+    )
+  }
+`;
+
 module.exports = {
   CREATE_RECIPE,
+  UPDATE_RECIPE_NAME,
 };

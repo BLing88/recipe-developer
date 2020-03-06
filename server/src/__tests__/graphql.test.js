@@ -16,6 +16,7 @@ import {
   UPDATE_INGREDIENTS,
   UPDATE_INSTRUCTIONS,
   UPDATE_NOTES,
+  DELETE_RECIPE,
 } from "../mutations";
 import { server } from "../graphql";
 
@@ -337,5 +338,37 @@ describe("server", () => {
     expect(updatedResNotes.length).toBe(newNotes.length);
     expect(updatedResNotes).toEqual(expect.arrayContaining(newNotes));
     expect(newNotes).toEqual(expect.arrayContaining(updatedResNotes));
+  });
+
+  test("deletes recipe", async () => {
+    const targetRecipe = testRecipes[0];
+    const targetRecipeId = targetRecipe.recipeId;
+
+    const beforeDeleteRecipeRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    expect(beforeDeleteRecipeRes.data.getRecipe).toEqual(targetRecipe);
+
+    const deleteRes = await mutate({
+      mutation: DELETE_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    expect(deleteRes.data.deleteRecipe).toEqual(targetRecipeId);
+
+    const afterDeleteRecipeRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    expect(afterDeleteRecipeRes.data.getRecipe).toBeNull();
   });
 });

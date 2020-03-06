@@ -79,8 +79,15 @@ const UPDATE_NOTES = gql`
   }
 `;
 
+const DELETE_RECIPE = gql`
+  mutation deleteRecipe($authorId: ID!, $recipeId: ID!) {
+    deleteRecipe(authorId: $authorId, recipeId: $recipeId)
+  }
+`;
+
 module.exports = {
   CREATE_RECIPE,
+  DELETE_RECIPE,
   UPDATE_RECIPE_NAME,
   UPDATE_INGREDIENTS,
   UPDATE_INSTRUCTIONS,

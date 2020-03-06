@@ -1,4 +1,4 @@
-const { updateRecipe } = require("./dynamodb");
+const { updateRecipe, deleteRecipe: dbDeleteRecipe } = require("./dynamodb");
 
 const createRecipe = async (_, { recipeInput }) => {
   return await updateRecipe(recipeInput);
@@ -40,8 +40,17 @@ const updateNotes = async (_, { authorId, recipeId, notes }) => {
   return res.notes;
 };
 
+const deleteRecipe = async (_, { authorId, recipeId }) => {
+  const res = await dbDeleteRecipe({
+    authorId,
+    recipeId,
+  });
+  return res.recipeId;
+};
+
 module.exports = {
   createRecipe,
+  deleteRecipe,
   updateRecipeName,
   updateIngredients,
   updateInstructions,

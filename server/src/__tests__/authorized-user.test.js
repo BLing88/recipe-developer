@@ -160,7 +160,7 @@ describe("server - for authorized users", () => {
     expect(expectedResult).toEqual(expect.arrayContaining(resRecipes));
   });
 
-  test("adds new recipe to db", async () => {
+  test("creates new recipe", async () => {
     const newRecipe = buildTestRecipe({ authorId: testAuthorId });
     const beforeCreateRes = await query({
       query: GET_RECIPE,
@@ -182,6 +182,7 @@ describe("server - for authorized users", () => {
       mutation: CREATE_RECIPE,
       variables: {
         recipeInput: newRecipe,
+        authorId: testAuthorId,
       },
     });
     expect(createRes.data.createRecipe).toEqual(newRecipe);

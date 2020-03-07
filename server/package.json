@@ -18,7 +18,10 @@
     "apollo-server": "^2.10.1",
     "apollo-server-lambda": "^2.10.1",
     "aws-sdk": "^2.630.0",
+    "dotenv": "^8.2.0",
     "graphql": "^14.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.7.0",
     "uuid": "^7.0.1"
   },
   "devDependencies": {
@@ -30,6 +33,7 @@
     "babel-jest": "^25.1.0",
     "faker": "^4.1.0",
     "jest": "^25.1.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
   }
 }

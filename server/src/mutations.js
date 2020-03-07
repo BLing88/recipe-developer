@@ -1,8 +1,8 @@
 const { gql } = require("apollo-server-lambda");
 
 const CREATE_RECIPE = gql`
-  mutation createRecipe($recipeInput: RecipeInput!) {
-    createRecipe(recipeInput: $recipeInput) {
+  mutation createRecipe($recipeInput: RecipeInput!, $authorId: ID!) {
+    createRecipe(recipeInput: $recipeInput, authorId: $authorId) {
       recipeName
       recipeId
       authorId

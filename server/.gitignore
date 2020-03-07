@@ -4,3 +4,4 @@ dist
 DynamoDBLocal_lib
 DynamoDBLocal.jar
 shared-local-instance.db
+.env

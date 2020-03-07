@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { idOfRecipe, nameOfRecipe } from "utils/recipe";
+import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 
 const Profile = ({ recipes, setIsCreatingRecipe }) => {
   return (

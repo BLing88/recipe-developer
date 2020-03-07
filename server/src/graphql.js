@@ -1,5 +1,4 @@
 const { ApolloServer, gql } = require("apollo-server-lambda");
-
 const { getAllRecipes, getRecipe } = require("./query-resolvers");
 const {
   createRecipe,
@@ -30,9 +29,18 @@ const resolvers = {
   },
 };
 
+const createContext = ({ event }) => {
+  const accessToken = event.headers.Authorization || "";
+
+  return {
+    accessToken,
+  };
+};
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  context: createContext,
 });
 
 const handler = server.createHandler({

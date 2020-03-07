@@ -2,10 +2,10 @@ const { updateRecipe, deleteRecipe: dbDeleteRecipe } = require("./dynamodb");
 const { getAuthorization } = require("./getAuthorization");
 const { ForbiddenError } = require("apollo-server");
 
-const createRecipe = async (_, { recipeInput }, context) => {
+const createRecipe = async (_, { recipeInput, authorId }, context) => {
   const { isAuthorized, error } = await getAuthorization(context);
   if (isAuthorized) {
-    return await updateRecipe(recipeInput);
+    return await updateRecipe({ ...recipeInput, authorId });
   } else {
     throw new ForbiddenError(`You are not authorized`);
   }

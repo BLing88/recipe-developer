@@ -1,5 +1,4 @@
 const AWS = require("aws-sdk");
-const { db } = require("./static-db");
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -8,9 +7,11 @@ const localDevConfig = {
   endpoint: "http://localhost:8000",
 };
 
-const dynamoDB = new AWS.DynamoDB.DocumentClient(localDevConfig);
+const dynamoDB =
+  process.env.NODE_ENV !== "test"
+    ? new AWS.DynamoDB.DocumentClient()
+    : new AWS.DynamoDB.DocumentClient(localDevConfig);
 const RECIPE_TABLE = `recipe-developer-recipes-dev-${process.env.PORT}`;
-const USER_TABLE = `recipe-developer-users-dev-${process.env.PORT}`;
 
 const getAllRecipesById = ({ authorId, db = dynamoDB }) => {
   const filterParams = {

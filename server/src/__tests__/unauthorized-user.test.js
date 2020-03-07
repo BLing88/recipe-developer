@@ -161,6 +161,7 @@ describe("server - for unauthorized users", () => {
       mutation: CREATE_RECIPE,
       variables: {
         recipeInput: newRecipe,
+        authorId: testAuthorId,
       },
     });
     expect(createRes.data.createRecipe).toBeNull();

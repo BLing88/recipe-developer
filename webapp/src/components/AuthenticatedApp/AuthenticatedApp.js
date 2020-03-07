@@ -41,7 +41,7 @@ const AuthenticatedApp = () => {
   return (
     <div className="app">
       <header className="app-header">
-        <NavBar />
+        <NavBar isCreatingRecipe={isCreatingRecipe} />
       </header>
       {isCreatingRecipe ? (
         <CreateRecipeForm createRecipeHandler={createRecipeHandler} />

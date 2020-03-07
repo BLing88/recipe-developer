@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-const GET_RECIPE = gql`
+export const GET_RECIPE = gql`
   query getRecipe($authorId: ID!, $recipeId: ID!) {
     getRecipe(authorId: $authorId, recipeId: $recipeId) {
       recipeName
@@ -22,7 +22,7 @@ const GET_RECIPE = gql`
   }
 `;
 
-const GET_ALL_RECIPES = gql`
+export const GET_ALL_RECIPES = gql`
   query getAllRecipes($authorId: ID!) {
     getAllRecipes(authorId: $authorId) {
       recipeName
@@ -30,8 +30,3 @@ const GET_ALL_RECIPES = gql`
     }
   }
 `;
-
-module.exports = {
-  GET_RECIPE,
-  GET_ALL_RECIPES,
-};

@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
 
-const CREATE_RECIPE = gql`
+export const CREATE_RECIPE = gql`
   mutation createRecipe($recipeInput: RecipeInput!, $authorId: ID!) {
     createRecipe(recipeInput: $recipeInput, authorId: $authorId) {
       recipeName
@@ -22,7 +22,7 @@ const CREATE_RECIPE = gql`
   }
 `;
 
-const UPDATE_RECIPE_NAME = gql`
+export const UPDATE_RECIPE_NAME = gql`
   mutation updateRecipeName(
     $authorId: ID!
     $recipeId: ID!
@@ -36,7 +36,7 @@ const UPDATE_RECIPE_NAME = gql`
   }
 `;
 
-const UPDATE_INGREDIENTS = gql`
+export const UPDATE_INGREDIENTS = gql`
   mutation updateIngredients(
     $authorId: ID!
     $recipeId: ID!
@@ -53,7 +53,7 @@ const UPDATE_INGREDIENTS = gql`
   }
 `;
 
-const UPDATE_INSTRUCTIONS = gql`
+export const UPDATE_INSTRUCTIONS = gql`
   mutation updateInstructions(
     $authorId: ID!
     $recipeId: ID!
@@ -70,7 +70,7 @@ const UPDATE_INSTRUCTIONS = gql`
   }
 `;
 
-const UPDATE_NOTES = gql`
+export const UPDATE_NOTES = gql`
   mutation updateNotes($authorId: ID!, $recipeId: ID!, $notes: [NoteInput!]!) {
     updateNotes(authorId: $authorId, recipeId: $recipeId, notes: $notes) {
       note
@@ -79,17 +79,8 @@ const UPDATE_NOTES = gql`
   }
 `;
 
-const DELETE_RECIPE = gql`
+export const DELETE_RECIPE = gql`
   mutation deleteRecipe($authorId: ID!, $recipeId: ID!) {
     deleteRecipe(authorId: $authorId, recipeId: $recipeId)
   }
 `;
-
-module.exports = {
-  CREATE_RECIPE,
-  DELETE_RECIPE,
-  UPDATE_RECIPE_NAME,
-  UPDATE_INGREDIENTS,
-  UPDATE_INSTRUCTIONS,
-  UPDATE_NOTES,
-};

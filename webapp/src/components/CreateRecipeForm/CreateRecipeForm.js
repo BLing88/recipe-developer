@@ -2,7 +2,7 @@ import React, { useReducer } from "react";
 import PropTypes from "prop-types";
 
 const defaultState = {
-  name: "",
+  recipeName: "",
   ingredients: [""],
   instructions: [""],
   notes: [""],
@@ -22,7 +22,7 @@ const reducer = (state, action) => {
     case UPDATE_NAME_INPUT:
       return {
         ...state,
-        name: action.name,
+        recipeName: action.recipeName,
       };
     case UPDATE_INGREDIENTS_INPUT:
       return {
@@ -104,10 +104,10 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
       <input
         id="recipe-name"
         type="text"
-        value={state.name}
+        value={state.recipeName}
         onChange={e => {
           e.preventDefault();
-          dispatch({ type: UPDATE_NAME_INPUT, name: e.target.value });
+          dispatch({ type: UPDATE_NAME_INPUT, recipeName: e.target.value });
         }}
         required
       />

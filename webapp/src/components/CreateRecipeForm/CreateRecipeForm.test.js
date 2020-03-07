@@ -2,7 +2,8 @@ import React from "react";
 import { render } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
-import { buildTestRecipe } from "test/utils/generate";
+import { buildTestRecipe, buildTestUser } from "test/utils/generate";
+import { nameOfRecipe } from "utils/recipe";
 
 import { CreateRecipeForm } from "./CreateRecipeForm";
 
@@ -166,5 +167,57 @@ describe("CreateRecipeForm", () => {
     const firstInput = getByLabelText(/^note 1:$/i);
     expect(firstInput).toBeInTheDocument();
     expect(firstInput).toHaveValue("");
+  });
+
+  test("Create new recipe when submitted", async () => {
+    const testuser = buildTestUser();
+    const newRecipe = buildTestRecipe({ authorId: testuser.userId });
+    const { ingredients, notes, instructions } = newRecipe;
+    const mockCreateRecipeHandler = jest.fn().mockName("createRecipeHandler");
+    const { getByLabelText, getByText } = render(
+      <CreateRecipeForm createRecipeHandler={mockCreateRecipeHandler} />
+    );
+
+    const recipeNameInput = getByLabelText(/recipe name/i);
+    user.click(recipeNameInput);
+    user.type(recipeNameInput, nameOfRecipe(newRecipe));
+
+    const addIngredientButton = getByText(/add ingredient/i);
+    for (let i = 0; i < ingredients.length; i++) {
+      const ingredient = ingredients[i].ingredient;
+      const ingredientInput = getByLabelText(
+        new RegExp(`^ingredient ${i + 1}:$`, "i")
+      );
+      user.type(ingredientInput, ingredient);
+      user.click(addIngredientButton);
+    }
+
+    const addInstructionButton = getByText(/add instruction/i);
+    for (let i = 0; i < instructions.length; i++) {
+      const instruction = instructions[i].instruction;
+      const instructionInput = getByLabelText(
+        new RegExp(`^step ${i + 1}:$`, "i")
+      );
+      user.type(instructionInput, instruction);
+      user.click(addInstructionButton);
+    }
+
+    const addNoteButton = getByText(/add note/i);
+    for (let i = 0; i < notes.length; i++) {
+      const note = notes[i].note;
+      const noteInput = getByLabelText(new RegExp(`^note ${i + 1}:$`, "i"));
+      user.type(noteInput, note);
+      user.click(addNoteButton);
+    }
+
+    const submitButton = getByText(/Create recipe/i);
+    user.click(submitButton);
+    expect(mockCreateRecipeHandler).toHaveBeenCalledTimes(1);
+    expect(mockCreateRecipeHandler).toHaveBeenCalledWith({
+      recipeName: newRecipe.recipeName,
+      ingredients: [...newRecipe.ingredients.map(i => i.ingredient), ""],
+      instructions: [...newRecipe.instructions.map(i => i.instruction), ""],
+      notes: [...newRecipe.notes.map(i => i.note), ""],
+    });
   });
 });

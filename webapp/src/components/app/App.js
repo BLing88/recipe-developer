@@ -5,8 +5,17 @@ import { AuthenticatedApp } from "../AuthenticatedApp";
 
 import { useAuth0 } from "../../react-auth0-spa";
 
+import ApolloClient from "apollo-boost";
+import { ApolloProvider } from "@apollo/react-hooks";
+
 const App = () => {
-  const { loading, user, isAuthenticated, loginWithRedirect } = useAuth0();
+  const {
+    loading,
+    user,
+    isAuthenticated,
+    loginWithRedirect,
+    getTokenSilently,
+  } = useAuth0();
 
   if (!user) {
     return (
@@ -15,13 +24,33 @@ const App = () => {
         signup={loginWithRedirect}
       />
     );
-  } else if (loading) {
+  }
+
+  const client = new ApolloClient({
+    uri: "", //"https://fxpbqbe7q2.execute-api.us-east-1.amazonaws.com/dev/graphql",
+    request: async operation => {
+      // Get token or get refreshed token
+      const token = isAuthenticated ? await getTokenSilently() : null;
+
+      operation.setContext({
+        headers: {
+          authorization: token ? `Bearer ${token}` : undefined,
+        },
+      });
+    },
+  });
+
+  if (loading) {
     return <main>Redirecting...</main>;
   }
 
   if (isAuthenticated) {
     console.log(user);
-    return <AuthenticatedApp />;
+    return (
+      <ApolloProvider client={client}>
+        <AuthenticatedApp />
+      </ApolloProvider>
+    );
   }
 };
 

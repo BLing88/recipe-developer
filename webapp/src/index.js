@@ -8,13 +8,6 @@ import { Auth0Provider } from "./react-auth0-spa";
 import config from "./auth_config.json";
 import history from "./utils/history";
 
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "@apollo/react-hooks";
-
-const client = new ApolloClient({
-  uri: "", //"https://fxpbqbe7q2.execute-api.us-east-1.amazonaws.com/dev/graphql",
-});
-
 const onRedirectCallback = appState => {
   history.push(
     appState && appState.targetUrl
@@ -27,12 +20,11 @@ ReactDOM.render(
   <Auth0Provider
     domain={config.domain}
     client_id={config.clientId}
+    audience={config.audience}
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
   >
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
+    <App />
   </Auth0Provider>,
   document.getElementById("root")
 );

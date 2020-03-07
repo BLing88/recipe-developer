@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/react-hooks";
 import gql from "graphql-tag";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
+import { GET_ALL_RECIPES } from "../../queries";
 
 import { buildRecipe } from "../../utils/recipe";
 
@@ -14,16 +15,16 @@ const AuthenticatedApp = () => {
   const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
   const { user } = useAuth0();
 
-  const GET_USER_RECIPES = gql`
-    query getAllRecipes($authorId: ID!) {
-      getAllRecipes(authorId: $authorId) {
-        recipeName
-        recipeId
-      }
-    }
-  `;
+  // const GET_ALL_RECIPES = gql`
+  //   query getAllRecipes($authorId: ID!) {
+  //     getAllRecipes(authorId: $authorId) {
+  //       recipeName
+  //       recipeId
+  //     }
+  //   }
+  // `;
 
-  const { loading, data, error } = useQuery(GET_USER_RECIPES, {
+  const { loading, data, error } = useQuery(GET_ALL_RECIPES, {
     variables: {
       authorId: user.id,
     },

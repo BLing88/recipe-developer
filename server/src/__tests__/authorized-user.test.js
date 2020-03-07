@@ -33,7 +33,20 @@ const db = new AWS.DynamoDB(localDevConfig);
 const testAuthorId = faker.random.uuid();
 let testRecipes = [];
 
-const { query, mutate } = createTestClient(server);
+const testServer = Object.create(Object.getPrototypeOf(server));
+const authorizedContext = server.context({
+  event: {
+    headers: {
+      Authorization: `Bearer ${process.env.VALID_TOKEN}`,
+    },
+  },
+});
+
+// Need to create test server this way so that we can pass in headers, otherwise
+// createTestClient will pass in empty object into context creator function
+const { query, mutate } = createTestClient(
+  Object.assign(testServer, server, { context: () => authorizedContext })
+);
 
 const setExistingRecipes = async () => {
   const numberOfRecipes = 1 + faker.random.number(15);
@@ -115,7 +128,7 @@ afterEach(async () => {
   });
 });
 
-describe("server", () => {
+describe("server - for authorized users", () => {
   test("gets recipe by author and recipe ids", async () => {
     for (let recipe of testRecipes) {
       const res = await query({

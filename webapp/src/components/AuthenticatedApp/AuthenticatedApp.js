@@ -53,6 +53,9 @@ const AuthenticatedApp = () => {
     }
   };
 
+  const creatingRecipe = () =>
+    setIsCreatingRecipe(isCreatingRecipe => !isCreatingRecipe);
+
   useEffect(() => {
     if (!getAllRecipesLoading && !getAllRecipesError) {
       getAllRecipesData && setRecipes(getAllRecipesData.getAllRecipes);
@@ -66,7 +69,10 @@ const AuthenticatedApp = () => {
   return (
     <div className="app">
       <header className="app-header">
-        <NavBar isCreatingRecipe={isCreatingRecipe} />
+        <NavBar
+          isCreatingRecipe={isCreatingRecipe}
+          setIsCreatingRecipe={creatingRecipe}
+        />
       </header>
       {isCreatingRecipe ? (
         <CreateRecipeForm
@@ -77,9 +83,7 @@ const AuthenticatedApp = () => {
       ) : (
         <Profile
           user={user}
-          setIsCreatingRecipe={() =>
-            setIsCreatingRecipe(isCreatingRecipe => !isCreatingRecipe)
-          }
+          setIsCreatingRecipe={creatingRecipe}
           recipes={recipes}
         />
       )}

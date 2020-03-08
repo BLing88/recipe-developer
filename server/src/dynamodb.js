@@ -11,7 +11,11 @@ const dynamoDB =
   process.env.NODE_ENV !== "test"
     ? new AWS.DynamoDB.DocumentClient()
     : new AWS.DynamoDB.DocumentClient(localDevConfig);
-const RECIPE_TABLE = `recipe-developer-recipes-dev-${process.env.PORT}`;
+
+const RECIPE_TABLE =
+  process.env.NODE_ENV !== "test"
+    ? process.env.RECIPE_TABLE
+    : `recipe-developer-recipes-dev-${process.env.PORT}`;
 
 const getAllRecipesById = ({ authorId, db = dynamoDB }) => {
   const filterParams = {

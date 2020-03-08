@@ -4,9 +4,10 @@ import { useAuth0 } from "../../react-auth0-spa";
 
 const NavBar = ({
   isCreatingRecipe,
-  setIsCreatingRecipe,
+  showCreatingRecipe,
   isShowingProfile,
-  setIsShowingProfile,
+  setShowingProfile,
+  setShowingRecipe,
 }) => {
   const { logout } = useAuth0();
 
@@ -18,18 +19,17 @@ const NavBar = ({
           <button
             onClick={e => {
               e.preventDefault();
-              setIsCreatingRecipe();
+              showCreatingRecipe();
             }}
           >
             Create recipe
           </button>
         )}
-        {isCreatingRecipe ? (
+        {!isShowingProfile ? (
           <button
             onClick={e => {
               e.preventDefault();
-              setIsShowingProfile();
-              setIsCreatingRecipe();
+              setShowingProfile();
             }}
           >
             My profile
@@ -42,7 +42,9 @@ const NavBar = ({
 };
 NavBar.propTypes = {
   isCreatingRecipe: PropTypes.bool.isRequired,
-  setIsCreatingRecipe: PropTypes.func.isRequired,
+  showCreatingRecipe: PropTypes.func.isRequired,
+  isShowingProfile: PropTypes.bool.isRequired,
+  setShowingProfile: PropTypes.func.isRequired,
 };
 
 export { NavBar };

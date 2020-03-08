@@ -59,15 +59,17 @@ const AuthenticatedApp = () => {
           setIsShowingProfile={showingProfile}
         />
       </header>
-      {isCreatingRecipe ? (
-        <CreateRecipeForm
-          createRecipeHandler={createRecipeHandler}
-          error={createRecipeError}
-          loading={createRecipeLoading}
-        />
-      ) : (
-        <Profile />
-      )}
+      <main>
+        {isCreatingRecipe ? (
+          <CreateRecipeForm
+            createRecipeHandler={createRecipeHandler}
+            error={createRecipeError}
+            loading={createRecipeLoading}
+          />
+        ) : (
+          <Profile />
+        )}
+      </main>
     </div>
   );
 };

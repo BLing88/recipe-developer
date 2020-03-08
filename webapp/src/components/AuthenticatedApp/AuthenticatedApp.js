@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { NavBar } from "../NavBar";
 import { Profile } from "../Profile";
+import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 
-import { useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
-// import { GET_ALL_RECIPES } from "../../queries";
+import { GET_ALL_RECIPES } from "../../queries";
 import { CREATE_RECIPE } from "../../mutations";
 
 import { buildRecipe } from "../../utils/recipe";
@@ -14,11 +15,21 @@ const AuthenticatedApp = () => {
   const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
   const [isShowingProfile, setIsShowingProfile] = useState(true);
   const { user } = useAuth0();
+  const {
+    loading: getAllRecipesLoading,
+    data: getAllRecipesData,
+    error: getAllRecipesError,
+    refetch: refetchGetAllRecipes,
+  } = useQuery(GET_ALL_RECIPES, {
+    variables: {
+      authorId: user.sub,
+    },
+  });
 
   const [
     createRecipe,
     {
-      data: createRecipeData,
+      // data: createRecipeData,
       loading: createRecipeLoading,
       error: createRecipeError,
     },
@@ -33,17 +44,17 @@ const AuthenticatedApp = () => {
       instructions: instructions.filter(instruction => instruction !== ""),
       notes: notes.filter(note => note !== ""),
     });
-    await createRecipe({
+    const result = await createRecipe({
       variables: {
         authorId: user.sub,
         recipeInput: recipe,
       },
     });
-    if (createRecipeData) {
+    if (result.data) {
       setIsCreatingRecipe(false);
+      refetchGetAllRecipes();
     }
   };
-
   const creatingRecipe = () =>
     setIsCreatingRecipe(isCreatingRecipe => !isCreatingRecipe);
   const showingProfile = () =>
@@ -67,7 +78,13 @@ const AuthenticatedApp = () => {
             loading={createRecipeLoading}
           />
         ) : (
-          <Profile />
+          <Profile>
+            <UserRecipesList
+              loading={getAllRecipesLoading}
+              error={getAllRecipesError}
+              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
+            />
+          </Profile>
         )}
       </main>
     </div>

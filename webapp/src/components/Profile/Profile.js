@@ -1,11 +1,10 @@
 import React from "react";
-import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 
-const Profile = () => {
+const Profile = ({ children }) => {
   return (
     <article className="user-profile">
       <h1>My Profile</h1>
-      <UserRecipesList />
+      {children}
     </article>
   );
 };

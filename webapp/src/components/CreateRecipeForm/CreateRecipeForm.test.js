@@ -226,4 +226,47 @@ describe("CreateRecipeForm", () => {
       notes: [...newRecipe.notes.map(i => i.note), ""],
     });
   });
+
+  test("Does not submit if recipe name missing", () => {
+    const testuser = buildTestUser();
+    const newRecipe = buildTestRecipe({ authorId: testuser.userId });
+    const { ingredients, notes, instructions } = newRecipe;
+    const mockCreateRecipeHandler = jest.fn().mockName("createRecipeHandler");
+    const { getByLabelText, getByText } = render(
+      <CreateRecipeForm createRecipeHandler={mockCreateRecipeHandler} />
+    );
+
+    const addIngredientButton = getByText(/add ingredient/i);
+    for (let i = 0; i < ingredients.length; i++) {
+      const ingredient = ingredients[i].ingredient;
+      const ingredientInput = getByLabelText(
+        new RegExp(`^ingredient ${i + 1}:$`, "i")
+      );
+      user.type(ingredientInput, ingredient);
+      user.click(addIngredientButton);
+    }
+
+    const addInstructionButton = getByText(/add instruction/i);
+    for (let i = 0; i < instructions.length; i++) {
+      const instruction = instructions[i].instruction;
+      const instructionInput = getByLabelText(
+        new RegExp(`^step ${i + 1}:$`, "i")
+      );
+      user.type(instructionInput, instruction);
+      user.click(addInstructionButton);
+    }
+
+    const addNoteButton = getByText(/add note/i);
+    for (let i = 0; i < notes.length; i++) {
+      const note = notes[i].note;
+      const noteInput = getByLabelText(new RegExp(`^note ${i + 1}:$`, "i"));
+      user.type(noteInput, note);
+      user.click(addNoteButton);
+    }
+
+    const submitButton = getByText(/Create recipe/i);
+    user.click(submitButton);
+    expect(mockCreateRecipeHandler).not.toHaveBeenCalled();
+    expect(getByText(/recipe name required/i)).toBeInTheDocument();
+  });
 });

@@ -6,8 +6,10 @@ const defaultState = {
   ingredients: [""],
   instructions: [""],
   notes: [""],
+  showMissingRecipeName: false,
 };
 const UPDATE_NAME_INPUT = "UPDATE_NAME_INPUT";
+const SHOW_MISSING_RECIPE_NAME = "SHOW_MISSING_RECIPE_NAME";
 const UPDATE_INGREDIENTS_INPUT = "UPDATE_INGREDIENTS_INPUT";
 const ADD_INGREDIENT = "ADD_INGREDIENT";
 const DELETE_INGREDIENT = "DELETE_INGREDIENT";
@@ -23,6 +25,11 @@ const reducer = (state, action) => {
       return {
         ...state,
         recipeName: action.recipeName,
+      };
+    case SHOW_MISSING_RECIPE_NAME:
+      return {
+        ...state,
+        showMissingRecipeName: true,
       };
     case UPDATE_INGREDIENTS_INPUT:
       return {
@@ -95,10 +102,11 @@ const reducer = (state, action) => {
       return state;
   }
 };
-const CreateRecipeForm = ({ createRecipeHandler }) => {
+const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
 
   return (
+    <>
     <form data-testid="create-recipe-form">
       <label htmlFor="recipe-name">Recipe name</label>
       <input
@@ -236,13 +244,24 @@ const CreateRecipeForm = ({ createRecipeHandler }) => {
       <button
         onClick={e => {
           e.preventDefault();
-          createRecipeHandler({ ...state });
+            if (!state.recipeName) {
+              dispatch({ type: SHOW_MISSING_RECIPE_NAME });
+            } else {
+              createRecipeHandler({
+                recipeName: state.recipeName,
+                ingredients: state.ingredients,
+                instructions: state.instructions,
+                notes: state.notes,
+              });
+            }
         }}
         type="submit"
       >
         Create recipe
       </button>
+        {state.showMissingRecipeName ? <div>Recipe name required</div> : null}
     </form>
+    </>
   );
 };
 CreateRecipeForm.propTypes = {

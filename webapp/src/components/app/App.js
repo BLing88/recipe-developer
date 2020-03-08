@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 import { LandingPage } from "../LandingPage";
 import { AuthenticatedApp } from "../AuthenticatedApp";
-import { GRAPHQL_URL } from "../../../graphql-configs";
+import { GRAPHQL_URL } from "../../graphql-configs";
 
 import { useAuth0 } from "../../react-auth0-spa";
 
@@ -28,7 +28,7 @@ const App = () => {
   }
 
   const client = new ApolloClient({
-    uri: "", // GRAPHQL_URL,
+    uri: GRAPHQL_URL,
     request: async operation => {
       // Get token or get refreshed token
       const token = isAuthenticated ? await getTokenSilently() : null;
@@ -46,7 +46,6 @@ const App = () => {
   }
 
   if (isAuthenticated) {
-    console.log(user);
     return (
       <ApolloProvider client={client}>
         <AuthenticatedApp />

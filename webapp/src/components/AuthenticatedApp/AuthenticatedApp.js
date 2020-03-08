@@ -45,7 +45,7 @@ const AuthenticatedApp = () => {
     const result = await createRecipe({
       variables: {
         authorId: user.sub,
-        ...recipe,
+        recipeInput: recipe,
       },
     });
     if (createRecipeData) {

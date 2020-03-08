@@ -2,10 +2,12 @@ import React, { useReducer } from "react";
 import { NavBar } from "../NavBar";
 import { Profile } from "../Profile";
 import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
+import { Recipe } from "../Recipe";
 
+import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
-import { GET_ALL_RECIPES } from "../../queries";
+import { GET_ALL_RECIPES, GET_RECIPE } from "../../queries";
 import { CREATE_RECIPE } from "../../mutations";
 
 import { buildRecipe } from "../../utils/recipe";
@@ -57,6 +59,11 @@ const AuthenticatedApp = () => {
       authorId: user.sub,
     },
   });
+
+  const [
+    getRecipe,
+    { loading: getRecipeLoading, data: getRecipeData, error: getRecipeError },
+  ] = useLazyQuery(GET_RECIPE);
 
   const [
     createRecipe,
@@ -113,9 +120,28 @@ const AuthenticatedApp = () => {
               loading={getAllRecipesLoading}
               error={getAllRecipesError}
               recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
+              getRecipe={(e, recipe) => {
+                e.preventDefault();
+                getRecipe({
+                  variables: {
+                    authorId: user.sub,
+                    recipeId: recipe.recipeId,
+                  },
+                });
+                dispatch({ type: SHOW_RECIPE });
+              }}
             />
           </Profile>
-        )}
+        ) : null}
+        {state.show === showRecipe ? (
+          <>
+            {getRecipeLoading ? <div>Loading recipe...</div> : null}
+            {getRecipeError ? <div>Error loading recipe. Try again</div> : null}
+            {!getRecipeLoading && getRecipeData ? (
+              <Recipe recipe={getRecipeData.getRecipe} />
+            ) : null}
+          </>
+        ) : null}
       </main>
     </div>
   );

@@ -122,6 +122,7 @@ describe("AuthenticatedApp", () => {
     testUser.click(createRecipeButton);
     expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
+
   test("Shows create recipe form when create recipe button is clicked", async () => {
     const recipes = buildArray(5, () => buildTestRecipe());
     const { getByText, getByTestId } = await renderLoadedProfile({ recipes });
@@ -143,5 +144,15 @@ describe("AuthenticatedApp", () => {
     expect(myProfileButton).not.toBeInTheDocument();
     expect(getByText(/my profile/i)).toBeInTheDocument();
     expect(createRecipeButton).not.toBeInTheDocument();
+  });
+
+  test("show recipe if user clicks on recipe in recipe list", async () => {
+    const recipes = buildArray(5, () => buildTestRecipe());
+    const targetRecipe = recipes[0];
+    const { getByText, queryByText } = await renderLoadedProfile({ recipes });
+
+    testUser.click(getByText(nameOfRecipe(targetRecipe)));
+    expect(queryByText(/my recipes/i)).not.toBeInTheDocument();
+    expect(getByText(nameOfRecipe(targetRecipe))).toBeInTheDocument();
   });
 });

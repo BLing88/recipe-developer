@@ -2,7 +2,7 @@ import React from "react";
 
 import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 
-const UserRecipesList = ({ loading, error, recipes }) => {
+const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
   return (
     <article>
       <h2>My Recipes</h2>
@@ -18,7 +18,14 @@ const UserRecipesList = ({ loading, error, recipes }) => {
         (recipes && recipes.length ? (
           <ul className="recipe-list">
             {recipes.map(recipe => (
-              <li key={idOfRecipe(recipe)}>{nameOfRecipe(recipe)}</li>
+              <li
+                onClick={e => {
+                  getRecipe(e, recipe);
+                }}
+                key={idOfRecipe(recipe)}
+              >
+                {nameOfRecipe(recipe)}
+              </li>
             ))}
           </ul>
         ) : (

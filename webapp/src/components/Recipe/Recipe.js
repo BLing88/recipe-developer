@@ -10,9 +10,9 @@ const Recipe = ({ recipe }) => {
   return (
     <article className="recipe">
       <h1 className="recipe-name">{recipeName}</h1>
-      <picture className="recipe-image">
+      {/* <picture className="recipe-image">
         <img src={require("../../assets/gimbap-mobile.png")} alt="gimbap" />
-      </picture>
+      </picture> */}
       {/* abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz */}
       <Ingredients ingredients={ingredients} />
       <Instructions instructions={instructions} />

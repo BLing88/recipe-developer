@@ -131,4 +131,17 @@ describe("AuthenticatedApp", () => {
     testUser.click(createRecipeButton);
     expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
+
+  test("clicking my profile btn when creating recipe shows profile", async () => {
+    const recipes = buildArray(5, () => buildTestRecipe());
+    const { getByText, getByTestId } = await renderLoadedProfile({ recipes });
+
+    const createRecipeButton = getByText(/create recipe/i);
+    testUser.click(createRecipeButton);
+    const myProfileButton = getByText(/my profile/i);
+    testUser.click(myProfileButton);
+    expect(myProfileButton).not.toBeInTheDocument();
+    expect(getByText(/my profile/i)).toBeInTheDocument();
+    expect(createRecipeButton).not.toBeInTheDocument();
+  });
 });

@@ -15,4 +15,18 @@ describe("NavBar", () => {
     );
     expect(getByText(/create recipe/i)).toBeInTheDocument();
   });
+
+  test("shows my profile button if not showing profile", () => {
+    mockUseAuth0.mockReturnValue({
+      logout: jest.fn().mockName("logout"),
+    });
+    const { getByText } = render(
+      <NavBar
+        isCreatingRecipe={true}
+        setIsCreatingRecipe={jest.fn()}
+        isShowingProfile={false}
+      />
+    );
+    expect(getByText(/my profile/i)).toBeInTheDocument();
+  });
 });

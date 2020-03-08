@@ -13,6 +13,7 @@ import { buildRecipe } from "../../utils/recipe";
 const AuthenticatedApp = () => {
   const [recipes, setRecipes] = useState([]);
   const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
+  const [isShowingProfile, setIsShowingProfile] = useState(true);
   const { user } = useAuth0();
 
   const {
@@ -42,7 +43,7 @@ const AuthenticatedApp = () => {
       instructions: instructions.filter(instruction => instruction !== ""),
       notes: notes.filter(note => note !== ""),
     });
-    const result = await createRecipe({
+    await createRecipe({
       variables: {
         authorId: user.sub,
         recipeInput: recipe,
@@ -55,6 +56,8 @@ const AuthenticatedApp = () => {
 
   const creatingRecipe = () =>
     setIsCreatingRecipe(isCreatingRecipe => !isCreatingRecipe);
+  const showingProfile = () =>
+    setIsShowingProfile(isShowingProfile => !isShowingProfile);
 
   useEffect(() => {
     if (!getAllRecipesLoading && !getAllRecipesError) {
@@ -72,6 +75,8 @@ const AuthenticatedApp = () => {
         <NavBar
           isCreatingRecipe={isCreatingRecipe}
           setIsCreatingRecipe={creatingRecipe}
+          isShowingProfile={isShowingProfile}
+          setIsShowingProfile={showingProfile}
         />
       </header>
       {isCreatingRecipe ? (

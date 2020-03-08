@@ -115,7 +115,7 @@ describe("AuthenticatedApp", () => {
     );
   });
 
-  test("Shows create recipe form when create recipe button is clicked", async () => {
+  test("Shows create recipe form when create recipe button is clicked and no recipes", async () => {
     const recipes = [];
     const { getByTestId } = await renderLoadedProfile({ recipes });
 

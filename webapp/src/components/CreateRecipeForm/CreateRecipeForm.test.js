@@ -62,19 +62,25 @@ describe("CreateRecipeForm", () => {
     const deleteIngredientButton = getByText(/delete ingredient/i);
     expect(deleteIngredientButton).toBeInTheDocument();
 
-    ingredients.forEach((ingredient, i) => {
+    // ingredients.forEach((ingredient, i) => {
+    //   const input = getByLabelText(new RegExp(`^ingredient ${i + 1}:$`, "i"));
+    //   user.type(input, ingredient);
+    //   expect(input).toHaveValue(ingredient);
+    //   user.click(addIngredientButton);
+    // });
+    for (let i = 0; i < ingredients.length; i++) {
+      const ingredient = ingredients[i];
       const input = getByLabelText(new RegExp(`^ingredient ${i + 1}:$`, "i"));
       user.type(input, ingredient);
       expect(input).toHaveValue(ingredient);
       user.click(addIngredientButton);
-    });
+    }
 
     user.click(deleteIngredientButton);
 
-    ingredients
-      .slice()
-      .reverse()
-      .forEach((ingredient, i) => {
+    const reversedIngredients = ingredients.slice().reverse();
+    for (let i = 0; i < reversedIngredients.length; i++) {
+      const ingredient = reversedIngredients[i];
         user.click(deleteIngredientButton);
         if (i < ingredients.length - 1) {
           expect(
@@ -84,7 +90,7 @@ describe("CreateRecipeForm", () => {
           ).not.toBeInTheDocument();
         }
         expect(queryByText(ingredient)).not.toBeInTheDocument();
-      });
+    }
 
     const firstInput = getByLabelText(/^ingredient 1:$/i);
     expect(firstInput).toBeInTheDocument();
@@ -103,19 +109,19 @@ describe("CreateRecipeForm", () => {
     const deleteInstructionButton = getByText(/delete instruction/i);
     expect(deleteInstructionButton).toBeInTheDocument();
 
-    instructions.forEach((instruction, i) => {
+    for (let i = 0; i < instructions.length; i++) {
+      const instruction = instructions[i];
       const input = getByLabelText(new RegExp(`^step ${i + 1}:$`, "i"));
       user.type(input, instruction);
       expect(input).toHaveValue(instruction);
       user.click(addInstructionButton);
-    });
+    }
 
     user.click(deleteInstructionButton);
 
-    instructions
-      .slice()
-      .reverse()
-      .forEach((instruction, i) => {
+    const reversedInstructions = instructions.slice().reverse();
+    for (let i = 0; i < reversedInstructions.length; i++) {
+      const instruction = reversedInstructions[i];
         user.click(deleteInstructionButton);
         if (i < instructions.length - 1) {
           expect(
@@ -123,7 +129,7 @@ describe("CreateRecipeForm", () => {
           ).not.toBeInTheDocument();
         }
         expect(queryByText(instruction)).not.toBeInTheDocument();
-      });
+    }
 
     const firstInput = getByLabelText(/^step 1:$/i);
     expect(firstInput).toBeInTheDocument();
@@ -142,19 +148,19 @@ describe("CreateRecipeForm", () => {
     const deleteNoteButton = getByText(/delete note/i);
     expect(deleteNoteButton).toBeInTheDocument();
 
-    notes.forEach((note, i) => {
+    for (let i = 0; i < notes.length; i++) {
+      const note = notes[i];
       const input = getByLabelText(new RegExp(`^note ${i + 1}:$`, "i"));
       user.type(input, note);
       expect(input).toHaveValue(note);
       user.click(addNoteButton);
-    });
+    }
 
     user.click(deleteNoteButton);
 
-    notes
-      .slice()
-      .reverse()
-      .forEach((note, i) => {
+    const reversedNotes = notes.slice().reverse();
+    for (let i = 0; i < reversedNotes.length; i++) {
+      const note = reversedNotes[i];
         user.click(deleteNoteButton);
         if (i < notes.length - 1) {
           expect(
@@ -162,14 +168,14 @@ describe("CreateRecipeForm", () => {
           ).not.toBeInTheDocument();
         }
         expect(queryByText(note)).not.toBeInTheDocument();
-      });
+    }
 
     const firstInput = getByLabelText(/^note 1:$/i);
     expect(firstInput).toBeInTheDocument();
     expect(firstInput).toHaveValue("");
   });
 
-  test("Create new recipe when submitted", async () => {
+  test("Create new recipe when submitted", () => {
     const testuser = buildTestUser();
     const newRecipe = buildTestRecipe({ authorId: testuser.userId });
     const { ingredients, notes, instructions } = newRecipe;

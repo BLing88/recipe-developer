@@ -62,12 +62,6 @@ describe("CreateRecipeForm", () => {
     const deleteIngredientButton = getByText(/delete ingredient/i);
     expect(deleteIngredientButton).toBeInTheDocument();
 
-    // ingredients.forEach((ingredient, i) => {
-    //   const input = getByLabelText(new RegExp(`^ingredient ${i + 1}:$`, "i"));
-    //   user.type(input, ingredient);
-    //   expect(input).toHaveValue(ingredient);
-    //   user.click(addIngredientButton);
-    // });
     for (let i = 0; i < ingredients.length; i++) {
       const ingredient = ingredients[i];
       const input = getByLabelText(new RegExp(`^ingredient ${i + 1}:$`, "i"));
@@ -81,15 +75,15 @@ describe("CreateRecipeForm", () => {
     const reversedIngredients = ingredients.slice().reverse();
     for (let i = 0; i < reversedIngredients.length; i++) {
       const ingredient = reversedIngredients[i];
-        user.click(deleteIngredientButton);
-        if (i < ingredients.length - 1) {
-          expect(
-            queryByText(
-              new RegExp(`^ingredient ${ingredients.length - i}:$`, "i")
-            )
-          ).not.toBeInTheDocument();
-        }
-        expect(queryByText(ingredient)).not.toBeInTheDocument();
+      user.click(deleteIngredientButton);
+      if (i < ingredients.length - 1) {
+        expect(
+          queryByText(
+            new RegExp(`^ingredient ${ingredients.length - i}:$`, "i")
+          )
+        ).not.toBeInTheDocument();
+      }
+      expect(queryByText(ingredient)).not.toBeInTheDocument();
     }
 
     const firstInput = getByLabelText(/^ingredient 1:$/i);
@@ -122,13 +116,13 @@ describe("CreateRecipeForm", () => {
     const reversedInstructions = instructions.slice().reverse();
     for (let i = 0; i < reversedInstructions.length; i++) {
       const instruction = reversedInstructions[i];
-        user.click(deleteInstructionButton);
-        if (i < instructions.length - 1) {
-          expect(
-            queryByText(new RegExp(`^step ${instructions.length - i}:$`, "i"))
-          ).not.toBeInTheDocument();
-        }
-        expect(queryByText(instruction)).not.toBeInTheDocument();
+      user.click(deleteInstructionButton);
+      if (i < instructions.length - 1) {
+        expect(
+          queryByText(new RegExp(`^step ${instructions.length - i}:$`, "i"))
+        ).not.toBeInTheDocument();
+      }
+      expect(queryByText(instruction)).not.toBeInTheDocument();
     }
 
     const firstInput = getByLabelText(/^step 1:$/i);
@@ -161,13 +155,13 @@ describe("CreateRecipeForm", () => {
     const reversedNotes = notes.slice().reverse();
     for (let i = 0; i < reversedNotes.length; i++) {
       const note = reversedNotes[i];
-        user.click(deleteNoteButton);
-        if (i < notes.length - 1) {
-          expect(
-            queryByText(new RegExp(`^note ${notes.length - i}:$`, "i"))
-          ).not.toBeInTheDocument();
-        }
-        expect(queryByText(note)).not.toBeInTheDocument();
+      user.click(deleteNoteButton);
+      if (i < notes.length - 1) {
+        expect(
+          queryByText(new RegExp(`^note ${notes.length - i}:$`, "i"))
+        ).not.toBeInTheDocument();
+      }
+      expect(queryByText(note)).not.toBeInTheDocument();
     }
 
     const firstInput = getByLabelText(/^note 1:$/i);
@@ -268,5 +262,51 @@ describe("CreateRecipeForm", () => {
     user.click(submitButton);
     expect(mockCreateRecipeHandler).not.toHaveBeenCalled();
     expect(getByText(/recipe name required/i)).toBeInTheDocument();
+  });
+
+  test("Shows try again message if recipe fails to be created", () => {
+    const testuser = buildTestUser();
+    const newRecipe = buildTestRecipe({ authorId: testuser.userId });
+    const mockCreateRecipeHandler = jest.fn().mockName("createRecipeHandler");
+
+    const { getByLabelText, getByText, rerender } = render(
+      <CreateRecipeForm
+        createRecipeHandler={mockCreateRecipeHandler}
+        error={undefined}
+        loading={false}
+      />
+    );
+
+    const recipeNameInput = getByLabelText(/recipe name/i);
+    user.click(recipeNameInput);
+    user.type(recipeNameInput, nameOfRecipe(newRecipe));
+
+    const submitButton = getByText(/Create recipe/i);
+    user.click(submitButton);
+    rerender(
+      <CreateRecipeForm
+        createRecipeHandler={mockCreateRecipeHandler}
+        error={undefined}
+        loading={true}
+      />
+    );
+
+    expect(getByText(/creating recipe/i)).toBeInTheDocument();
+    expect(recipeNameInput).toBeInTheDocument();
+    expect(recipeNameInput).toHaveValue(nameOfRecipe(newRecipe));
+
+    const mockError = "error creating recipe";
+    rerender(
+      <CreateRecipeForm
+        createRecipeHandler={mockCreateRecipeHandler}
+        error={mockError}
+        loading={false}
+      />
+    );
+
+    expect(getByText(/Error creating recipe/i)).toBeInTheDocument();
+    expect(getByText(/try again/i)).toBeInTheDocument();
+    expect(recipeNameInput).toBeInTheDocument();
+    expect(recipeNameInput).toHaveValue(nameOfRecipe(newRecipe));
   });
 });

@@ -107,143 +107,143 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
 
   return (
     <>
-    <form data-testid="create-recipe-form">
-      <label htmlFor="recipe-name">Recipe name</label>
-      <input
-        id="recipe-name"
-        type="text"
-        value={state.recipeName}
-        onChange={e => {
-          e.preventDefault();
-          dispatch({ type: UPDATE_NAME_INPUT, recipeName: e.target.value });
-        }}
-        required
-      />
-      <section>
-        Ingredients
-        <ul>
-          {state.ingredients.map((ingredient, i) => (
-            <li key={i}>
-              <label htmlFor={`recipe-ingredients-${i + 1}`}>
-                ingredient {i + 1}:
-              </label>
-              <input
-                id={`recipe-ingredients-${i + 1}`}
-                type="text"
-                value={ingredient}
-                onChange={e => {
-                  e.preventDefault();
-                  dispatch({
-                    type: UPDATE_INGREDIENTS_INPUT,
-                    ingredientNumber: i,
-                    ingredient: e.target.value,
-                  });
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={e => {
+      <form data-testid="create-recipe-form">
+        <label htmlFor="recipe-name">Recipe name</label>
+        <input
+          id="recipe-name"
+          type="text"
+          value={state.recipeName}
+          onChange={e => {
             e.preventDefault();
-            dispatch({ type: ADD_INGREDIENT });
+            dispatch({ type: UPDATE_NAME_INPUT, recipeName: e.target.value });
           }}
-        >
-          Add ingredient
-        </button>
-        <button
-          onClick={e => {
-            e.preventDefault();
-            dispatch({ type: DELETE_INGREDIENT });
-          }}
-        >
-          Delete ingredient
-        </button>
-      </section>
+          required
+        />
+        <section>
+          Ingredients
+          <ul>
+            {state.ingredients.map((ingredient, i) => (
+              <li key={i}>
+                <label htmlFor={`recipe-ingredients-${i + 1}`}>
+                  ingredient {i + 1}:
+                </label>
+                <input
+                  id={`recipe-ingredients-${i + 1}`}
+                  type="text"
+                  value={ingredient}
+                  onChange={e => {
+                    e.preventDefault();
+                    dispatch({
+                      type: UPDATE_INGREDIENTS_INPUT,
+                      ingredientNumber: i,
+                      ingredient: e.target.value,
+                    });
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_INGREDIENT });
+            }}
+          >
+            Add ingredient
+          </button>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              dispatch({ type: DELETE_INGREDIENT });
+            }}
+          >
+            Delete ingredient
+          </button>
+        </section>
 
-      <section>
-        Instructions
-        <ul>
-          {state.instructions.map((instruction, i) => (
-            <li key={i}>
-              <label htmlFor={`recipe-instructions-${i + 1}`}>
-                step {i + 1}:
-              </label>
-              <textarea
-                id={`recipe-instructions-${i + 1}`}
-                value={instruction}
-                onChange={e => {
-                  e.preventDefault();
-                  dispatch({
-                    type: UPDATE_INSTRUCTIONS_INPUT,
-                    instructionNumber: i,
-                    instruction: e.target.value,
-                  });
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_INSTRUCTION });
-          }}
-        >
-          Add instruction
-        </button>
-        <button
-          onClick={e => {
-            e.preventDefault();
-            dispatch({ type: DELETE_INSTRUCTION });
-          }}
-        >
-          Delete instruction
-        </button>
-      </section>
+        <section>
+          Instructions
+          <ul>
+            {state.instructions.map((instruction, i) => (
+              <li key={i}>
+                <label htmlFor={`recipe-instructions-${i + 1}`}>
+                  step {i + 1}:
+                </label>
+                <textarea
+                  id={`recipe-instructions-${i + 1}`}
+                  value={instruction}
+                  onChange={e => {
+                    e.preventDefault();
+                    dispatch({
+                      type: UPDATE_INSTRUCTIONS_INPUT,
+                      instructionNumber: i,
+                      instruction: e.target.value,
+                    });
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_INSTRUCTION });
+            }}
+          >
+            Add instruction
+          </button>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              dispatch({ type: DELETE_INSTRUCTION });
+            }}
+          >
+            Delete instruction
+          </button>
+        </section>
 
-      <section>
-        Notes
-        <ul>
-          {state.notes.map((note, i) => (
-            <li key={i}>
-              <label htmlFor={`recipe-notes-${i + 1}`}>note {i + 1}:</label>
-              <textarea
-                id={`recipe-notes-${i + 1}`}
-                value={note}
-                onChange={e => {
-                  e.preventDefault();
-                  dispatch({
-                    type: UPDATE_NOTES_INPUT,
-                    noteNumber: i,
-                    note: e.target.value,
-                  });
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_NOTE });
-          }}
-        >
-          Add note
-        </button>
-        <button
-          onClick={e => {
-            e.preventDefault();
-            dispatch({ type: DELETE_NOTE });
-          }}
-        >
-          Delete note
-        </button>
-      </section>
+        <section>
+          Notes
+          <ul>
+            {state.notes.map((note, i) => (
+              <li key={i}>
+                <label htmlFor={`recipe-notes-${i + 1}`}>note {i + 1}:</label>
+                <textarea
+                  id={`recipe-notes-${i + 1}`}
+                  value={note}
+                  onChange={e => {
+                    e.preventDefault();
+                    dispatch({
+                      type: UPDATE_NOTES_INPUT,
+                      noteNumber: i,
+                      note: e.target.value,
+                    });
+                  }}
+                />
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_NOTE });
+            }}
+          >
+            Add note
+          </button>
+          <button
+            onClick={e => {
+              e.preventDefault();
+              dispatch({ type: DELETE_NOTE });
+            }}
+          >
+            Delete note
+          </button>
+        </section>
 
-      <button
-        onClick={e => {
-          e.preventDefault();
+        <button
+          onClick={e => {
+            e.preventDefault();
             if (!state.recipeName) {
               dispatch({ type: SHOW_MISSING_RECIPE_NAME });
             } else {
@@ -254,13 +254,15 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
                 notes: state.notes,
               });
             }
-        }}
-        type="submit"
-      >
-        Create recipe
-      </button>
+          }}
+          type="submit"
+        >
+          Create recipe
+        </button>
         {state.showMissingRecipeName ? <div>Recipe name required</div> : null}
-    </form>
+        {loading ? <div>Creating recipe...</div> : null}
+        {error ? <div>Error creating recipe. Try again.</div> : null}
+      </form>
     </>
   );
 };

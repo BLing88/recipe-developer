@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { idOfNote } from "utils/recipe";
+import { idOfNote } from "../../utils/recipe";
 
 const Notes = ({ notes }) => {
   return (

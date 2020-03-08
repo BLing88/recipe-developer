@@ -77,9 +77,9 @@ describe("App", () => {
     });
     rerender(<App />);
 
-    const loading = getByText(/Loading profile/i);
+    const logout = getByText(/log out/i);
     const signup = queryByText(/sign up/i);
-    expect(loading).toBeInTheDocument();
+    expect(logout).toBeInTheDocument();
     expect(signup).not.toBeInTheDocument();
   });
 });

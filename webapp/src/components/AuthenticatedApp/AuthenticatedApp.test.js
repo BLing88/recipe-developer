@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthenticatedApp } from "./AuthenticatedApp";
-import { idOfRecipe, nameOfRecipe } from "utils/recipe";
+import { nameOfRecipe } from "utils/recipe";
 
 import { render, wait } from "@testing-library/react";
 import {
@@ -41,7 +41,7 @@ const renderLoadedProfile = async (overrides = {}) => {
       request: {
         query: GET_USER_RECIPES,
         variables: {
-          authorId: user.id,
+          authorId: user.userId,
         },
       },
       result: () => {
@@ -84,7 +84,7 @@ describe("AuthenticatedApp", () => {
         request: {
           query: GET_USER_RECIPES,
           variables: {
-            authorId: user.id,
+            authorId: user.sub,
           },
         },
         result: () => {
@@ -104,12 +104,11 @@ describe("AuthenticatedApp", () => {
       </MockedProvider>
     );
 
-    // const loading = getByText(/Loading profile/i);
-    expect(getByText(/Loading profile/i)).toBeInTheDocument();
+    expect(getByText(/Loading recipes/i)).toBeInTheDocument();
     await wait(); // wait for MockedProvider's promise to resolve
     const profile = await findByText(/Log out/i);
     expect(profile).toBeInTheDocument();
-    expect(queryByText(/Loading profile/i)).toBeNull();
+    expect(queryByText(/Loading recipes/i)).toBeNull();
     recipes.forEach(recipe =>
       expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument()
     );
@@ -117,9 +116,9 @@ describe("AuthenticatedApp", () => {
 
   test("Shows create recipe form when create recipe button is clicked and no recipes", async () => {
     const recipes = [];
-    const { getByTestId } = await renderLoadedProfile({ recipes });
+    const { getByTestId, getByText } = await renderLoadedProfile({ recipes });
 
-    const createRecipeButton = getByTestId("no-recipes-create-btn");
+    const createRecipeButton = getByText(/create recipe/i);
     testUser.click(createRecipeButton);
     expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
@@ -134,12 +133,13 @@ describe("AuthenticatedApp", () => {
 
   test("clicking my profile btn when creating recipe shows profile", async () => {
     const recipes = buildArray(5, () => buildTestRecipe());
-    const { getByText, getByTestId } = await renderLoadedProfile({ recipes });
+    const { getByText } = await renderLoadedProfile({ recipes });
 
     const createRecipeButton = getByText(/create recipe/i);
     testUser.click(createRecipeButton);
     const myProfileButton = getByText(/my profile/i);
     testUser.click(myProfileButton);
+    await wait(); // wait for MockedProvider's promise to resolve loading recipes
     expect(myProfileButton).not.toBeInTheDocument();
     expect(getByText(/my profile/i)).toBeInTheDocument();
     expect(createRecipeButton).not.toBeInTheDocument();

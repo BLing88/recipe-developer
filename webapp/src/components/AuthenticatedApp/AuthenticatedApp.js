@@ -1,30 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { NavBar } from "../NavBar";
 import { Profile } from "../Profile";
 
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
-import { GET_ALL_RECIPES } from "../../queries";
+// import { GET_ALL_RECIPES } from "../../queries";
 import { CREATE_RECIPE } from "../../mutations";
 
 import { buildRecipe } from "../../utils/recipe";
 
 const AuthenticatedApp = () => {
-  const [recipes, setRecipes] = useState([]);
   const [isCreatingRecipe, setIsCreatingRecipe] = useState(false);
   const [isShowingProfile, setIsShowingProfile] = useState(true);
   const { user } = useAuth0();
 
-  const {
-    loading: getAllRecipesLoading,
-    data: getAllRecipesData,
-    error: getAllRecipesError,
-  } = useQuery(GET_ALL_RECIPES, {
-    variables: {
-      authorId: user.sub,
-    },
-  });
   const [
     createRecipe,
     {
@@ -59,16 +49,6 @@ const AuthenticatedApp = () => {
   const showingProfile = () =>
     setIsShowingProfile(isShowingProfile => !isShowingProfile);
 
-  useEffect(() => {
-    if (!getAllRecipesLoading && !getAllRecipesError) {
-      getAllRecipesData && setRecipes(getAllRecipesData.getAllRecipes);
-    }
-  }, [getAllRecipesLoading, getAllRecipesData, getAllRecipesError]);
-
-  if (getAllRecipesLoading) {
-    return <div className="loading-profile">Loading profile...</div>;
-  }
-
   return (
     <div className="app">
       <header className="app-header">
@@ -86,11 +66,7 @@ const AuthenticatedApp = () => {
           loading={createRecipeLoading}
         />
       ) : (
-        <Profile
-          user={user}
-          setIsCreatingRecipe={creatingRecipe}
-          recipes={recipes}
-        />
+        <Profile />
       )}
     </div>
   );

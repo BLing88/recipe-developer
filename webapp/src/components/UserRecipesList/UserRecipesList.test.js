@@ -97,13 +97,12 @@ describe("UserRecipesList", () => {
   test("shows recipes", async () => {
     const mockLogout = jest.fn().mockName("logout");
     const user = buildTestUser();
-    user.sub = user.userId;
     mockUseAuth0.mockReturnValue({
       user,
       logout: mockLogout,
     });
     const recipes = buildArray(5, () =>
-      buildTestRecipe({ authorId: user.userId })
+      buildTestRecipe({ authorId: user.sub })
     );
     const mocks = [
       {
@@ -137,5 +136,44 @@ describe("UserRecipesList", () => {
     for (let recipe of recipes) {
       expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument();
     }
+  });
+
+  test("shows no recipes message if user has no recipes", async () => {
+    const mockLogout = jest.fn().mockName("logout");
+    const user = buildTestUser();
+    mockUseAuth0.mockReturnValue({
+      user,
+      logout: mockLogout,
+    });
+    const recipes = [];
+    const mocks = [
+      {
+        request: {
+          query: GET_ALL_RECIPES,
+          variables: {
+            authorId: user.sub,
+          },
+        },
+        result: () => {
+          return {
+            data: {
+              getAllRecipes: recipes,
+            },
+            error: null,
+            loading: false,
+          };
+        },
+      },
+    ];
+
+    const { getByText, queryByText } = render(
+      <MockedProvider addTypename={false} mocks={mocks}>
+        <UserRecipesList />
+      </MockedProvider>
+    );
+    await wait();
+    expect(queryByText(/^loading recipes/i)).not.toBeInTheDocument();
+    expect(queryByText(/Error loading recipes/i)).not.toBeInTheDocument();
+    expect(getByText(/no recipes/i)).toBeInTheDocument();
   });
 });

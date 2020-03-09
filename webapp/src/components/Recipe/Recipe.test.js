@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, getByTestId, wait } from "@testing-library/react";
 import { Recipe } from ".";
 import { buildTestRecipe } from "test/utils/generate";
 import {
@@ -121,20 +121,32 @@ describe("Recipe", () => {
     expect(getByLabelText(/^note 1:/i)).toHaveValue(notes[1].note);
   });
 
-  test("submitting an empty recipe shows an error message", () => {
-    const { queryByText, getByText } = renderRecipe({
+  test("submitting an empty recipe shows an error message", async () => {
+    const recipeName = "a";
+    const { queryByText, getByText, getByLabelText } = renderRecipe({
       recipe: buildTestRecipe({
-        recipeName: "",
+        recipeName,
         ingredients: [buildIngredient("")],
         instructions: [buildInstruction("")],
         notes: [buildNote("")],
       }),
     });
+
     expect(queryByText(/submit/i)).not.toBeInTheDocument();
+    testUser.click(getByText(recipeName));
+    await testUser.type(getByLabelText(/recipe name/i), "", {
+      allAtOnce: true,
+    });
     testUser.click(getByText(/ingredients/i));
+    expect(queryByText(/Recipe cannot be empty/i)).not.toBeInTheDocument();
+
     const submitButton = queryByText(/submit/i);
     expect(submitButton).toBeInTheDocument();
     testUser.click(submitButton);
     expect(getByText(/Recipe cannot be empty/i)).toBeInTheDocument();
+
+    await testUser.type(getByLabelText(/ingredient/i), "new ingredient");
+    testUser.click(submitButton);
+    expect(queryByText(/Recipe cannot be empty/i)).not.toBeInTheDocument();
   });
 });

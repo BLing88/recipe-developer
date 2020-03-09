@@ -21,6 +21,9 @@ import {
   getNoteOf,
   authorOfRecipe,
   idOfRecipe,
+  idOfIngredient,
+  idOfInstruction,
+  idOfNote,
 } from "../../utils/recipe";
 
 const SHOW_PROFILE = "SHOW_PROFILE";
@@ -75,6 +78,26 @@ export const arraysHaveSameElementsInOrder = (a, b) => {
     }
   }
   return true;
+};
+
+const projectRecipe = augmentedRecipe => {
+  return {
+    authorId: authorOfRecipe(augmentedRecipe),
+    recipeId: idOfRecipe(augmentedRecipe),
+    recipeName: nameOfRecipe(augmentedRecipe),
+    ingredients: ingredientsOfRecipe(augmentedRecipe).map(ingredientObj => ({
+      ingredient: getIngredientOf(ingredientObj),
+      ingredientId: idOfIngredient(ingredientObj),
+    })),
+    instructions: instructionsOfRecipe(augmentedRecipe).map(instructionObj => ({
+      instruction: getInstructionOf(instructionObj),
+      instructionId: idOfInstruction(instructionObj),
+    })),
+    notes: notesOfRecipe(augmentedRecipe).map(noteObj => ({
+      note: getNoteOf(noteObj),
+      noteId: idOfNote(noteObj),
+    })),
+  };
 };
 
 const AuthenticatedApp = () => {
@@ -235,10 +258,10 @@ const AuthenticatedApp = () => {
             {getRecipeError ? <div>Error loading recipe. Try again</div> : null}
             {!getRecipeLoading && getRecipeData ? (
               <Recipe
-                recipe={getRecipeData.getRecipe}
+                recipe={projectRecipe(getRecipeData.getRecipe)}
                 updateHandler={updateRecipeHandler}
                 updateRecipeError={updateRecipeError}
-                loading={updateRecipeLoading}
+                updateRecipeLoading={updateRecipeLoading}
               />
             ) : null}
           </>

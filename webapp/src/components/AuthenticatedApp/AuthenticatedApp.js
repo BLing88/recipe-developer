@@ -98,7 +98,7 @@ const AuthenticatedApp = () => {
       },
     });
     if (result.data) {
-      dispatch({ type: SHOW_PROFILE });
+      dispatch({ type: SHOW_ALL_RECIPES });
       refetchGetAllRecipes();
     }
   };

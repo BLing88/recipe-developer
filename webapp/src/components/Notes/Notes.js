@@ -3,13 +3,15 @@ import PropTypes from "prop-types";
 
 import { idOfNote } from "../../utils/recipe";
 
-const Notes = ({ notes }) => {
+const Notes = ({ notes, onClick }) => {
   return (
     <section className="notes-section">
       <h2>Notes</h2>
       <ul className="recipe-notes">
         {notes.map(note => (
-          <li key={idOfNote(note)}>{note.note}</li>
+          <li onClick={onClick} key={idOfNote(note)}>
+            {note.note}
+          </li>
         ))}
       </ul>
     </section>
@@ -17,6 +19,7 @@ const Notes = ({ notes }) => {
 };
 Notes.propTypes = {
   notes: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export { Notes };

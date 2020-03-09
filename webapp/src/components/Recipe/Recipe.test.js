@@ -85,4 +85,23 @@ describe("Recipe", () => {
       instructions[1].instruction
     );
   });
+
+  test("clicking on a note brings up note editing inputs", () => {
+    const {
+      getAllByText,
+      getByLabelText,
+      getByTestId,
+      recipe,
+    } = renderRecipe();
+    const { notes } = recipe;
+
+    testUser.click(getAllByText(notes[0].note)[0]);
+    const noteInput = getByLabelText(/^note 1:/i);
+    expect(noteInput).toBeInTheDocument();
+    expect(noteInput).toHaveValue(notes[0].note);
+
+    const deleteButton = getByTestId("delete-note-1");
+    testUser.click(deleteButton);
+    expect(getByLabelText(/^note 1:/i)).toHaveValue(notes[1].note);
+  });
 });

@@ -12,6 +12,9 @@ import {
   idOfIngredient,
   getInstructionOf,
   idOfInstruction,
+  getNoteOf,
+  idOfNote,
+  buildNote,
 } from "../../utils/recipe";
 import { InputForm } from "../InputForm";
 
@@ -27,7 +30,11 @@ const EDITING_INSTRUCTIONS = "EDITING_INSTRUCTIONS";
 const UPDATE_INSTRUCTIONS_INPUT = "UPDATE_INSTRUCTIONS_INPUT";
 const ADD_INSTRUCTION = "ADD_INSTRUCTION";
 const DELETE_INSTRUCTION = "DELETE_INSTRUCTION";
-// const EDITING_NOTES = "EDITING_NOTES";
+
+const EDITING_NOTES = "EDITING_NOTES";
+const UPDATE_NOTES_INPUT = "UPDATE_NOTES_INPUT";
+const ADD_NOTE = "ADD_NOTE";
+const DELETE_NOTE = "DELETE_NOTE";
 
 const initialState = recipe => {
   return {
@@ -37,6 +44,8 @@ const initialState = recipe => {
     ingredients: [...recipe.ingredients],
     editInstructions: false,
     instructions: [...recipe.instructions],
+    editNotes: false,
+    notes: [...recipe.notes],
   };
 };
 
@@ -114,6 +123,37 @@ const recipeReducer = (state, action) => {
                 ...state.instructions.slice(action.targetInstruction + 1),
               ],
       };
+    case EDITING_NOTES:
+      return {
+        ...state,
+        editNotes: true,
+      };
+    case UPDATE_NOTES_INPUT:
+      return {
+        ...state,
+        notes: [
+          ...state.notes.slice(0, action.noteNumber),
+          action.note,
+          ...state.notes.slice(action.noteNumber + 1),
+        ],
+      };
+    case ADD_NOTE:
+      return {
+        ...state,
+        notes: [...state.notes, buildNote("")],
+      };
+    case DELETE_NOTE:
+      const numOfNotes = state.notes.length;
+      return {
+        ...state,
+        notes:
+          numOfNotes === 1
+            ? [buildNote("")]
+            : [
+                ...state.notes.slice(0, action.targetNote),
+                ...state.notes.slice(action.targetNote + 1),
+              ],
+      };
     default:
       return {
         ...state,
@@ -152,6 +192,21 @@ const Recipe = ({ recipe, updateHandler }) => {
       type: UPDATE_INSTRUCTIONS_INPUT,
       instructionNumber: index,
       instruction: newInstruction,
+    });
+  };
+
+  const noteInputChangeHandler = (e, note, index) => {
+    e.preventDefault();
+    const newNote = idOfNote(note)
+      ? {
+          note: e.target.value,
+          noteId: idOfNote(note),
+        }
+      : buildIngredient(e.target.value);
+    dispatch({
+      type: UPDATE_NOTES_INPUT,
+      noteNumber: index,
+      note: newNote,
     });
   };
 
@@ -238,10 +293,32 @@ const Recipe = ({ recipe, updateHandler }) => {
           }}
         />
       )}
-      <Notes
-        // onClick={() => setEditing(EDITING_NOTES)}
-        notes={notes}
-      />
+      {!state.editNotes ? (
+        <Notes
+          onClick={() => dispatch({ type: EDITING_NOTES })}
+          notes={notes}
+        />
+      ) : (
+        <InputForm
+          title={"Notes"}
+          objectName={"note"}
+          displayName={"note"}
+          objects={state.notes}
+          getValueOfObject={getNoteOf}
+          getIdOfObject={idOfNote}
+          inputChangeHandler={noteInputChangeHandler}
+          addObjectHandler={e => {
+            e.preventDefault();
+            dispatch({ type: ADD_NOTE });
+          }}
+          deleteObjectHandler={targetIndex => {
+            dispatch({
+              type: DELETE_NOTE,
+              targetNote: targetIndex,
+            });
+          }}
+        />
+      )}
     </article>
   );
 };

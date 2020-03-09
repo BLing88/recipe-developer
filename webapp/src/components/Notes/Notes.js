@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { idOfNote } from "../../utils/recipe";
+import { idOfNote, getNoteOf } from "../../utils/recipe";
 
 const Notes = ({ notes, onClick }) => {
   return (
@@ -10,7 +10,7 @@ const Notes = ({ notes, onClick }) => {
       <ul className="recipe-notes">
         {notes.map(note => (
           <li onClick={onClick} key={idOfNote(note)}>
-            {note.note}
+            {getNoteOf(note)}
           </li>
         ))}
       </ul>

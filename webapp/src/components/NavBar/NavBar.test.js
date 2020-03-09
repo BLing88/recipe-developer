@@ -11,7 +11,14 @@ describe("NavBar", () => {
       logout: jest.fn().mockName("logout"),
     });
     const { getByText } = render(
-      <NavBar isCreatingRecipe={false} setIsCreatingRecipe={jest.fn()} />
+      <NavBar
+        isCreatingRecipe={false}
+        showCreatingRecipe={jest.fn()}
+        isShowingProfile={true}
+        setShowingProfile={jest.fn()}
+        isShowingAllRecipes={false}
+        setShowingAllRecipes={jest.fn()}
+      />
     );
     expect(getByText(/create recipe/i)).toBeInTheDocument();
   });
@@ -23,8 +30,11 @@ describe("NavBar", () => {
     const { getByText } = render(
       <NavBar
         isCreatingRecipe={true}
-        setIsCreatingRecipe={jest.fn()}
+        showCreatingRecipe={jest.fn()}
         isShowingProfile={false}
+        setShowingProfile={jest.fn()}
+        isShowingAllRecipes={false}
+        setShowingAllRecipes={jest.fn()}
       />
     );
     expect(getByText(/my profile/i)).toBeInTheDocument();

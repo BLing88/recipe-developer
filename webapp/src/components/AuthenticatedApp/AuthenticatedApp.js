@@ -14,12 +14,15 @@ import { buildRecipe } from "../../utils/recipe";
 
 const SHOW_PROFILE = "SHOW_PROFILE";
 const showProfile = "profile";
+const SHOW_ALL_RECIPES = "SHOW_RECIPES";
+const showAllRecipes = "allRecipes";
 const SHOW_CREATE_RECIPE = "SHOW_CREATE_RECIPE";
 const showCreateRecipe = "createRecipe";
 const SHOW_RECIPE = "SHOW_RECIPE";
 const showRecipe = "recipe";
+
 const defaultAppState = {
-  show: "profile",
+  show: showAllRecipes,
 };
 
 const appReducer = (state, action) => {
@@ -28,6 +31,11 @@ const appReducer = (state, action) => {
       return {
         ...state,
         show: showProfile,
+      };
+    case SHOW_ALL_RECIPES:
+      return {
+        ...state,
+        show: showAllRecipes,
       };
     case SHOW_CREATE_RECIPE:
       return {
@@ -95,6 +103,17 @@ const AuthenticatedApp = () => {
     }
   };
 
+  const recipeClickHandler = (e, recipe) => {
+    e.preventDefault();
+    getRecipe({
+      variables: {
+        authorId: user.sub,
+        recipeId: recipe.recipeId,
+      },
+    });
+    dispatch({ type: SHOW_RECIPE });
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -104,9 +123,19 @@ const AuthenticatedApp = () => {
           isShowingProfile={state.show === showProfile}
           setShowingProfile={() => dispatch({ type: SHOW_PROFILE })}
           setShowingRecipe={state.show === showRecipe}
+          isShowingAllRecipes={state.show === showAllRecipes}
+          setShowingAllRecipes={() => dispatch({ type: SHOW_ALL_RECIPES })}
         />
       </header>
       <main>
+        {state.show === showAllRecipes ? (
+          <UserRecipesList
+            loading={getAllRecipesLoading}
+            error={getAllRecipesError}
+            recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
+            getRecipe={recipeClickHandler}
+          />
+        ) : null}
         {state.show === showCreateRecipe ? (
           <CreateRecipeForm
             createRecipeHandler={createRecipeHandler}
@@ -114,25 +143,9 @@ const AuthenticatedApp = () => {
             loading={createRecipeLoading}
           />
         ) : null}
-        {state.show === showProfile ? (
-          <Profile>
-            <UserRecipesList
-              loading={getAllRecipesLoading}
-              error={getAllRecipesError}
-              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
-              getRecipe={(e, recipe) => {
-                e.preventDefault();
-                getRecipe({
-                  variables: {
-                    authorId: user.sub,
-                    recipeId: recipe.recipeId,
-                  },
-                });
-                dispatch({ type: SHOW_RECIPE });
-              }}
-            />
-          </Profile>
-        ) : null}
+
+        {state.show === showProfile ? <Profile /> : null}
+
         {state.show === showRecipe ? (
           <>
             {getRecipeLoading ? <div>Loading recipe...</div> : null}

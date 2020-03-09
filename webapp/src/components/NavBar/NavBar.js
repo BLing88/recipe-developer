@@ -7,14 +7,24 @@ const NavBar = ({
   showCreatingRecipe,
   isShowingProfile,
   setShowingProfile,
-  setShowingRecipe,
+  isShowingAllRecipes,
+  setShowingAllRecipes,
 }) => {
   const { logout } = useAuth0();
 
   return (
     <nav>
       <span>
-        <button>My recipes</button>
+        {!isShowingAllRecipes && (
+          <button
+            onClick={e => {
+              e.preventDefault();
+              setShowingAllRecipes();
+            }}
+          >
+            My recipes
+          </button>
+        )}
         {!isCreatingRecipe && (
           <button
             onClick={e => {
@@ -25,7 +35,7 @@ const NavBar = ({
             Create recipe
           </button>
         )}
-        {!isShowingProfile ? (
+        {!isShowingProfile && (
           <button
             onClick={e => {
               e.preventDefault();
@@ -34,7 +44,7 @@ const NavBar = ({
           >
             My profile
           </button>
-        ) : null}
+        )}
         <button onClick={() => logout()}>Log out</button>
       </span>
     </nav>
@@ -45,6 +55,8 @@ NavBar.propTypes = {
   showCreatingRecipe: PropTypes.func.isRequired,
   isShowingProfile: PropTypes.bool.isRequired,
   setShowingProfile: PropTypes.func.isRequired,
+  isShowingAllRecipes: PropTypes.bool.isRequired,
+  setShowingAllRecipes: PropTypes.func.isRequired,
 };
 
 export { NavBar };

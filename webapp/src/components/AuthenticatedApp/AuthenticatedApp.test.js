@@ -146,13 +146,17 @@ describe("AuthenticatedApp", () => {
     expect(createRecipeButton).not.toBeInTheDocument();
   });
 
-  test("show recipe if user clicks on recipe in recipe list", async () => {
+  test("show all user recipes if click my recipes btn", async () => {
     const recipes = buildArray(5, () => buildTestRecipe());
-    const targetRecipe = recipes[0];
-    const { getByText, queryByText } = await renderLoadedProfile({ recipes });
+    const { getByText } = await renderLoadedProfile({ recipes });
 
-    testUser.click(getByText(nameOfRecipe(targetRecipe)));
-    expect(queryByText(/my recipes/i)).not.toBeInTheDocument();
-    expect(getByText(nameOfRecipe(targetRecipe))).toBeInTheDocument();
+    const createRecipeButton = getByText(/create recipe/i);
+    testUser.click(createRecipeButton);
+    const myRecipesButton = getByText(/my recipes/i);
+    testUser.click(myRecipesButton);
+    await wait(); // wait for MockedProvider's promise to resolve loading recipes
+    expect(myRecipesButton).not.toBeInTheDocument();
+    expect(getByText(/my profile/i)).toBeInTheDocument();
+    expect(getByText(/create recipe/i)).toBeInTheDocument();
   });
 });

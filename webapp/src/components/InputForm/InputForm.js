@@ -3,6 +3,7 @@ import React from "react";
 const InputForm = ({
   title,
   objectName,
+  displayName,
   objects,
   getValueOfObject,
   getIdOfObject,
@@ -18,7 +19,7 @@ const InputForm = ({
           return (
             <li key={getIdOfObject(object)}>
               <label htmlFor={`${objectName}-${i + 1}`}>
-                {objectName} {i + 1}:
+                {displayName} {i + 1}:
               </label>
               <input
                 id={`${objectName}-${i + 1}`}

@@ -64,4 +64,25 @@ describe("Recipe", () => {
       ingredients[1].ingredient
     );
   });
+
+  test("clicking on an instruction brings up instruction editing inputs", () => {
+    const {
+      getAllByText,
+      getByLabelText,
+      getByTestId,
+      recipe,
+    } = renderRecipe();
+    const { instructions } = recipe;
+
+    testUser.click(getAllByText(instructions[0].instruction)[0]);
+    const instructionInput = getByLabelText(/^step 1:/i);
+    expect(instructionInput).toBeInTheDocument();
+    expect(instructionInput).toHaveValue(instructions[0].instruction);
+
+    const deleteButton = getByTestId("delete-instruction-1");
+    testUser.click(deleteButton);
+    expect(getByLabelText(/^step 1:/i)).toHaveValue(
+      instructions[1].instruction
+    );
+  });
 });

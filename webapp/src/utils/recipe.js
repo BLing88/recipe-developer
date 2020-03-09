@@ -31,6 +31,11 @@ export const buildIngredient = ingredient => ({
   ingredientId: randomId(),
 });
 
+export const buildInstruction = instruction => ({
+  instruction,
+  instructionId: randomId(),
+});
+
 export const nameOfRecipe = recipe => recipe.recipeName;
 
 export const authorOfRecipe = recipe => recipe.authorId;
@@ -38,13 +43,11 @@ export const authorOfRecipe = recipe => recipe.authorId;
 export const idOfRecipe = recipe => recipe.recipeId;
 
 export const ingredientsOfRecipe = recipe => recipe.ingredients;
-
 export const getIngredientOf = ingredient => ingredient.ingredient;
-
 export const idOfIngredient = ingredient => ingredient.ingredientId;
 
 export const instructionsOfRecipe = recipe => recipe.instructions;
-
+export const getInstructionOf = instruction => instruction.instruction;
 export const idOfInstruction = instruction => instruction.instructionId;
 
 export const notesOfRecipe = recipe => recipe.notes;

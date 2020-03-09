@@ -43,4 +43,25 @@ describe("Recipe", () => {
     expect(recipeNameInput).toBeInTheDocument();
     expect(recipeNameInput).toHaveValue(nameOfRecipe(recipe));
   });
+
+  test("clicking on an ingredient brings up ingredient editing inputs", () => {
+    const {
+      getAllByText,
+      getByLabelText,
+      getByTestId,
+      recipe,
+    } = renderRecipe();
+    const { ingredients } = recipe;
+
+    testUser.click(getAllByText(ingredients[0].ingredient)[0]);
+    const ingredientInput = getByLabelText(/^ingredient 1:/i);
+    expect(ingredientInput).toBeInTheDocument();
+    expect(ingredientInput).toHaveValue(ingredients[0].ingredient);
+
+    const deleteButton = getByTestId("delete-ingredient-1");
+    testUser.click(deleteButton);
+    expect(getByLabelText(/^ingredient 1:/i)).toHaveValue(
+      ingredients[1].ingredient
+    );
+  });
 });

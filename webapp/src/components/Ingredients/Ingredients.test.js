@@ -7,7 +7,7 @@ import { buildTestIngredients } from "test/utils/generate";
 test("it lists every ingredient", () => {
   const testIngredients = buildTestIngredients();
   const { getAllByText } = render(
-    <Ingredients ingredients={testIngredients} />
+    <Ingredients ingredients={testIngredients} onClick={jest.fn()} />
   );
   const ingredientSet = new Set(
     testIngredients.map(ingredient => ingredient.ingredient)

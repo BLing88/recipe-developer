@@ -10,8 +10,10 @@ import {
   buildTestNotes,
 } from "generate";
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
+import { authorOfRecipe, idOfRecipe } from "recipe";
 import {
   CREATE_RECIPE,
+  UPDATE_RECIPE,
   UPDATE_RECIPE_NAME,
   UPDATE_INGREDIENTS,
   UPDATE_INSTRUCTIONS,
@@ -266,6 +268,28 @@ describe("server - for unauthorized users", () => {
     expect(deleteRes.data.deleteRecipe).toBeNull();
     expect(
       deleteRes.errors
+        .map(err => err.message)
+        .includes(`You are not authorized`)
+    ).toBe(true);
+  });
+
+  test("returns null updating existing recipe", async () => {
+    const targetRecipe = testRecipes[0];
+    const targetRecipeId = idOfRecipe(targetRecipe);
+    const newRecipe = buildTestRecipe({
+      authorId: authorOfRecipe(targetRecipe),
+      recipeId: targetRecipeId,
+    });
+
+    const updateRecipeRes = await mutate({
+      mutation: UPDATE_RECIPE,
+      variables: {
+        ...newRecipe,
+      },
+    });
+    expect(updateRecipeRes.data.updateRecipe).toBeNull();
+    expect(
+      updateRecipeRes.errors
         .map(err => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);

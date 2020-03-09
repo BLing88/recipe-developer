@@ -31,6 +31,14 @@ const typeDefsString = `
 
   type Mutation {
     createRecipe(authorId: ID!, recipeInput: RecipeInput!): Recipe
+    updateRecipe(
+      authorId: ID!,
+      recipeId: ID!,
+      recipeName: String,
+      ingredients: [IngredientInput!]
+    instructions: [InstructionInput!]
+    notes: [NoteInput!]
+    ): Recipe
     updateRecipeName(authorId: ID!, recipeId: ID!, newRecipeName: String!): String
     updateIngredients(authorId: ID!, recipeId: ID!, ingredients: [IngredientInput!]!): [Ingredient]
     updateInstructions(authorId: ID!, recipeId: ID!, instructions: [InstructionInput!]!): [Instruction]

@@ -2,6 +2,7 @@ const { ApolloServer, gql } = require("apollo-server-lambda");
 const { getAllRecipes, getRecipe } = require("./query-resolvers");
 const {
   createRecipe,
+  updateRecipe,
   updateRecipeName,
   updateIngredients,
   updateInstructions,
@@ -21,6 +22,7 @@ const resolvers = {
   },
   Mutation: {
     createRecipe,
+    updateRecipe,
     updateRecipeName,
     updateIngredients,
     updateInstructions,

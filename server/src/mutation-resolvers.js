@@ -1,11 +1,34 @@
-const { updateRecipe, deleteRecipe: dbDeleteRecipe } = require("./dynamodb");
+const {
+  updateRecipe: dbUpdateRecipe,
+  deleteRecipe: dbDeleteRecipe,
+} = require("./dynamodb");
 const { getAuthorization } = require("./getAuthorization");
 const { ForbiddenError } = require("apollo-server");
 
 const createRecipe = async (_, { recipeInput, authorId }, context) => {
   const { isAuthorized, error } = await getAuthorization(context);
   if (isAuthorized) {
-    return await updateRecipe({ ...recipeInput, authorId });
+    return await dbUpdateRecipe({ ...recipeInput, authorId });
+  } else {
+    throw new ForbiddenError(`You are not authorized`);
+  }
+};
+
+const updateRecipe = async (
+  _,
+  { authorId, recipeId, recipeName, ingredients, instructions, notes },
+  context
+) => {
+  const { isAuthorized, error } = await getAuthorization(context);
+  if (isAuthorized) {
+    return await dbUpdateRecipe({
+      authorId,
+      recipeId,
+      recipeName,
+      ingredients,
+      instructions,
+      notes,
+    });
   } else {
     throw new ForbiddenError(`You are not authorized`);
   }
@@ -18,7 +41,7 @@ const updateRecipeName = async (
 ) => {
   const { isAuthorized, error } = await getAuthorization(context);
   if (isAuthorized) {
-    const res = await updateRecipe({
+    const res = await dbUpdateRecipe({
       authorId,
       recipeId,
       recipeName: newRecipeName,
@@ -36,7 +59,7 @@ const updateIngredients = async (
 ) => {
   const { isAuthorized, error } = await getAuthorization(context);
   if (isAuthorized) {
-    const res = await updateRecipe({
+    const res = await dbUpdateRecipe({
       authorId,
       recipeId,
       ingredients,
@@ -54,7 +77,7 @@ const updateInstructions = async (
 ) => {
   const { isAuthorized, error } = await getAuthorization(context);
   if (isAuthorized) {
-    const res = await updateRecipe({
+    const res = await dbUpdateRecipe({
       authorId,
       recipeId,
       instructions,
@@ -68,7 +91,7 @@ const updateInstructions = async (
 const updateNotes = async (_, { authorId, recipeId, notes }, context) => {
   const { isAuthorized, error } = await getAuthorization(context);
   if (isAuthorized) {
-    const res = await updateRecipe({
+    const res = await dbUpdateRecipe({
       authorId,
       recipeId,
       notes,
@@ -95,6 +118,7 @@ const deleteRecipe = async (_, { authorId, recipeId }, context) => {
 module.exports = {
   createRecipe,
   deleteRecipe,
+  updateRecipe,
   updateRecipeName,
   updateIngredients,
   updateInstructions,

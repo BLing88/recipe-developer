@@ -12,6 +12,7 @@ import {
 import { GET_RECIPE, GET_ALL_RECIPES } from "../queries";
 import {
   CREATE_RECIPE,
+  UPDATE_RECIPE,
   UPDATE_RECIPE_NAME,
   UPDATE_INGREDIENTS,
   UPDATE_INSTRUCTIONS,
@@ -19,6 +20,7 @@ import {
   DELETE_RECIPE,
 } from "../mutations";
 import { server } from "../graphql";
+import { authorOfRecipe, idOfRecipe } from "recipe";
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -384,5 +386,31 @@ describe("server - for authorized users", () => {
       },
     });
     expect(afterDeleteRecipeRes.data.getRecipe).toBeNull();
+  });
+
+  test("updates existing recipe", async () => {
+    const targetRecipe = testRecipes[0];
+    const targetRecipeId = idOfRecipe(targetRecipe);
+    const newRecipe = buildTestRecipe({
+      authorId: authorOfRecipe(targetRecipe),
+      recipeId: targetRecipeId,
+    });
+
+    const updateRecipeRes = await mutate({
+      mutation: UPDATE_RECIPE,
+      variables: {
+        ...newRecipe,
+      },
+    });
+    expect(updateRecipeRes.data.updateRecipe).toEqual(newRecipe);
+
+    const checkUpdatedRecipeRes = await query({
+      query: GET_RECIPE,
+      variables: {
+        authorId: testAuthorId,
+        recipeId: targetRecipeId,
+      },
+    });
+    expect(checkUpdatedRecipeRes.data.getRecipe).toEqual(newRecipe);
   });
 });

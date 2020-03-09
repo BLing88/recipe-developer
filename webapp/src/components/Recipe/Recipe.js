@@ -193,7 +193,12 @@ const recipeReducer = (state, action) => {
   }
 };
 
-const Recipe = ({ recipe, updateHandler, updateRecipeError, loading }) => {
+const Recipe = ({
+  recipe,
+  updateHandler,
+  updateRecipeError,
+  updateRecipeLoading,
+}) => {
   const { recipeName, ingredients, instructions, notes } = recipe;
   const [state, dispatch] = useReducer(recipeReducer, recipe, initialState);
 
@@ -391,6 +396,8 @@ const Recipe = ({ recipe, updateHandler, updateRecipeError, loading }) => {
       ) : null}
       {state.missingRecipeName ? <div>Recipe name required</div> : null}
       {state.showEmptyInputsMessage ? <div>Recipe cannot be empty</div> : null}
+      {updateRecipeError ? <div>Error updating recipe. Try again.</div> : null}
+      {updateRecipeLoading ? <div>Updating recipe...</div> : null}
     </article>
   );
 };

@@ -281,7 +281,7 @@ const Recipe = ({
       updateHandler(recipe, updatedRecipe);
     }
   };
-
+  console.log(nameOfRecipe(recipe));
   return (
     <article className="recipe">
       {!state.editName ? (
@@ -409,7 +409,12 @@ const Recipe = ({
       <button
         onClick={e => {
           e.preventDefault();
-          deleteHandler(recipe);
+          const confirmDelete = window.prompt(
+            `Enter "Delete ${nameOfRecipe(recipe)}"`
+          );
+          if (confirmDelete === `Delete ${nameOfRecipe(recipe)}`) {
+            deleteHandler(recipe);
+          }
         }}
         className="delete-recipe-btn"
       >

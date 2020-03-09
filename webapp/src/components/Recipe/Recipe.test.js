@@ -2,14 +2,30 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { Recipe } from ".";
 import { buildTestRecipe } from "test/utils/generate";
-import { nameOfRecipe } from "utils/recipe";
+import {
+  nameOfRecipe,
+  buildIngredient,
+  buildInstruction,
+  buildNote,
+} from "utils/recipe";
 import testUser from "@testing-library/user-event";
 
-const renderRecipe = () => {
-  const recipe = buildTestRecipe();
+const renderRecipe = (overrides = {}) => {
+  const recipe = overrides.recipe || buildTestRecipe();
+  const updateHandler =
+    overrides.updateHandler || jest.fn().mockName("updateHandler");
+  const updateRecipeError = overrides.updateRecipeError || null;
+  const loading = overrides.loading || false;
   return {
     recipe,
-    ...render(<Recipe recipe={recipe} />),
+    ...render(
+      <Recipe
+        recipe={recipe}
+        updateHandler={updateHandler}
+        updateRecipeError={updateRecipeError}
+        loading={loading}
+      />
+    ),
   };
 };
 
@@ -103,5 +119,22 @@ describe("Recipe", () => {
     const deleteButton = getByTestId("delete-note-1");
     testUser.click(deleteButton);
     expect(getByLabelText(/^note 1:/i)).toHaveValue(notes[1].note);
+  });
+
+  test("submitting an empty recipe shows an error message", () => {
+    const { queryByText, getByText } = renderRecipe({
+      recipe: buildTestRecipe({
+        recipeName: "",
+        ingredients: [buildIngredient("")],
+        instructions: [buildInstruction("")],
+        notes: [buildNote("")],
+      }),
+    });
+    expect(queryByText(/submit/i)).not.toBeInTheDocument();
+    testUser.click(getByText(/ingredients/i));
+    const submitButton = queryByText(/submit/i);
+    expect(submitButton).toBeInTheDocument();
+    testUser.click(submitButton);
+    expect(getByText(/Recipe cannot be empty/i)).toBeInTheDocument();
   });
 });

@@ -22,6 +22,42 @@ export const CREATE_RECIPE = gql`
   }
 `;
 
+export const UPDATE_RECIPE = gql`
+  mutation updateRecipe(
+    $authorId: ID!
+    $recipeId: ID!
+    $recipeName: String
+    $ingredients: [IngredientInput!]
+    $instructions: [InstructionInput!]
+    $notes: [NoteInput!]
+  ) {
+    updateRecipe(
+      authorId: $authorId
+      recipeId: $recipeId
+      recipeName: $recipeName
+      ingredients: $ingredients
+      instructions: $instructions
+      notes: $notes
+    ) {
+      authorId
+      recipeId
+      recipeName
+      ingredients {
+        ingredient
+        ingredientId
+      }
+      instructions {
+        instruction
+        instructionId
+      }
+      notes {
+        note
+        noteId
+      }
+    }
+  }
+`;
+
 export const UPDATE_RECIPE_NAME = gql`
   mutation updateRecipeName(
     $authorId: ID!

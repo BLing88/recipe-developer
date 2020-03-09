@@ -11,15 +11,21 @@ import {
   getIngredientOf,
   idOfIngredient,
   getInstructionOf,
+  instructionsOfRecipe,
   idOfInstruction,
   getNoteOf,
   idOfNote,
   buildNote,
+  authorOfRecipe,
+  idOfRecipe,
+  ingredientsOfRecipe,
+  notesOfRecipe,
 } from "../../utils/recipe";
 import { InputForm } from "../InputForm";
 
 const EDITING_NAME = "EDITING_NAME";
 const UPDATE_RECIPE_NAME_INPUT = "UPDATE_RECIPE_NAME_INPUT";
+const SHOW_MISSING_RECIPE_NAME = "SHOW_MISSING_RECIPE_NAME";
 
 const EDITING_INGREDIENTS = "EDITING_INGREDIENTS";
 const UPDATE_INGREDIENTS_INPUT = "UPDATE_INGREDIENTS_INPUT";
@@ -36,16 +42,27 @@ const UPDATE_NOTES_INPUT = "UPDATE_NOTES_INPUT";
 const ADD_NOTE = "ADD_NOTE";
 const DELETE_NOTE = "DELETE_NOTE";
 
+const SHOW_EMPTY_INPUTS_MESSAGE = "SHOW_EMPTY_INPUTS_MESSAGE";
+const HIDE_EMPTY_INPUTS_MESSAGE = "HIDE_EMPTY_INPUTS_MESSAGE";
+const haveEmptyInputs = (a, b, c) => {
+  return (
+    a.filter(a => a !== "").length === 0 &&
+    b.filter(b => b !== "").length === 0 &&
+    c.filter(c => c !== "").length === 0
+  );
+};
 const initialState = recipe => {
   return {
     editName: false,
     recipeName: nameOfRecipe(recipe),
     editIngredients: false,
-    ingredients: [...recipe.ingredients],
+    ingredients: [...ingredientsOfRecipe(recipe)],
     editInstructions: false,
-    instructions: [...recipe.instructions],
+    instructions: [...instructionsOfRecipe(recipe)],
     editNotes: false,
-    notes: [...recipe.notes],
+    notes: [...notesOfRecipe(recipe)],
+    missingRecipeName: false,
+    showEmptyInputsMessage: false,
   };
 };
 
@@ -154,6 +171,21 @@ const recipeReducer = (state, action) => {
                 ...state.notes.slice(action.targetNote + 1),
               ],
       };
+    case SHOW_MISSING_RECIPE_NAME:
+      return {
+        ...state,
+        missingRecipeName: true,
+      };
+    case SHOW_EMPTY_INPUTS_MESSAGE:
+      return {
+        ...state,
+        showEmptyInputsMessage: true,
+      };
+    case HIDE_EMPTY_INPUTS_MESSAGE:
+      return {
+        ...state,
+        showEmptyInputsMessage: false,
+      };
     default:
       return {
         ...state,
@@ -161,7 +193,7 @@ const recipeReducer = (state, action) => {
   }
 };
 
-const Recipe = ({ recipe, updateHandler }) => {
+const Recipe = ({ recipe, updateHandler, updateRecipeError, loading }) => {
   const { recipeName, ingredients, instructions, notes } = recipe;
   const [state, dispatch] = useReducer(recipeReducer, recipe, initialState);
 
@@ -208,6 +240,38 @@ const Recipe = ({ recipe, updateHandler }) => {
       noteNumber: index,
       note: newNote,
     });
+  };
+
+  const submitHandler = async e => {
+    e.preventDefault();
+    if (!state.recipeName) {
+      dispatch({ type: SHOW_MISSING_RECIPE_NAME });
+      if (
+        haveEmptyInputs(
+          state.ingredients.map(getIngredientOf),
+          state.instructions.map(getInstructionOf),
+          state.notes.map(getNoteOf)
+        )
+      ) {
+        dispatch({ type: SHOW_EMPTY_INPUTS_MESSAGE });
+      } else {
+        dispatch({ type: HIDE_EMPTY_INPUTS_MESSAGE });
+      }
+    } else {
+      const updatedRecipe = {
+        authorId: authorOfRecipe(recipe),
+        recipeId: idOfRecipe(recipe),
+        recipeName: state.recipeName,
+        ingredients: state.ingredients.filter(
+          ingredient => getIngredientOf(ingredient) !== ""
+        ),
+        instructions: state.instructions.filter(
+          instruction => getInstructionOf(instruction) !== ""
+        ),
+        notes: state.notes.filter(note => getNoteOf(note) !== ""),
+      };
+      updateHandler(recipe, updatedRecipe);
+    }
   };
 
   return (
@@ -319,6 +383,14 @@ const Recipe = ({ recipe, updateHandler }) => {
           }}
         />
       )}
+      {state.editNotes ||
+      state.editIngredients ||
+      state.editInstructions ||
+      state.editName ? (
+        <button onClick={submitHandler}>Submit</button>
+      ) : null}
+      {state.missingRecipeName ? <div>Recipe name required</div> : null}
+      {state.showEmptyInputsMessage ? <div>Recipe cannot be empty</div> : null}
     </article>
   );
 };

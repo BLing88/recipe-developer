@@ -8,9 +8,20 @@ import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
 import { GET_ALL_RECIPES, GET_RECIPE } from "../../queries";
-import { CREATE_RECIPE } from "../../mutations";
+import { CREATE_RECIPE, UPDATE_RECIPE } from "../../mutations";
 
-import { buildRecipe } from "../../utils/recipe";
+import {
+  buildRecipe,
+  nameOfRecipe,
+  ingredientsOfRecipe,
+  instructionsOfRecipe,
+  notesOfRecipe,
+  getIngredientOf,
+  getInstructionOf,
+  getNoteOf,
+  authorOfRecipe,
+  idOfRecipe,
+} from "../../utils/recipe";
 
 const SHOW_PROFILE = "SHOW_PROFILE";
 const showProfile = "profile";
@@ -54,6 +65,18 @@ const appReducer = (state, action) => {
   }
 };
 
+export const arraysHaveSameElementsInOrder = (a, b) => {
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const AuthenticatedApp = () => {
   const [state, dispatch] = useReducer(appReducer, defaultAppState);
   const { user } = useAuth0();
@@ -70,7 +93,12 @@ const AuthenticatedApp = () => {
 
   const [
     getRecipe,
-    { loading: getRecipeLoading, data: getRecipeData, error: getRecipeError },
+    {
+      loading: getRecipeLoading,
+      data: getRecipeData,
+      error: getRecipeError,
+      refetch: refetchRecipe,
+    },
   ] = useLazyQuery(GET_RECIPE);
 
   const [
@@ -81,6 +109,11 @@ const AuthenticatedApp = () => {
       error: createRecipeError,
     },
   ] = useMutation(CREATE_RECIPE);
+
+  const [
+    updateRecipe,
+    { loading: updateRecipeLoading, error: updateRecipeError },
+  ] = useMutation(UPDATE_RECIPE);
 
   const createRecipeHandler = async recipeData => {
     const { recipeName, ingredients, instructions, notes } = recipeData;
@@ -112,6 +145,56 @@ const AuthenticatedApp = () => {
       },
     });
     dispatch({ type: SHOW_RECIPE });
+  };
+
+  const updateRecipeHandler = async (recipe, newRecipe) => {
+    const oldRecipeName = nameOfRecipe(recipe);
+    const newRecipeName = nameOfRecipe(newRecipe);
+    const oldIngredients = ingredientsOfRecipe(recipe);
+    const newIngredients = ingredientsOfRecipe(newRecipe);
+    const oldInstructions = instructionsOfRecipe(recipe);
+    const newInstructions = instructionsOfRecipe(newRecipe);
+    const oldNotes = notesOfRecipe(recipe);
+    const newNotes = notesOfRecipe(newRecipe);
+
+    const recipeName = newRecipeName !== oldRecipeName ? newRecipeName : null;
+    const ingredients = !arraysHaveSameElementsInOrder(
+      oldIngredients.map(getIngredientOf),
+      newIngredients.map(getIngredientOf)
+    )
+      ? newIngredients
+      : null;
+    const instructions = !arraysHaveSameElementsInOrder(
+      oldInstructions.map(getInstructionOf),
+      newInstructions.map(getInstructionOf)
+    )
+      ? newInstructions
+      : null;
+    const notes = !arraysHaveSameElementsInOrder(
+      oldNotes.map(getNoteOf),
+      newNotes.map(getNoteOf)
+    )
+      ? newNotes
+      : null;
+
+    const updatedRecipe = {
+      authorId: authorOfRecipe(recipe),
+      recipeId: idOfRecipe(recipe),
+      recipeName,
+      ingredients,
+      instructions,
+      notes,
+    };
+    const updateResult = await updateRecipe({ variables: updatedRecipe });
+
+    if (updateResult.data) {
+      refetchRecipe({
+        variables: {
+          authorId: authorOfRecipe(recipe),
+          recipeId: idOfRecipe(recipe),
+        },
+      });
+    }
   };
 
   return (
@@ -151,7 +234,12 @@ const AuthenticatedApp = () => {
             {getRecipeLoading ? <div>Loading recipe...</div> : null}
             {getRecipeError ? <div>Error loading recipe. Try again</div> : null}
             {!getRecipeLoading && getRecipeData ? (
-              <Recipe recipe={getRecipeData.getRecipe} />
+              <Recipe
+                recipe={getRecipeData.getRecipe}
+                updateHandler={updateRecipeHandler}
+                updateRecipeError={updateRecipeError}
+                loading={updateRecipeLoading}
+              />
             ) : null}
           </>
         ) : null}

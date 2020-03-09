@@ -5,7 +5,7 @@ import { idOfInstruction, getInstructionOf } from "../../utils/recipe";
 
 const Instructions = ({ instructions, onClick }) => (
   <section className="instructions">
-    <h2>Instructions</h2>
+    <h2 onClick={onClick}>Instructions</h2>
     <ol className="recipe-instructions">
       {instructions.map(instruction => (
         <li onClick={onClick} key={idOfInstruction(instruction)}>

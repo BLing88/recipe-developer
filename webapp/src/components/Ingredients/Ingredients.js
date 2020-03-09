@@ -6,7 +6,7 @@ import { idOfIngredient } from "../../utils/recipe";
 
 const Ingredients = ({ ingredients, onClick }) => (
   <section className="ingredients">
-    <h2>Ingredients</h2>
+    <h2 onClick={onClick}>Ingredients</h2>
     <ul className="ingredients-list">
       {ingredients.map(ingredient => (
         <li onClick={onClick} key={idOfIngredient(ingredient)}>

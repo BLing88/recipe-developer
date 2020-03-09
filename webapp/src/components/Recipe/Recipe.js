@@ -198,6 +198,9 @@ const Recipe = ({
   updateHandler,
   updateRecipeError,
   updateRecipeLoading,
+  deleteHandler,
+  deleteRecipeError,
+  deleteRecipeLoading,
 }) => {
   const { recipeName, ingredients, instructions, notes } = recipe;
   const [state, dispatch] = useReducer(recipeReducer, recipe, initialState);
@@ -336,6 +339,7 @@ const Recipe = ({
           }}
         />
       )}
+
       {!state.editInstructions ? (
         <Instructions
           onClick={() => dispatch({ type: EDITING_INSTRUCTIONS })}
@@ -362,6 +366,7 @@ const Recipe = ({
           }}
         />
       )}
+
       {!state.editNotes ? (
         <Notes
           onClick={() => dispatch({ type: EDITING_NOTES })}
@@ -388,16 +393,30 @@ const Recipe = ({
           }}
         />
       )}
+
       {state.editNotes ||
       state.editIngredients ||
       state.editInstructions ||
       state.editName ? (
         <button onClick={submitHandler}>Submit</button>
       ) : null}
+
       {state.missingRecipeName ? <div>Recipe name required</div> : null}
       {state.showEmptyInputsMessage ? <div>Recipe cannot be empty</div> : null}
       {updateRecipeError ? <div>Error updating recipe. Try again.</div> : null}
       {updateRecipeLoading ? <div>Updating recipe...</div> : null}
+
+      <button
+        onClick={e => {
+          e.preventDefault();
+          deleteHandler(recipe);
+        }}
+        className="delete-recipe-btn"
+      >
+        Delete recipe
+      </button>
+      {deleteRecipeError ? <div>Error deleting recipe. Try again.</div> : null}
+      {deleteRecipeLoading ? <div>Deleting recipe...</div> : null}
     </article>
   );
 };

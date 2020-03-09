@@ -8,7 +8,7 @@ import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
 import { GET_ALL_RECIPES, GET_RECIPE } from "../../queries";
-import { CREATE_RECIPE, UPDATE_RECIPE } from "../../mutations";
+import { CREATE_RECIPE, UPDATE_RECIPE, DELETE_RECIPE } from "../../mutations";
 
 import {
   buildRecipe,
@@ -138,6 +138,11 @@ const AuthenticatedApp = () => {
     { loading: updateRecipeLoading, error: updateRecipeError },
   ] = useMutation(UPDATE_RECIPE);
 
+  const [
+    deleteRecipe,
+    { loading: deleteRecipeLoading, error: deleteRecipeError },
+  ] = useMutation(DELETE_RECIPE);
+
   const createRecipeHandler = async recipeData => {
     const { recipeName, ingredients, instructions, notes } = recipeData;
     const recipe = buildRecipe({
@@ -220,6 +225,19 @@ const AuthenticatedApp = () => {
     }
   };
 
+  const deleteRecipeHandler = async recipe => {
+    const deleteRes = await deleteRecipe({
+      variables: {
+        authorId: authorOfRecipe(recipe),
+        recipeId: idOfRecipe(recipe),
+      },
+    });
+    if (deleteRes.data.deleteRecipe) {
+      refetchGetAllRecipes();
+      dispatch({ type: SHOW_ALL_RECIPES });
+    }
+  };
+
   return (
     <div className="app">
       <header className="app-header">
@@ -262,6 +280,9 @@ const AuthenticatedApp = () => {
                 updateHandler={updateRecipeHandler}
                 updateRecipeError={updateRecipeError}
                 updateRecipeLoading={updateRecipeLoading}
+                deleteHandler={deleteRecipeHandler}
+                deleteRecipeError={deleteRecipeError}
+                deleteRecipeLoading={deleteRecipeLoading}
               />
             ) : null}
           </>

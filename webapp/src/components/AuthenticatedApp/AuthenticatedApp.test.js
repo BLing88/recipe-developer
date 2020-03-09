@@ -70,7 +70,7 @@ const renderLoadedProfile = async (overrides = {}) => {
 };
 
 describe("AuthenticatedApp", () => {
-  test("loads Profile", async () => {
+  test("loads all recipes after login", async () => {
     const mockLogout = jest.fn().mockName("logout");
     const user = buildTestUser();
     mockUseAuth0.mockReturnValue({
@@ -106,15 +106,15 @@ describe("AuthenticatedApp", () => {
 
     expect(getByText(/Loading recipes/i)).toBeInTheDocument();
     await wait(); // wait for MockedProvider's promise to resolve
-    const profile = await findByText(/Log out/i);
-    expect(profile).toBeInTheDocument();
+    const logout = await findByText(/Log out/i);
+    expect(logout).toBeInTheDocument();
     expect(queryByText(/Loading recipes/i)).toBeNull();
     recipes.forEach(recipe =>
       expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument()
     );
   });
 
-  test("Shows create recipe form when create recipe button is clicked and no recipes", async () => {
+  test("shows create recipe form when create recipe button is clicked and no recipes", async () => {
     const recipes = [];
     const { getByTestId, getByText } = await renderLoadedProfile({ recipes });
 
@@ -123,7 +123,7 @@ describe("AuthenticatedApp", () => {
     expect(getByTestId("create-recipe-form")).toBeInTheDocument();
   });
 
-  test("Shows create recipe form when create recipe button is clicked", async () => {
+  test("shows create recipe form when create recipe button is clicked", async () => {
     const recipes = buildArray(5, () => buildTestRecipe());
     const { getByText, getByTestId } = await renderLoadedProfile({ recipes });
 
@@ -159,4 +159,14 @@ describe("AuthenticatedApp", () => {
     expect(getByText(/my profile/i)).toBeInTheDocument();
     expect(getByText(/create recipe/i)).toBeInTheDocument();
   });
+
+  // test("show recipe if user clicks on recipe in recipe list", async () => {
+  //   const recipes = buildArray(5, () => buildTestRecipe());
+  //   const targetRecipe = recipes[0];
+  //   const { getByText, queryByText } = await renderLoadedProfile({ recipes });
+
+  //   testUser.click(getByText(nameOfRecipe(targetRecipe)));
+  //   expect(queryByText(/my recipes/i)).not.toBeInTheDocument();
+  //   expect(getByText(nameOfRecipe(targetRecipe))).toBeInTheDocument();
+  // });
 });

@@ -29,6 +29,7 @@
         border: none;
         cursor: pointer;
         font-weight: bold;
+        background: var(--primary-color);
     }
 
     .navbar-item:not(:last-child) {

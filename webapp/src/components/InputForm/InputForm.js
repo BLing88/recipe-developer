@@ -15,7 +15,7 @@ const InputForm = ({
 }) => {
   return (
     <section>
-      {title}
+      <h2>{title}</h2>
       <ul>
         {objects.map((object, i) => {
           return (

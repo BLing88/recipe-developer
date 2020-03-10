@@ -5,6 +5,7 @@ const InputForm = ({
   title,
   objectName,
   displayName,
+  displayType,
   objects,
   getValueOfObject,
   getIdOfObject,
@@ -22,12 +23,21 @@ const InputForm = ({
               <label htmlFor={`${objectName}-${i + 1}`}>
                 {displayName} {i + 1}:
               </label>
-              <input
-                id={`${objectName}-${i + 1}`}
-                type="text"
-                value={getValueOfObject(object)}
-                onChange={e => inputChangeHandler(e, object, i)}
-              />
+              {displayType === "text" ? (
+                <input
+                  id={`${objectName}-${i + 1}`}
+                  type="text"
+                  value={getValueOfObject(object)}
+                  onChange={e => inputChangeHandler(e, object, i)}
+                />
+              ) : (
+                <textarea
+                  id={`${objectName}-${i + 1}`}
+                  type="text"
+                  value={getValueOfObject(object)}
+                  onChange={e => inputChangeHandler(e, object, i)}
+                />
+              )}
 
               <div
                 onClick={e => deleteObjectHandler(i)}
@@ -47,6 +57,7 @@ InputForm.propTypes = {
   title: PropTypes.string.isRequired,
   objectName: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired,
+  displayType: PropTypes.oneOf(["text", "textarea"]).isRequired,
   objects: PropTypes.arrayOf(PropTypes.object).isRequired,
   getValueOfObject: PropTypes.func.isRequired,
   getIdOfObject: PropTypes.func.isRequired,

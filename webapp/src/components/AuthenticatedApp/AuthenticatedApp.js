@@ -240,7 +240,7 @@ const AuthenticatedApp = () => {
 
   return (
     <div className="app">
-      <header className="app-header">
+      <header>
         <NavBar
           isCreatingRecipe={state.show === showCreateRecipe}
           showCreatingRecipe={() => dispatch({ type: SHOW_CREATE_RECIPE })}

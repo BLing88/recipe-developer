@@ -15,39 +15,44 @@ const NavBar = ({
 
   return (
     <nav className="navbar">
-      {/* <span > */}
-      {!isShowingAllRecipes && (
-        <button
-          onClick={e => {
-            e.preventDefault();
-            setShowingAllRecipes();
-          }}
-        >
-          My recipes
+      <div className="navbar-items">
+        {!isShowingAllRecipes && (
+          <button
+            className="navbar-item"
+            onClick={e => {
+              e.preventDefault();
+              setShowingAllRecipes();
+            }}
+          >
+            My recipes
+          </button>
+        )}
+        {!isCreatingRecipe && (
+          <button
+            className="navbar-item"
+            onClick={e => {
+              e.preventDefault();
+              showCreatingRecipe();
+            }}
+          >
+            Create recipe
+          </button>
+        )}
+        {!isShowingProfile && (
+          <button
+            className="navbar-item"
+            onClick={e => {
+              e.preventDefault();
+              setShowingProfile();
+            }}
+          >
+            My profile
+          </button>
+        )}
+        <button className="navbar-item" onClick={() => logout()}>
+          Log out
         </button>
-      )}
-      {!isCreatingRecipe && (
-        <button
-          onClick={e => {
-            e.preventDefault();
-            showCreatingRecipe();
-          }}
-        >
-          Create recipe
-        </button>
-      )}
-      {!isShowingProfile && (
-        <button
-          onClick={e => {
-            e.preventDefault();
-            setShowingProfile();
-          }}
-        >
-          My profile
-        </button>
-      )}
-      <button onClick={() => logout()}>Log out</button>
-      {/* </span> */}
+      </div>
     </nav>
   );
 };

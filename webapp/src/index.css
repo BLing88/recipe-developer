@@ -27,14 +27,15 @@
 }
 
 body {
+  --background-color:#fafaf7;
   margin: 0;
-  padding: 0.5em 0.75em;
+  padding: 0;
   font-family: Charter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #f7f7f5;
+  background-color: var(--background-color);
   box-sizing: border-box;
   line-height: 1.35em;
 }
@@ -44,10 +45,20 @@ code {
     monospace;
 }
 
+
+
 ul {
   list-style: none;
   padding-left: 0;
 }
+
+ol {
+  padding-left: 1em;
+}
+
+/* ol ::before {
+  padding-left: 1em;
+} */
 
 textarea {
   resize:none;
@@ -65,4 +76,12 @@ input[type='text'] {
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif; */
   font-size: 1em;
+}
+
+h1, h2 {
+  color:#0ba2fe;
+}
+
+button {
+  background: #0ba2fe;
 }

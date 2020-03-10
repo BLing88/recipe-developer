@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const InputForm = ({
   title,
@@ -41,6 +42,17 @@ const InputForm = ({
       <button onClick={addObjectHandler}>Add {objectName}</button>
     </section>
   );
+};
+InputForm.propTypes = {
+  title: PropTypes.string.isRequired,
+  objectName: PropTypes.string.isRequired,
+  displayName: PropTypes.string.isRequired,
+  objects: PropTypes.arrayOf(PropTypes.object).isRequired,
+  getValueOfObject: PropTypes.func.isRequired,
+  getIdOfObject: PropTypes.func.isRequired,
+  inputChangeHandler: PropTypes.func.isRequired,
+  addObjectHandler: PropTypes.func.isRequired,
+  deleteObjectHandler: PropTypes.func.isRequired,
 };
 
 export { InputForm };

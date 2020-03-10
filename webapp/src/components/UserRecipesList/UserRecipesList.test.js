@@ -18,7 +18,12 @@ import { nameOfRecipe } from "utils/recipe";
 describe("UserRecipesList", () => {
   test("shows loading message when loading recipes", () => {
     const { getByText, queryByText } = render(
-      <UserRecipesList loading={true} error={null} recipes={undefined} />
+      <UserRecipesList
+        loading={true}
+        error={null}
+        recipes={undefined}
+        getRecipe={jest.fn()}
+      />
     );
     expect(getByText(/loading recipes/i)).toBeInTheDocument();
     expect(queryByText(/Error loading recipes/i)).not.toBeInTheDocument();
@@ -27,7 +32,12 @@ describe("UserRecipesList", () => {
 
   test("shows error if error getting user recipes", () => {
     const { getByText, queryByText } = render(
-      <UserRecipesList loading={false} error={true} recipes={undefined} />
+      <UserRecipesList
+        loading={false}
+        error={true}
+        recipes={undefined}
+        getRecipe={jest.fn()}
+      />
     );
     expect(queryByText(/^loading recipes/i)).not.toBeInTheDocument();
     expect(getByText(/Error loading recipes/i)).toBeInTheDocument();
@@ -40,7 +50,12 @@ describe("UserRecipesList", () => {
       buildTestRecipe({ authorId: user.sub })
     );
     const { getByText, queryByText } = render(
-      <UserRecipesList loading={false} error={null} recipes={recipes} />
+      <UserRecipesList
+        loading={false}
+        error={null}
+        recipes={recipes}
+        getRecipe={jest.fn()}
+      />
     );
     expect(queryByText(/^loading recipes/i)).not.toBeInTheDocument();
     expect(queryByText(/Error loading recipes/i)).not.toBeInTheDocument();
@@ -53,7 +68,12 @@ describe("UserRecipesList", () => {
   test("shows no recipes message if user has no recipes", () => {
     const recipes = [];
     const { getByText, queryByText } = render(
-      <UserRecipesList loading={false} error={null} recipes={recipes} />
+      <UserRecipesList
+        loading={false}
+        error={null}
+        recipes={recipes}
+        getRecipe={jest.fn()}
+      />
     );
     expect(queryByText(/^loading recipes/i)).not.toBeInTheDocument();
     expect(queryByText(/Error loading recipes/i)).not.toBeInTheDocument();

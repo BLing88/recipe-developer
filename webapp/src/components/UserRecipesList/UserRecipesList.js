@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 
@@ -33,6 +34,12 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
         ))}
     </article>
   );
+};
+UserRecipesList.propTypes = {
+  loading: PropTypes.bool.isRequired,
+  error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  recipes: PropTypes.arrayOf(PropTypes.object),
+  getRecipe: PropTypes.func.isRequired,
 };
 
 export { UserRecipesList };

@@ -281,7 +281,7 @@ const Recipe = ({
       updateHandler(recipe, updatedRecipe);
     }
   };
-  console.log(nameOfRecipe(recipe));
+
   return (
     <article className="recipe">
       {!state.editName ? (
@@ -427,6 +427,12 @@ const Recipe = ({
 };
 Recipe.propTypes = {
   recipe: PropTypes.object.isRequired,
+  updateHandler: PropTypes.func.isRequired,
+  updateRecipeError: PropTypes.object,
+  updateRecipeLoading: PropTypes.bool.isRequired,
+  deleteHandler: PropTypes.func.isRequired,
+  deleteRecipeError: PropTypes.object,
+  deleteRecipeLoading: PropTypes.bool.isRequired,
 };
 
 export { Recipe };

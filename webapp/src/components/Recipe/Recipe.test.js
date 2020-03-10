@@ -15,7 +15,11 @@ const renderRecipe = (overrides = {}) => {
   const updateHandler =
     overrides.updateHandler || jest.fn().mockName("updateHandler");
   const updateRecipeError = overrides.updateRecipeError || null;
-  const loading = overrides.loading || false;
+  const updateRecipeLoading = overrides.updateRecipeLoading || false;
+  const deleteHandler =
+    overrides.deleteHandler || jest.fn().mockName("deleteHandler");
+  const deleteRecipeError = overrides.deleteRecipeError || null;
+  const deleteRecipeLoading = overrides.deleteRecipeLoading || false;
   return {
     recipe,
     ...render(
@@ -23,7 +27,10 @@ const renderRecipe = (overrides = {}) => {
         recipe={recipe}
         updateHandler={updateHandler}
         updateRecipeError={updateRecipeError}
-        loading={loading}
+        updateRecipeLoading={updateRecipeLoading}
+        deleteHandler={deleteHandler}
+        deleteRecipeError={deleteRecipeError}
+        deleteRecipeLoading={deleteRecipeLoading}
       />
     ),
   };
@@ -33,7 +40,7 @@ describe("Recipe", () => {
   test("shows title, ingredients, instructions, and notes", () => {
     const recipe = buildTestRecipe();
     const { ingredients, instructions, notes } = recipe;
-    const { getAllByText, getByText } = render(<Recipe recipe={recipe} />);
+    const { getAllByText, getByText } = renderRecipe({ recipe });
 
     expect(getByText(nameOfRecipe(recipe))).toBeInTheDocument();
     expect(getByText("Ingredients")).toBeInTheDocument();

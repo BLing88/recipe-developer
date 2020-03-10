@@ -40,17 +40,17 @@ const InputForm = ({
                 />
               )}
 
-              <div
+              <button
                 onClick={e => deleteObjectHandler(i)}
                 data-testid={`delete-${objectName}-${i + 1}`}
               >
                 delete
-              </div>
+              </button>
             </li>
           );
         })}
       </ul>
-      <button onClick={addObjectHandler}>Add {objectName}</button>
+      <button onClick={addObjectHandler}>Add {displayName}</button>
     </section>
   );
 };

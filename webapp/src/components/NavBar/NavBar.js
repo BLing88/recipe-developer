@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useAuth0 } from "../../react-auth0-spa";
+import "./NavBar.css";
 
 const NavBar = ({
   isCreatingRecipe,
@@ -13,40 +14,40 @@ const NavBar = ({
   const { logout } = useAuth0();
 
   return (
-    <nav>
-      <span>
-        {!isShowingAllRecipes && (
-          <button
-            onClick={e => {
-              e.preventDefault();
-              setShowingAllRecipes();
-            }}
-          >
-            My recipes
-          </button>
-        )}
-        {!isCreatingRecipe && (
-          <button
-            onClick={e => {
-              e.preventDefault();
-              showCreatingRecipe();
-            }}
-          >
-            Create recipe
-          </button>
-        )}
-        {!isShowingProfile && (
-          <button
-            onClick={e => {
-              e.preventDefault();
-              setShowingProfile();
-            }}
-          >
-            My profile
-          </button>
-        )}
-        <button onClick={() => logout()}>Log out</button>
-      </span>
+    <nav className="navbar">
+      {/* <span > */}
+      {!isShowingAllRecipes && (
+        <button
+          onClick={e => {
+            e.preventDefault();
+            setShowingAllRecipes();
+          }}
+        >
+          My recipes
+        </button>
+      )}
+      {!isCreatingRecipe && (
+        <button
+          onClick={e => {
+            e.preventDefault();
+            showCreatingRecipe();
+          }}
+        >
+          Create recipe
+        </button>
+      )}
+      {!isShowingProfile && (
+        <button
+          onClick={e => {
+            e.preventDefault();
+            setShowingProfile();
+          }}
+        >
+          My profile
+        </button>
+      )}
+      <button onClick={() => logout()}>Log out</button>
+      {/* </span> */}
     </nav>
   );
 };

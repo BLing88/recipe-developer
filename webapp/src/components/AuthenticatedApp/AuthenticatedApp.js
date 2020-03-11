@@ -1,4 +1,5 @@
 import React, { useReducer } from "react";
+import styles from "./AuthenticatedApp.module.css";
 import { NavBar } from "../NavBar";
 import { Profile } from "../Profile";
 import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
@@ -239,8 +240,8 @@ const AuthenticatedApp = () => {
   };
 
   return (
-    <div className="app">
-      <header>
+    <div className={styles.authenticatedApp}>
+      <header className={styles.navbar}>
         <NavBar
           isCreatingRecipe={state.show === showCreateRecipe}
           showCreatingRecipe={() => dispatch({ type: SHOW_CREATE_RECIPE })}
@@ -251,7 +252,7 @@ const AuthenticatedApp = () => {
           setShowingAllRecipes={() => dispatch({ type: SHOW_ALL_RECIPES })}
         />
       </header>
-      <main>
+      <main className={styles.mainContent}>
         {state.show === showAllRecipes ? (
           <UserRecipesList
             loading={getAllRecipesLoading}

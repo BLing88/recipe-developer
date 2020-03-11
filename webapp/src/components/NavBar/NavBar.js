@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useAuth0 } from "../../react-auth0-spa";
-import "./NavBar.css";
+import styles from "./NavBar.module.css";
 
 const NavBar = ({
   isCreatingRecipe,
@@ -14,11 +14,11 @@ const NavBar = ({
   const { logout } = useAuth0();
 
   return (
-    <nav className="navbar">
-      <div className="navbar-items">
+    <nav className={styles.navbar}>
+      <div className={styles.navbarItems}>
         {!isShowingAllRecipes && (
           <button
-            className="navbar-item"
+            className={`${styles.navbarItem} ${styles.myRecipesBtn}`}
             onClick={e => {
               e.preventDefault();
               setShowingAllRecipes();
@@ -29,7 +29,7 @@ const NavBar = ({
         )}
         {!isCreatingRecipe && (
           <button
-            className="navbar-item"
+            className={`${styles.navbarItem} ${styles.createRecipeBtn}`}
             onClick={e => {
               e.preventDefault();
               showCreatingRecipe();
@@ -40,7 +40,7 @@ const NavBar = ({
         )}
         {!isShowingProfile && (
           <button
-            className="navbar-item"
+            className={`${styles.navbarItem} ${styles.profileBtn}`}
             onClick={e => {
               e.preventDefault();
               setShowingProfile();
@@ -49,7 +49,10 @@ const NavBar = ({
             My profile
           </button>
         )}
-        <button className="navbar-item" onClick={() => logout()}>
+        <button
+          className={`${styles.navbarItem} ${styles.logoutBtn}`}
+          onClick={() => logout()}
+        >
           Log out
         </button>
       </div>

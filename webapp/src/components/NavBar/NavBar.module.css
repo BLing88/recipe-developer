@@ -1,42 +1,53 @@
-.navbar-items {
+.navbar {
+    --navbar-height: 2.5em;
+}
+
+.navbarItems {
     display: flex;
     flex-direction: row;
 }
 
-.navbar {
-    --primary-color: #0ba2fe;
-    /* --secondary-color: ; */
-    --accent-color: rgba(205, 85, 68);
-    --border-color: rgba(205, 85, 68, 0.5)
-}
-
 @media only screen and (max-width: 450px) {
-    
-
     .navbar {
-        /* position: fixed; */
-        /* border: solid 1px red; */
-        height: 2.5em;
+        height: var(--navbar-height);
+        margin: 0 -1em;
+        position: fixed;
+        top: calc(100% - var(--navbar-height));
+        left: 1em;
+        width: calc(100vw); 
     }
 
-    .navbar-items {
-        margin: 0 -1em;
+    .navbarItems {
         height: 100%;
     }
 
-    .navbar-item {
-        flex: 1 1 auto;
+    .navbarItem {
+        flex: 1 1 calc(100vw / 4);
         border: none;
         cursor: pointer;
         font-weight: bold;
         background: var(--primary-color);
+        font-size: 0.8em;
     }
 
-    .navbar-item:not(:last-child) {
-        border-right: solid 1px var(--border-color);
-        /* opacity: 0.5; */
-    } 
+    .logoutBtn {
+        order: 1;
+    }
 
+    .profileBtn {
+        order: 2;
+    }
+
+    .createRecipeBtn {
+        order: 3;
+    }
+
+    .myRecipesBtn {
+        order: 4;
+    }
+    .navbarItem {
+        border-right: solid 1px var(--border-color);
+    } 
 }
 
 @media only screen and (min-width: 451px) {
@@ -47,20 +58,20 @@
         justify-content: flex-end;
     }
 
-    .navbar-items {
+    .navbarItems {
         width: 50vw;
         height: 100%;
         /* justify-content: flex-start; */
         /* border: solid 1px black; */
     }
     
-    .navbar-item {
+    .navbarItem {
         flex: 1 1 auto;
         border: none;
         cursor: pointer;
     }
     
-    .navbar-item:hover {
+    .navbarItem:hover {
         background: aqua;
     }
     

@@ -4,21 +4,15 @@ import styles from "./CreateRecipeForm.module.css";
 
 import { InputForm } from "../InputForm";
 import {
-  nameOfRecipe,
   buildIngredient,
   buildInstruction,
   getIngredientOf,
   idOfIngredient,
   getInstructionOf,
-  instructionsOfRecipe,
   idOfInstruction,
   getNoteOf,
   idOfNote,
   buildNote,
-  authorOfRecipe,
-  idOfRecipe,
-  ingredientsOfRecipe,
-  notesOfRecipe,
 } from "../../utils/recipe";
 
 const defaultState = {

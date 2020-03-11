@@ -1,19 +1,28 @@
 import { v4 as randomId } from "uuid";
 
-export const buildIngredient = ingredient => ({
-  ingredient,
-  ingredientId: randomId(),
-});
+export const buildIngredient = ingredient =>
+  ingredient.ingredientId
+    ? ingredient
+    : {
+        ingredient,
+        ingredientId: randomId(),
+      };
 
-export const buildInstruction = instruction => ({
-  instruction,
-  instructionId: randomId(),
-});
+export const buildInstruction = instruction =>
+  instruction.instructionId
+    ? instruction
+    : {
+        instruction,
+        instructionId: randomId(),
+      };
 
-export const buildNote = note => ({
-  note,
-  noteId: randomId(),
-});
+export const buildNote = note =>
+  note.noteId
+    ? note
+    : {
+        note,
+        noteId: randomId(),
+      };
 
 export const buildRecipe = ({
   recipeName,

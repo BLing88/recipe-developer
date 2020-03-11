@@ -12,7 +12,6 @@ import { GET_ALL_RECIPES, GET_RECIPE } from "../../queries";
 import { CREATE_RECIPE, UPDATE_RECIPE, DELETE_RECIPE } from "../../mutations";
 
 import {
-  buildRecipe,
   nameOfRecipe,
   ingredientsOfRecipe,
   instructionsOfRecipe,
@@ -25,6 +24,7 @@ import {
   idOfIngredient,
   idOfInstruction,
   idOfNote,
+  buildRecipe,
 } from "../../utils/recipe";
 
 const SHOW_PROFILE = "SHOW_PROFILE";
@@ -146,12 +146,17 @@ const AuthenticatedApp = () => {
 
   const createRecipeHandler = async recipeData => {
     const { recipeName, ingredients, instructions, notes } = recipeData;
+
     const recipe = buildRecipe({
       authorId: user.sub,
       recipeName,
-      ingredients: ingredients.filter(ingredient => ingredient !== ""),
-      instructions: instructions.filter(instruction => instruction !== ""),
-      notes: notes.filter(note => note !== ""),
+      ingredients: ingredients.filter(
+        ingredient => getIngredientOf(ingredient) !== ""
+      ),
+      instructions: instructions.filter(
+        instruction => getInstructionOf(instruction) !== ""
+      ),
+      notes: notes.filter(note => getNoteOf(note) !== ""),
     });
     const result = await createRecipe({
       variables: {

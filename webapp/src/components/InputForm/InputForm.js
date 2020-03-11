@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./InputForm.css";
+import styles from "./InputForm.module.css";
 
 const InputForm = ({
   title,
@@ -15,17 +15,21 @@ const InputForm = ({
   deleteObjectHandler,
 }) => {
   return (
-    <section>
-      <h2>{title}</h2>
-      <ul>
+    <section className={styles.inputForm}>
+      <h2 className={styles.title}>{title}</h2>
+      <ul className={styles.inputList}>
         {objects.map((object, i) => {
           return (
-            <li key={getIdOfObject(object)}>
-              <label htmlFor={`${objectName}-${i + 1}`}>
+            <li className={styles.inputListItem} key={getIdOfObject(object)}>
+              <label
+                className={styles.inputLabel}
+                htmlFor={`${objectName}-${i + 1}`}
+              >
                 {displayName} {i + 1}:
               </label>
               {displayType === "text" ? (
                 <input
+                  className={styles.input}
                   id={`${objectName}-${i + 1}`}
                   type="text"
                   value={getValueOfObject(object)}
@@ -33,6 +37,7 @@ const InputForm = ({
                 />
               ) : (
                 <textarea
+                  className={styles.input}
                   id={`${objectName}-${i + 1}`}
                   type="text"
                   value={getValueOfObject(object)}
@@ -41,16 +46,20 @@ const InputForm = ({
               )}
 
               <button
-                onClick={e => deleteObjectHandler(i)}
+                className={styles.deleteInputBtn}
+                onClick={() => deleteObjectHandler(i)}
                 data-testid={`delete-${objectName}-${i + 1}`}
+                aria-label={`delete ${objectName}`}
               >
-                delete
+                &times;
               </button>
             </li>
           );
         })}
       </ul>
-      <button onClick={addObjectHandler}>Add {displayName}</button>
+      <button className={styles.addInputBtn} onClick={addObjectHandler}>
+        Add {displayName}
+      </button>
     </section>
   );
 };

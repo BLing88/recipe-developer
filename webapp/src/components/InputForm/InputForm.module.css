@@ -1,0 +1,76 @@
+.inputForm {
+    --add-and-update-button-color: rgba(99, 121, 110,0.5);
+}
+
+.input {
+    border: solid 1px rgba(0,0,0,0.25);
+}
+
+.deleteInputBtn, .addInputBtn {
+    cursor: pointer;
+}
+
+.addInputBtn {
+    font-size: 0.8em;
+    background: var(--add-and-update-button-color);
+    border: solid 1px var(--add-and-update-button-color);
+    border-radius: 4px;
+    /* color: var(--add-and-update-button-color); */
+    font-weight: bold;
+}
+
+.deleteInputBtn:hover {
+    color: var(--accent-color);
+}
+
+@media only screen and (max-width: 450px){ 
+    .inputListItem {
+        display: flex;
+        flex-flow: row wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .inputLabel {
+        order: 1
+    }
+
+        
+    .input {
+        order: 3;
+        margin: 0 0 0.5em 0;
+        padding: 0.35em 0.4em;
+        border-radius: 0.5em;
+        /* transition: width 1s cubic-bezier(0.445, 0.05, 0.55, 0.95); */
+    }
+
+    .input:focus {
+        width: 85%;
+    }
+
+    textarea.input {
+        resize: none;
+        width: 85%;
+        height: 2em;
+        font-family: inherit;
+        transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    }
+
+    textarea.input:focus {
+        height: 5em;
+    }
+    
+    .deleteInputBtn {
+        order: 2;
+        padding: 0;
+        width: 10px;
+        height: 10px;
+        text-align: center;
+        background: none;
+        height: 1.5em;
+        border: none;
+        font-size: 0.9em;
+        font-weight: bold;
+    }
+
+}

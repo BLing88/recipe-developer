@@ -227,7 +227,7 @@ const Recipe = ({
           instruction: e.target.value,
           instructionId: idOfInstruction(instruction),
         }
-      : buildIngredient(e.target.value);
+      : buildInstruction(e.target.value);
     dispatch({
       type: UPDATE_INSTRUCTIONS_INPUT,
       instructionNumber: index,
@@ -242,7 +242,7 @@ const Recipe = ({
           note: e.target.value,
           noteId: idOfNote(note),
         }
-      : buildIngredient(e.target.value);
+      : buildNote(e.target.value);
     dispatch({
       type: UPDATE_NOTES_INPUT,
       noteNumber: index,

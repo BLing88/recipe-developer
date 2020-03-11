@@ -1,7 +1,25 @@
 import { v4 as randomId } from "uuid";
 
+export const nameOfRecipe = recipe => recipe.recipeName;
+
+export const authorOfRecipe = recipe => recipe.authorId;
+
+export const idOfRecipe = recipe => recipe.recipeId;
+
+export const ingredientsOfRecipe = recipe => recipe.ingredients;
+export const getIngredientOf = ingredient => ingredient.ingredient;
+export const idOfIngredient = ingredient => ingredient.ingredientId;
+
+export const instructionsOfRecipe = recipe => recipe.instructions;
+export const getInstructionOf = instruction => instruction.instruction;
+export const idOfInstruction = instruction => instruction.instructionId;
+
+export const notesOfRecipe = recipe => recipe.notes;
+export const getNoteOf = note => note.note;
+export const idOfNote = note => note.noteId;
+
 export const buildIngredient = ingredient =>
-  ingredient.ingredientId
+  idOfIngredient(ingredient)
     ? ingredient
     : {
         ingredient,
@@ -9,7 +27,7 @@ export const buildIngredient = ingredient =>
       };
 
 export const buildInstruction = instruction =>
-  instruction.instructionId
+  idOfInstruction(instruction)
     ? instruction
     : {
         instruction,
@@ -17,7 +35,7 @@ export const buildInstruction = instruction =>
       };
 
 export const buildNote = note =>
-  note.noteId
+  idOfNote(note)
     ? note
     : {
         note,
@@ -40,21 +58,3 @@ export const buildRecipe = ({
     notes: notes.map(buildNote),
   };
 };
-
-export const nameOfRecipe = recipe => recipe.recipeName;
-
-export const authorOfRecipe = recipe => recipe.authorId;
-
-export const idOfRecipe = recipe => recipe.recipeId;
-
-export const ingredientsOfRecipe = recipe => recipe.ingredients;
-export const getIngredientOf = ingredient => ingredient.ingredient;
-export const idOfIngredient = ingredient => ingredient.ingredientId;
-
-export const instructionsOfRecipe = recipe => recipe.instructions;
-export const getInstructionOf = instruction => instruction.instruction;
-export const idOfInstruction = instruction => instruction.instructionId;
-
-export const notesOfRecipe = recipe => recipe.notes;
-export const getNoteOf = note => note.note;
-export const idOfNote = note => note.noteId;

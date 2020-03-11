@@ -32,8 +32,8 @@ body {
   /* --secondary-color: ; */
   --accent-color: rgba(205, 85, 68);
   --border-color: rgba(205, 85, 68, 0.5);
-  margin: 0;
-  padding: 0;
+  margin: 1.25em 0 0 0;
+  padding: 0 0.5em;
   font-family: Charter, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;

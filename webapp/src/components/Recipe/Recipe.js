@@ -1,6 +1,6 @@
 import React, { useReducer } from "react";
 import PropTypes from "prop-types";
-import "./Recipe.css";
+import styles from "./Recipe.module.css";
 import { Ingredients } from "../Ingredients";
 import { Instructions } from "../Instructions";
 import { Notes } from "../Notes";
@@ -283,18 +283,19 @@ const Recipe = ({
   };
 
   return (
-    <article className="recipe">
+    <article className={styles.recipe}>
       {!state.editName ? (
         <h1
           onClick={() => dispatch({ type: EDITING_NAME })}
-          className="recipe-name"
+          className={styles.recipeName}
         >
           {recipeName}
         </h1>
       ) : (
         <>
-          <label htmlFor="recipe-name">Recipe name</label>
+          <label htmlFor="recipe-name">Recipe name:</label>
           <input
+            className={styles.recipeNameInput}
             id="recipe-name"
             type="text"
             value={state.recipeName}
@@ -401,7 +402,9 @@ const Recipe = ({
       state.editIngredients ||
       state.editInstructions ||
       state.editName ? (
-        <button onClick={submitHandler}>Submit</button>
+        <button className={styles.updateRecipeBtn} onClick={submitHandler}>
+          Update recipe
+        </button>
       ) : null}
 
       {state.missingRecipeName ? <div>Recipe name required</div> : null}
@@ -419,7 +422,7 @@ const Recipe = ({
             deleteHandler(recipe);
           }
         }}
-        className="delete-recipe-btn"
+        className={styles.deleteRecipeBtn}
       >
         Delete recipe
       </button>

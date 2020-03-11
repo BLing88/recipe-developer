@@ -1,0 +1,59 @@
+.recipe {
+    --add-and-update-button-color: rgba(99, 121, 110,0.75);
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe .recipeImage { 
+    margin: 0 auto;
+}
+
+.recipe li {
+    margin-bottom: 0.5em;
+}
+.recipeNameInput {
+    margin: 0 0 0.5em 0;
+    padding: 0.35em 0.4em;
+    border-radius: 0.5em;
+    border: solid 1px rgba(0,0,0,0.25);
+}
+
+.deleteRecipeBtn {
+    width: 45%;
+    height: 1.5em;
+    padding: 0 0.5em 0 0.5em;
+    font-size: 0.75em;
+    font-weight: bolder;
+    margin: 10em auto 0 auto;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    background: var(--accent-color);
+}
+
+.updateRecipeBtn{
+    margin: 5em 0 0 0;
+    font-weight: bold;
+    background: var( --add-and-update-button-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.15em 0;
+}
+
+@media only screen and (max-width: 450px) {
+    .recipe {
+        margin: 1em 1.5em;
+    }
+}
+
+@media only screen and (min-width: 451px) {
+    .recipe {
+        margin: 2em 5em;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .recipe {
+        margin: 3em 10em;
+    }
+}

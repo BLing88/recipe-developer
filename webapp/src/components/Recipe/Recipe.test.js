@@ -139,7 +139,7 @@ describe("Recipe", () => {
       }),
     });
 
-    expect(queryByText(/submit/i)).not.toBeInTheDocument();
+    expect(queryByText(/update/i)).not.toBeInTheDocument();
     testUser.click(getByText(recipeName));
     await testUser.type(getByLabelText(/recipe name/i), "", {
       allAtOnce: true,
@@ -147,13 +147,13 @@ describe("Recipe", () => {
     testUser.click(getByText(/ingredients/i));
     expect(queryByText(/Recipe cannot be empty/i)).not.toBeInTheDocument();
 
-    const submitButton = queryByText(/submit/i);
-    expect(submitButton).toBeInTheDocument();
-    testUser.click(submitButton);
+    const updateButton = queryByText(/update/i);
+    expect(updateButton).toBeInTheDocument();
+    testUser.click(updateButton);
     expect(getByText(/Recipe cannot be empty/i)).toBeInTheDocument();
 
-    await testUser.type(getByLabelText(/ingredient/i), "new ingredient");
-    testUser.click(submitButton);
+    await testUser.type(getByLabelText(/^ingredient/i), "new ingredient");
+    testUser.click(updateButton);
     expect(queryByText(/Recipe cannot be empty/i)).not.toBeInTheDocument();
   });
 });

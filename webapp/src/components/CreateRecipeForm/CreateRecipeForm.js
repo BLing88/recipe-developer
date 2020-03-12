@@ -181,6 +181,7 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
       <form data-testid="create-recipe-form">
         <label htmlFor="recipe-name">Recipe name:</label>
         <input
+          className={styles.recipeNameInput}
           id="recipe-name"
           type="text"
           value={state.recipeName}
@@ -254,6 +255,7 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
         />
 
         <button
+          className={styles.createRecipeBtn}
           onClick={e => {
             e.preventDefault();
             if (!state.recipeName) {

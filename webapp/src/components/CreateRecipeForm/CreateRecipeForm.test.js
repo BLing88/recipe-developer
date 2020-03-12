@@ -6,6 +6,14 @@ import { buildTestRecipe, buildTestUser } from "test/utils/generate";
 import { nameOfRecipe } from "utils/recipe";
 
 import { CreateRecipeForm } from "./CreateRecipeForm";
+import {
+  getIngredientOf,
+  getInstructionOf,
+  getNoteOf,
+  instructionsOfRecipe,
+  ingredientsOfRecipe,
+  notesOfRecipe,
+} from "../../utils/recipe";
 
 expect.extend(toHaveNoViolations);
 
@@ -53,15 +61,11 @@ describe("CreateRecipeForm", () => {
   test("can add and delete multiple ingredients", () => {
     const testRecipe = buildTestRecipe();
     const ingredients = testRecipe.ingredients.map(i => i.ingredient);
-    const { getByLabelText, getByText, queryByText } = render(
+    const { getByLabelText, getByText, queryByText, getByTestId } = render(
       <CreateRecipeForm createRecipeHandler={jest.fn()} />
     );
-
     const addIngredientButton = getByText(/add ingredient/i);
     expect(addIngredientButton).toBeInTheDocument();
-    const deleteIngredientButton = getByText(/delete ingredient/i);
-    expect(deleteIngredientButton).toBeInTheDocument();
-
     for (let i = 0; i < ingredients.length; i++) {
       const ingredient = ingredients[i];
       const input = getByLabelText(new RegExp(`^ingredient ${i + 1}:$`, "i"));
@@ -69,12 +73,18 @@ describe("CreateRecipeForm", () => {
       expect(input).toHaveValue(ingredient);
       user.click(addIngredientButton);
     }
-
+    const deleteIngredientButton = getByTestId(
+      `delete-ingredient-${ingredients.length + 1}`
+    );
     user.click(deleteIngredientButton);
 
     const reversedIngredients = ingredients.slice().reverse();
     for (let i = 0; i < reversedIngredients.length; i++) {
       const ingredient = reversedIngredients[i];
+      const deleteIngredientButton = getByTestId(
+        `delete-ingredient-${ingredients.length - i}`
+      );
+      expect(deleteIngredientButton).toBeInTheDocument();
       user.click(deleteIngredientButton);
       if (i < ingredients.length - 1) {
         expect(
@@ -86,6 +96,39 @@ describe("CreateRecipeForm", () => {
       expect(queryByText(ingredient)).not.toBeInTheDocument();
     }
 
+    // const addIngredientButton = getByText(/add ingredient/i);
+    // expect(addIngredientButton).toBeInTheDocument();
+
+    // for (let i = 0; i < ingredients.length; i++) {
+    //   const ingredient = ingredients[i];
+    //   const input = getByLabelText(new RegExp(`^ingredient ${i + 1}:$`, "i"));
+    //   user.type(input, ingredient);
+    //   expect(input).toHaveValue(ingredient);
+    //   user.click(addIngredientButton);
+    // }
+    // const deleteIngredientButton = getByTestId(
+    //   `delete-ingredient-${ingredients.length + 1}`
+    // );
+    // user.click(deleteIngredientButton);
+
+    // const reversedIngredients = ingredients.slice().reverse();
+    // for (let i = 0; i < reversedIngredients.length; i++) {
+    //   const ingredient = reversedIngredients[i];
+    //   const deleteIngredientButton = getByTestId(
+    //     `delete-ingredient-${ingredients.length - i}`
+    //   );
+    //   expect(deleteIngredientButton).toBeInTheDocument();
+    //   user.click(deleteIngredientButton);
+    //   if (i < ingredients.length - 1) {
+    //     expect(
+    //       queryByText(
+    //         new RegExp(`^ingredient ${ingredients.length - i}:$`, "i")
+    //       )
+    //     ).not.toBeInTheDocument();
+    //   }
+    //   expect(queryByText(ingredient)).not.toBeInTheDocument();
+    // }
+
     const firstInput = getByLabelText(/^ingredient 1:$/i);
     expect(firstInput).toBeInTheDocument();
     expect(firstInput).toHaveValue("");
@@ -94,14 +137,12 @@ describe("CreateRecipeForm", () => {
   test("can add and delete multiple instructions", () => {
     const testRecipe = buildTestRecipe();
     const instructions = testRecipe.instructions.map(i => i.instruction);
-    const { getByLabelText, getByText, queryByText } = render(
+    const { getByLabelText, getByText, getByTestId, queryByText } = render(
       <CreateRecipeForm createRecipeHandler={jest.fn()} />
     );
 
-    const addInstructionButton = getByText(/add instruction/i);
+    const addInstructionButton = getByText(/add step/i);
     expect(addInstructionButton).toBeInTheDocument();
-    const deleteInstructionButton = getByText(/delete instruction/i);
-    expect(deleteInstructionButton).toBeInTheDocument();
 
     for (let i = 0; i < instructions.length; i++) {
       const instruction = instructions[i];
@@ -110,12 +151,18 @@ describe("CreateRecipeForm", () => {
       expect(input).toHaveValue(instruction);
       user.click(addInstructionButton);
     }
-
+    const deleteInstructionButton = getByTestId(
+      `delete-instruction-${instructions.length + 1}`
+    );
     user.click(deleteInstructionButton);
 
     const reversedInstructions = instructions.slice().reverse();
     for (let i = 0; i < reversedInstructions.length; i++) {
       const instruction = reversedInstructions[i];
+      const deleteInstructionButton = getByTestId(
+        `delete-instruction-${instructions.length - i}`
+      );
+      expect(deleteInstructionButton).toBeInTheDocument();
       user.click(deleteInstructionButton);
       if (i < instructions.length - 1) {
         expect(
@@ -133,14 +180,12 @@ describe("CreateRecipeForm", () => {
   test("can add and delete multiple notes", () => {
     const testRecipe = buildTestRecipe();
     const notes = testRecipe.notes.map(i => i.note);
-    const { getByLabelText, getByText, queryByText } = render(
+    const { getByLabelText, getByText, queryByText, getByTestId } = render(
       <CreateRecipeForm createRecipeHandler={jest.fn()} />
     );
 
     const addNoteButton = getByText(/add note/i);
     expect(addNoteButton).toBeInTheDocument();
-    const deleteNoteButton = getByText(/delete note/i);
-    expect(deleteNoteButton).toBeInTheDocument();
 
     for (let i = 0; i < notes.length; i++) {
       const note = notes[i];
@@ -149,12 +194,15 @@ describe("CreateRecipeForm", () => {
       expect(input).toHaveValue(note);
       user.click(addNoteButton);
     }
-
+    const deleteNoteButton = getByTestId(`delete-note-${notes.length + 1}`);
+    expect(deleteNoteButton).toBeInTheDocument();
     user.click(deleteNoteButton);
 
     const reversedNotes = notes.slice().reverse();
     for (let i = 0; i < reversedNotes.length; i++) {
       const note = reversedNotes[i];
+      const deleteNoteButton = getByTestId(`delete-note-${notes.length - i}`);
+      expect(deleteNoteButton).toBeInTheDocument();
       user.click(deleteNoteButton);
       if (i < notes.length - 1) {
         expect(
@@ -192,7 +240,7 @@ describe("CreateRecipeForm", () => {
       user.click(addIngredientButton);
     }
 
-    const addInstructionButton = getByText(/add instruction/i);
+    const addInstructionButton = getByText(/add step/i);
     for (let i = 0; i < instructions.length; i++) {
       const instruction = instructions[i].instruction;
       const instructionInput = getByLabelText(
@@ -213,11 +261,18 @@ describe("CreateRecipeForm", () => {
     const submitButton = getByText(/Create recipe/i);
     user.click(submitButton);
     expect(mockCreateRecipeHandler).toHaveBeenCalledTimes(1);
-    expect(mockCreateRecipeHandler).toHaveBeenCalledWith({
+    const submittedRecipe = mockCreateRecipeHandler.mock.calls[0][0];
+    const submittedData = {
+      ...submittedRecipe,
+      ingredients: ingredientsOfRecipe(submittedRecipe).map(getIngredientOf),
+      instructions: instructionsOfRecipe(submittedRecipe).map(getInstructionOf),
+      notes: notesOfRecipe(submittedRecipe).map(getNoteOf),
+    };
+    expect(submittedData).toEqual({
       recipeName: newRecipe.recipeName,
-      ingredients: [...newRecipe.ingredients.map(i => i.ingredient), ""],
-      instructions: [...newRecipe.instructions.map(i => i.instruction), ""],
-      notes: [...newRecipe.notes.map(i => i.note), ""],
+      ingredients: [...newRecipe.ingredients.map(getIngredientOf), ""],
+      instructions: [...newRecipe.instructions.map(getInstructionOf), ""],
+      notes: [...newRecipe.notes.map(getNoteOf), ""],
     });
   });
 
@@ -240,7 +295,7 @@ describe("CreateRecipeForm", () => {
       user.click(addIngredientButton);
     }
 
-    const addInstructionButton = getByText(/add instruction/i);
+    const addInstructionButton = getByText(/add step/i);
     for (let i = 0; i < instructions.length; i++) {
       const instruction = instructions[i].instruction;
       const instructionInput = getByLabelText(

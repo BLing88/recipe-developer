@@ -3,6 +3,7 @@ import "./App.css";
 import { LandingPage } from "../LandingPage";
 import { AuthenticatedApp } from "../AuthenticatedApp";
 import { GRAPHQL_URL } from "../../graphql-configs";
+import { BrowserRouter } from "react-router-dom";
 
 import { useAuth0 } from "../../react-auth0-spa";
 
@@ -47,9 +48,11 @@ const App = () => {
 
   if (isAuthenticated) {
     return (
-      <ApolloProvider client={client}>
-        <AuthenticatedApp />
-      </ApolloProvider>
+      <BrowserRouter>
+        <ApolloProvider client={client}>
+          <AuthenticatedApp />
+        </ApolloProvider>
+      </BrowserRouter>
     );
   }
 };

@@ -2,16 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useAuth0 } from "../../react-auth0-spa";
 import styles from "./NavBar.module.css";
+import { useHistory } from "react-router-dom";
 
 const NavBar = ({
   isCreatingRecipe,
-  showCreatingRecipe,
   isShowingProfile,
-  setShowingProfile,
   isShowingAllRecipes,
-  setShowingAllRecipes,
 }) => {
   const { logout } = useAuth0();
+  const history = useHistory();
 
   return (
     <nav className={styles.navbar}>
@@ -21,7 +20,7 @@ const NavBar = ({
             className={`${styles.navbarItem} ${styles.myRecipesBtn}`}
             onClick={e => {
               e.preventDefault();
-              setShowingAllRecipes();
+              history.push("/my-recipes");
             }}
           >
             My recipes
@@ -32,7 +31,7 @@ const NavBar = ({
             className={`${styles.navbarItem} ${styles.createRecipeBtn}`}
             onClick={e => {
               e.preventDefault();
-              showCreatingRecipe();
+              history.push("/create-recipe");
             }}
           >
             Create recipe
@@ -43,7 +42,7 @@ const NavBar = ({
             className={`${styles.navbarItem} ${styles.profileBtn}`}
             onClick={e => {
               e.preventDefault();
-              setShowingProfile();
+              history.push("/my-profile");
             }}
           >
             My profile
@@ -51,7 +50,10 @@ const NavBar = ({
         )}
         <button
           className={`${styles.navbarItem} ${styles.logoutBtn}`}
-          onClick={() => logout()}
+          onClick={() => {
+            logout();
+            history.push("/logout");
+          }}
         >
           Log out
         </button>
@@ -61,11 +63,8 @@ const NavBar = ({
 };
 NavBar.propTypes = {
   isCreatingRecipe: PropTypes.bool.isRequired,
-  showCreatingRecipe: PropTypes.func.isRequired,
   isShowingProfile: PropTypes.bool.isRequired,
-  setShowingProfile: PropTypes.func.isRequired,
   isShowingAllRecipes: PropTypes.bool.isRequired,
-  setShowingAllRecipes: PropTypes.func.isRequired,
 };
 
 export { NavBar };

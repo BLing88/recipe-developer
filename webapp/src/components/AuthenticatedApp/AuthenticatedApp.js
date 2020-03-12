@@ -1,9 +1,10 @@
-import React, { useReducer } from "react";
+import React from "react";
 import styles from "./AuthenticatedApp.module.css";
 import { NavBar } from "../NavBar";
 import { Profile } from "../Profile";
 import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 import { Recipe } from "../Recipe";
+import { useHistory, useLocation, Route, Switch } from "react-router-dom";
 
 import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
@@ -26,48 +27,6 @@ import {
   idOfNote,
   buildRecipe,
 } from "../../utils/recipe";
-
-const SHOW_PROFILE = "SHOW_PROFILE";
-const showProfile = "profile";
-const SHOW_ALL_RECIPES = "SHOW_RECIPES";
-const showAllRecipes = "allRecipes";
-const SHOW_CREATE_RECIPE = "SHOW_CREATE_RECIPE";
-const showCreateRecipe = "createRecipe";
-const SHOW_RECIPE = "SHOW_RECIPE";
-const showRecipe = "recipe";
-
-const defaultAppState = {
-  show: showAllRecipes,
-};
-
-const appReducer = (state, action) => {
-  switch (action.type) {
-    case SHOW_PROFILE:
-      return {
-        ...state,
-        show: showProfile,
-      };
-    case SHOW_ALL_RECIPES:
-      return {
-        ...state,
-        show: showAllRecipes,
-      };
-    case SHOW_CREATE_RECIPE:
-      return {
-        ...state,
-        show: showCreateRecipe,
-      };
-    case SHOW_RECIPE:
-      return {
-        ...state,
-        show: showRecipe,
-      };
-    default:
-      return {
-        ...state,
-      };
-  }
-};
 
 export const arraysHaveSameElementsInOrder = (a, b) => {
   if (a.length !== b.length) {
@@ -102,8 +61,9 @@ const projectRecipe = augmentedRecipe => {
 };
 
 const AuthenticatedApp = () => {
-  const [state, dispatch] = useReducer(appReducer, defaultAppState);
   const { user } = useAuth0();
+  const history = useHistory();
+  const location = useLocation();
   const {
     loading: getAllRecipesLoading,
     data: getAllRecipesData,
@@ -165,8 +125,8 @@ const AuthenticatedApp = () => {
       },
     });
     if (result.data) {
-      dispatch({ type: SHOW_ALL_RECIPES });
       refetchGetAllRecipes();
+      history.push("/my-recipes");
     }
   };
 
@@ -178,7 +138,11 @@ const AuthenticatedApp = () => {
         recipeId: recipe.recipeId,
       },
     });
-    dispatch({ type: SHOW_RECIPE });
+    history.push(
+      `/recipe/${nameOfRecipe(recipe)
+        .split(" ")
+        .join("-")}`
+    );
   };
 
   const updateRecipeHandler = async (recipe, newRecipe) => {
@@ -240,7 +204,7 @@ const AuthenticatedApp = () => {
     });
     if (deleteRes.data.deleteRecipe) {
       refetchGetAllRecipes();
-      dispatch({ type: SHOW_ALL_RECIPES });
+      history.push("/my-recipes");
     }
   };
 
@@ -248,51 +212,64 @@ const AuthenticatedApp = () => {
     <div className={styles.authenticatedApp}>
       <header className={styles.navbar}>
         <NavBar
-          isCreatingRecipe={state.show === showCreateRecipe}
-          showCreatingRecipe={() => dispatch({ type: SHOW_CREATE_RECIPE })}
-          isShowingProfile={state.show === showProfile}
-          setShowingProfile={() => dispatch({ type: SHOW_PROFILE })}
-          setShowingRecipe={state.show === showRecipe}
-          isShowingAllRecipes={state.show === showAllRecipes}
-          setShowingAllRecipes={() => dispatch({ type: SHOW_ALL_RECIPES })}
+          isCreatingRecipe={location.pathname === "/create-recipe"}
+          isShowingAllRecipes={location.pathname === "/my-recipes"}
+          isShowingProfile={location.pathname === "/my-profile"}
         />
       </header>
+
       <main className={styles.mainContent}>
-        {state.show === showAllRecipes ? (
-          <UserRecipesList
-            loading={getAllRecipesLoading}
-            error={getAllRecipesError}
-            recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
-            getRecipe={recipeClickHandler}
-          />
-        ) : null}
-        {state.show === showCreateRecipe ? (
-          <CreateRecipeForm
-            createRecipeHandler={createRecipeHandler}
-            error={createRecipeError}
-            loading={createRecipeLoading}
-          />
-        ) : null}
+        <Switch>
+          <Route path="/my-recipes">
+            <UserRecipesList
+              loading={getAllRecipesLoading}
+              error={getAllRecipesError}
+              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
+              getRecipe={recipeClickHandler}
+            />
+          </Route>
 
-        {state.show === showProfile ? <Profile /> : null}
+          <Route path="/create-recipe">
+            <CreateRecipeForm
+              createRecipeHandler={createRecipeHandler}
+              error={createRecipeError}
+              loading={createRecipeLoading}
+            />
+          </Route>
 
-        {state.show === showRecipe ? (
-          <>
-            {getRecipeLoading ? <div>Loading recipe...</div> : null}
-            {getRecipeError ? <div>Error loading recipe. Try again</div> : null}
-            {!getRecipeLoading && getRecipeData ? (
-              <Recipe
-                recipe={projectRecipe(getRecipeData.getRecipe)}
-                updateHandler={updateRecipeHandler}
-                updateRecipeError={updateRecipeError}
-                updateRecipeLoading={updateRecipeLoading}
-                deleteHandler={deleteRecipeHandler}
-                deleteRecipeError={deleteRecipeError}
-                deleteRecipeLoading={deleteRecipeLoading}
-              />
-            ) : null}
-          </>
-        ) : null}
+          <Route path="/my-profile">
+            <Profile />
+          </Route>
+
+          <Route path="/recipe/">
+            <>
+              {getRecipeLoading ? <div>Loading recipe...</div> : null}
+              {getRecipeError ? (
+                <div>Error loading recipe. Try again</div>
+              ) : null}
+              {!getRecipeLoading && getRecipeData ? (
+                <Recipe
+                  recipe={projectRecipe(getRecipeData.getRecipe)}
+                  updateHandler={updateRecipeHandler}
+                  updateRecipeError={updateRecipeError}
+                  updateRecipeLoading={updateRecipeLoading}
+                  deleteHandler={deleteRecipeHandler}
+                  deleteRecipeError={deleteRecipeError}
+                  deleteRecipeLoading={deleteRecipeLoading}
+                />
+              ) : null}
+            </>
+          </Route>
+
+          <Route>
+            <UserRecipesList
+              loading={getAllRecipesLoading}
+              error={getAllRecipesError}
+              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
+              getRecipe={recipeClickHandler}
+            />
+          </Route>
+        </Switch>
       </main>
     </div>
   );

@@ -9,6 +9,7 @@ import {
   buildTestRecipe,
 } from "test/utils/generate";
 import testUser from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 
 jest.mock("../../react-auth0-spa");
 import { useAuth0 as mockUseAuth0 } from "../../react-auth0-spa";
@@ -58,7 +59,8 @@ const renderLoadedProfile = async (overrides = {}) => {
   const queries = render(
     <MockedProvider addTypename={false} mocks={mocks}>
       <AuthenticatedApp />
-    </MockedProvider>
+    </MockedProvider>,
+    { wrapper: MemoryRouter }
   );
   await wait(); // wait for MockedProvider's promise to resolve
 
@@ -101,7 +103,8 @@ describe("AuthenticatedApp", () => {
     const { getByText, queryByText, findByText } = render(
       <MockedProvider addTypename={false} mocks={mocks}>
         <AuthenticatedApp />
-      </MockedProvider>
+      </MockedProvider>,
+      { wrapper: MemoryRouter }
     );
 
     expect(getByText(/Loading recipes/i)).toBeInTheDocument();

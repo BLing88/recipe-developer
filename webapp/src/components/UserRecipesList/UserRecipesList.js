@@ -7,7 +7,7 @@ import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
   return (
     <article className={styles.userRecipesList}>
-      <h2 className={styles.title}>My Recipes</h2>
+      <h1 className={styles.title}>My Recipes</h1>
 
       {loading ? (
         <div className={styles.loadingRecipes}>Loading recipes...</div>

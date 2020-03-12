@@ -178,8 +178,13 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
 
   return (
     <>
-      <form data-testid="create-recipe-form">
-        <label htmlFor="recipe-name">Recipe name:</label>
+      <form
+        className={styles.createRecipeForm}
+        data-testid="create-recipe-form"
+      >
+        <label htmlFor="recipe-name">
+          <h1 className={styles.recipeName}>Recipe name:</h1>
+        </label>
         <input
           className={styles.recipeNameInput}
           id="recipe-name"

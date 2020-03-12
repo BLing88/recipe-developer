@@ -1,4 +1,14 @@
+.createRecipeForm {
+    --add-and-create-button-color: rgba(99, 121, 110,0.75);
+    margin: 0 2em;
+}
+
 @media only screen and (max-width: 450px) {
+    .createRecipeForm {
+        display: flex;
+        flex-direction: column;
+    }
+    
     .recipeNameInput {
         margin: 0 0 0.5em 0;
         padding: 0.35em 0.4em;
@@ -7,6 +17,11 @@
     }
 
     .createRecipeBtn {
-        margin-bottom: 3em;
+        margin: 5em 0 3em 0;
+        font-weight: bold;
+        background: var( --add-and-create-button-color);
+        border: none;
+        border-radius: 10px;
+        padding: 0.15em 0;
     }
 }

@@ -51,13 +51,15 @@
     textarea.input {
         resize: none;
         width: 85%;
-        height: 2em;
+        height: 4em;
         font-family: inherit;
+        transition: width 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
         transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
     }
 
     textarea.input:focus {
-        height: 5em;
+        height: 8em;
+        width: 100%
     }
     
     .deleteInputBtn {

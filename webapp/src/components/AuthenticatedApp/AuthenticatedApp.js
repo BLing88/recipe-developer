@@ -60,6 +60,11 @@ const projectRecipe = augmentedRecipe => {
   };
 };
 
+const USER_RECIPES_PATH = "/my-recipes";
+const CREATE_RECIPE_PATH = "/create-recipe";
+const PROFILE_PATH = "/my-profile";
+const RECIPE_PATH = "/recipe/";
+
 const AuthenticatedApp = () => {
   const { user } = useAuth0();
   const history = useHistory();
@@ -126,7 +131,7 @@ const AuthenticatedApp = () => {
     });
     if (result.data) {
       refetchGetAllRecipes();
-      history.push("/my-recipes");
+      history.push(USER_RECIPES_PATH);
     }
   };
 
@@ -139,7 +144,7 @@ const AuthenticatedApp = () => {
       },
     });
     history.push(
-      `/recipe/${nameOfRecipe(recipe)
+      `${RECIPE_PATH}${nameOfRecipe(recipe)
         .split(" ")
         .join("-")}`
     );
@@ -204,7 +209,7 @@ const AuthenticatedApp = () => {
     });
     if (deleteRes.data.deleteRecipe) {
       refetchGetAllRecipes();
-      history.push("/my-recipes");
+      history.push(USER_RECIPES_PATH);
     }
   };
 
@@ -212,15 +217,15 @@ const AuthenticatedApp = () => {
     <div className={styles.authenticatedApp}>
       <header className={styles.navbar}>
         <NavBar
-          isCreatingRecipe={location.pathname === "/create-recipe"}
-          isShowingAllRecipes={location.pathname === "/my-recipes"}
-          isShowingProfile={location.pathname === "/my-profile"}
+          isCreatingRecipe={location.pathname === CREATE_RECIPE_PATH}
+          isShowingAllRecipes={location.pathname === USER_RECIPES_PATH}
+          isShowingProfile={location.pathname === PROFILE_PATH}
         />
       </header>
 
       <main className={styles.mainContent}>
         <Switch>
-          <Route path="/my-recipes">
+          <Route path={USER_RECIPES_PATH}>
             <UserRecipesList
               loading={getAllRecipesLoading}
               error={getAllRecipesError}
@@ -229,7 +234,7 @@ const AuthenticatedApp = () => {
             />
           </Route>
 
-          <Route path="/create-recipe">
+          <Route path={CREATE_RECIPE_PATH}>
             <CreateRecipeForm
               createRecipeHandler={createRecipeHandler}
               error={createRecipeError}
@@ -237,11 +242,11 @@ const AuthenticatedApp = () => {
             />
           </Route>
 
-          <Route path="/my-profile">
+          <Route path={PROFILE_PATH}>
             <Profile />
           </Route>
 
-          <Route path="/recipe/">
+          <Route path={RECIPE_PATH}>
             <>
               {getRecipeLoading ? <div>Loading recipe...</div> : null}
               {getRecipeError ? (

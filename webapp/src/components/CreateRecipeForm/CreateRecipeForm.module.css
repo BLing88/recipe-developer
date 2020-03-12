@@ -17,7 +17,7 @@
     }
 
     .createRecipeBtn {
-        margin: 5em 0 3em 0;
+        margin: 5em 0 5em 0;
         font-weight: bold;
         background: var( --add-and-create-button-color);
         border: none;

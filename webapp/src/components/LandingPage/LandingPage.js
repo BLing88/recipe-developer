@@ -5,17 +5,21 @@ import styles from "./LandingPage.module.css";
 
 const LandingPage = ({ loginWithRedirect, signup }) => {
   return (
-    <main className="landing-page">
+    <main className={styles.landingPage}>
       <h1 className={styles.appTitle}>Recipe Developer</h1>
-      <button className="login-btn" onClick={() => loginWithRedirect()}>
-        Login
+
+      <picture className={styles.recipeImage}>
+        <img
+          src={require("../../assets/jeff-sheldon-6MT4_Ut8a3Y-unsplash.jpg")}
+          alt="recipe"
+        />
+      </picture>
+
+      <button className={styles.loginBtn} onClick={() => loginWithRedirect()}>
+        Login or sign up
       </button>
-      <section>
-        Don&apos;t have an account?
-        <button className="signup-btn" onClick={() => signup()}>
-          Sign up
-        </button>
-      </section>
+
+      <p>Easily develop all your recipes in one location.</p>
     </main>
   );
 };

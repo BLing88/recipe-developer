@@ -1,6 +1,6 @@
 .inputForm {
     --add-and-update-button-color: rgba(99, 121, 110,0.5);
-    --input-border-color:rgb(11, 162, 254, 0.5);
+    --input-border-color:rgba(11, 162, 254, 0.5);
 }
 
 .input {

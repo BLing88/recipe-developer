@@ -1,0 +1,17 @@
+.splashPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.appName {
+    margin: 0;
+}
+
+
+
+/* .spinnerDot {
+    animation: 2s linear 0s infinite 
+} */

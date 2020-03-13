@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { LandingPage } from "../LandingPage";
+import { SplashPage } from "../SplashPage";
 import { AuthenticatedApp } from "../AuthenticatedApp";
 import { GRAPHQL_URL } from "../../graphql-configs";
 import { BrowserRouter } from "react-router-dom";
@@ -18,6 +19,10 @@ const App = () => {
     loginWithRedirect,
     getTokenSilently,
   } = useAuth0();
+
+  if (loading) {
+    return <SplashPage />;
+  }
 
   if (!user) {
     return (
@@ -41,10 +46,6 @@ const App = () => {
       });
     },
   });
-
-  if (loading) {
-    return <main>Redirecting...</main>;
-  }
 
   if (isAuthenticated) {
     return (

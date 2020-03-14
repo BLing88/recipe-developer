@@ -12,7 +12,7 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
 
       {loading ? (
         <section className={styles.loadingRecipes}>
-          <p>Loading recipes...</p> <LoadingSpinner size="SMALL" />
+          <p>Loading recipes&hellip; </p> <LoadingSpinner size="SMALL" />
         </section>
       ) : null}
 
@@ -21,9 +21,7 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
           <p>Error loading recipes. Try again.</p>
         </section>
       ) : null}
-      <section className={styles.noRecipesMsg}>
-        <p>You have no recipes!</p>
-      </section>
+
       {!loading &&
         !error &&
         (recipes && recipes.length ? (

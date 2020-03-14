@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 import PropTypes from "prop-types";
 import styles from "./CreateRecipeForm.module.css";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 import { InputForm } from "../InputForm";
 import {
@@ -259,9 +260,22 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
           }}
         />
 
-        {state.showMissingRecipeName ? <div>Recipe name required</div> : null}
-        {loading ? <div>Creating recipe...</div> : null}
-        {error ? <div>Error creating recipe. Try again.</div> : null}
+        {state.showMissingRecipeName ? (
+          <section className={styles.nameRequiredMsg}>
+            <p>Recipe name required</p>
+          </section>
+        ) : null}
+        {loading ? (
+          <section className={styles.loadingMsg}>
+            <p>Creating recipe&hellip;</p>
+            <LoadingSpinner size={"SMALL"} />
+          </section>
+        ) : null}
+        {error ? (
+          <section className={styles.errorMsg}>
+            <p>Error creating recipe. Try again.</p>
+          </section>
+        ) : null}
         <button
           className={styles.createRecipeBtn}
           onClick={e => {

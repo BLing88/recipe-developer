@@ -24,6 +24,34 @@
     border: solid 1px var(--input-border-color);
 }
 
+.nameRequiredMsg,
+.errorMsg {
+    color: var(--accent-color);
+    font-weight: bold;
+    border: solid 2px var(--accent-color);
+    border-radius: 0.5em;
+    padding: 0 0.5em;
+    margin-top: 0.5em;
+}
+
+.loadingMsg {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    /* border: solid 2px var(--primary-color);
+    border-radius: 0.5em; */
+    padding: 0 0.5em;
+    margin-top: 0.5em;
+}
+
+.loadingSpinner {
+    width: 10px;
+    height: 10px;
+}
+
 @media only screen and (max-width: 450px) {
     .createRecipeForm {
         display: flex;

@@ -40,21 +40,3 @@
     border-radius: 10px;
     padding: 0.15em 0;
 }
-
-@media only screen and (max-width: 450px) {
-    .recipe {
-        margin: 1em 1.5em;
-    }
-}
-
-@media only screen and (min-width: 451px) {
-    .recipe {
-        margin: 2em 5em;
-    }
-}
-
-@media only screen and (min-width: 900px) {
-    .recipe {
-        margin: 3em 10em;
-    }
-}

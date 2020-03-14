@@ -18,3 +18,21 @@
         order: 1;
         /* flex: 1 */
 }}
+
+@media only screen and (max-width: 450px) {
+    .mainContent {
+        padding: 1em 1.5em;
+    }
+}
+
+@media only screen and (min-width: 451px) {
+    .mainContent {
+        padding: 2em 5em;
+    }
+}
+
+@media only screen and (min-width: 900px) {
+    .mainContent {
+        padding: 3em 10em;
+    }
+}

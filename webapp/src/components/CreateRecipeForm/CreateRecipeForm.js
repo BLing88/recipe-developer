@@ -259,6 +259,9 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
           }}
         />
 
+        {state.showMissingRecipeName ? <div>Recipe name required</div> : null}
+        {loading ? <div>Creating recipe...</div> : null}
+        {error ? <div>Error creating recipe. Try again.</div> : null}
         <button
           className={styles.createRecipeBtn}
           onClick={e => {
@@ -278,9 +281,6 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
         >
           Create recipe
         </button>
-        {state.showMissingRecipeName ? <div>Recipe name required</div> : null}
-        {loading ? <div>Creating recipe...</div> : null}
-        {error ? <div>Error creating recipe. Try again.</div> : null}
       </form>
     </>
   );

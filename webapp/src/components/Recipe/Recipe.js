@@ -4,6 +4,7 @@ import styles from "./Recipe.module.css";
 import { Ingredients } from "../Ingredients";
 import { Instructions } from "../Instructions";
 import { Notes } from "../Notes";
+import { LoadingSpinner } from "../LoadingSpinner";
 import {
   nameOfRecipe,
   buildIngredient,
@@ -398,6 +399,40 @@ const Recipe = ({
         />
       )}
 
+      {state.missingRecipeName ? (
+        <section className={styles.nameRequiredMsg}>
+          <p>Recipe name required</p>
+        </section>
+      ) : null}
+      {state.showEmptyInputsMessage ? (
+        <section className={styles.emptyRecipeMsg}>
+          <p>Recipe cannot be empty</p>
+        </section>
+      ) : null}
+      {updateRecipeError ? (
+        <section className={styles.errorMsg}>
+          <p>Error updating recipe. Try again.</p>
+        </section>
+      ) : null}
+      {updateRecipeLoading ? (
+        <section className={styles.updatingRecipeMsg}>
+          <p>Updating recipe&hellip;</p>
+          <LoadingSpinner size="SMALL" />
+        </section>
+      ) : null}
+
+      {deleteRecipeError ? (
+        <section className={styles.errorMsg}>
+          <p>Error deleting recipe. Try again.</p>
+        </section>
+      ) : null}
+      {deleteRecipeLoading ? (
+        <section className={styles.deletingRecipeMsg}>
+          <p>Deleting recipe&hellip;</p>
+          <LoadingSpinner size="SMALL" />
+        </section>
+      ) : null}
+
       {state.editNotes ||
       state.editIngredients ||
       state.editInstructions ||
@@ -406,11 +441,6 @@ const Recipe = ({
           Update recipe
         </button>
       ) : null}
-
-      {state.missingRecipeName ? <div>Recipe name required</div> : null}
-      {state.showEmptyInputsMessage ? <div>Recipe cannot be empty</div> : null}
-      {updateRecipeError ? <div>Error updating recipe. Try again.</div> : null}
-      {updateRecipeLoading ? <div>Updating recipe...</div> : null}
 
       <button
         onClick={e => {
@@ -426,8 +456,6 @@ const Recipe = ({
       >
         Delete recipe
       </button>
-      {deleteRecipeError ? <div>Error deleting recipe. Try again.</div> : null}
-      {deleteRecipeLoading ? <div>Deleting recipe...</div> : null}
     </article>
   );
 };

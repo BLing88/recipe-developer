@@ -40,3 +40,26 @@
     border-radius: 10px;
     padding: 0.15em 0;
 }
+
+.updatingRecipeMsg,
+.deletingRecipeMsg {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    padding: 0 0.5em;
+    margin-top: 0.5em;
+}
+
+.nameRequiredMsg,
+.emptyRecipeMsg,
+.errorMsg {
+    color: var(--accent-color);
+    font-weight: bold;
+    border: solid 2px var(--accent-color);
+    border-radius: 0.5em;
+    padding: 0 0.5em;
+    margin-top: 0.5em;
+}

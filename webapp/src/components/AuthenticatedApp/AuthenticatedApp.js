@@ -5,6 +5,7 @@ import { Profile } from "../Profile";
 import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 import { Recipe } from "../Recipe";
 import { useHistory, useLocation, Route, Switch } from "react-router-dom";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
@@ -248,7 +249,13 @@ const AuthenticatedApp = () => {
 
           <Route path={RECIPE_PATH}>
             <>
-              {getRecipeLoading ? <div>Loading recipe...</div> : null}
+              {getRecipeLoading ? (
+                <section className={styles.loadingRecipe}>
+                  <p>Loading recipe&hellip;</p>
+                  <LoadingSpinner size="SMALL" />
+                </section>
+              ) : null}
+
               {getRecipeError ? (
                 <div>Error loading recipe. Try again</div>
               ) : null}

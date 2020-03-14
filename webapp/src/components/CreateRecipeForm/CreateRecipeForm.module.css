@@ -2,10 +2,19 @@
     --add-and-create-button-color: rgba(99, 121, 110,0.75);
     --input-border-color: rgb(11, 162, 254, 0.5);
     margin: 0 2em;
+    display: flex;
+    flex-direction: column;
 }
 
-.createRecipeBtn:hover {
+.createRecipeBtn {
     cursor: pointer;
+    background: var( --add-and-create-button-color);
+    border: none;
+    border-radius: 10px;
+    padding: 0.25em 0.5em;
+    font-weight: bold;
+    margin: 5em auto 5em auto;
+    width: 33vw;
 }
 
 .recipeNameInput {
@@ -29,15 +38,11 @@
     }
 
     .recipeNameInput:focus {
-        width: calc(100% - 1em);
+        width: 100%
     }
 
     .createRecipeBtn {
-        margin: 5em 0 5em 0;
-        font-weight: bold;
-        background: var( --add-and-create-button-color);
-        border: none;
-        border-radius: 10px;
-        padding: 0.15em 0;
+        /* margin: 5em 0 5em 0; */
+        width: 100%
     }
 }

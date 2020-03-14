@@ -3,7 +3,22 @@
     --input-border-color:rgba(11, 162, 254, 0.5);
 }
 
+.inputListItem {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+    "input-name delete-btn"
+    "input input";
+}
+
+.inputLabel {
+    grid-area: input-name;
+}
+
 .input {
+    grid-area: input;
     border: solid 1px var(--input-border-color);
 }
 
@@ -16,8 +31,11 @@
     background: var(--add-and-update-button-color);
     border: solid 1px var(--add-and-update-button-color);
     border-radius: 4px;
-    /* color: var(--add-and-update-button-color); */
     font-weight: bold;
+}
+
+.deleteInputBtn {
+    grid-area: delete-btn;
 }
 
 .deleteInputBtn:hover {
@@ -25,26 +43,13 @@
 }
 
 @media only screen and (max-width: 450px){ 
-    .inputListItem {
-        display: flex;
-        flex-flow: row wrap;
-        align-items: center;
-        justify-content: space-between;
-    }
-
     .addInputBtn {
         display: block;
         padding: 0.5em 0.5em;
         margin: 0 0 0 auto;
     }
-
-    .inputLabel {
-        order: 1
-    }
-
         
     .input {
-        order: 3;
         margin: 0 0 0.5em 0;
         padding: 0.35em 0.4em;
         border-radius: 0.5em;
@@ -70,7 +75,6 @@
     }
     
     .deleteInputBtn {
-        order: 2;
         padding: 0;
         width: 10px;
         height: 10px;
@@ -79,7 +83,6 @@
         height: 1.5em;
         border: none;
         font-size: 1.5em;
-        /* font-weight: bold; */
     }
 
 }

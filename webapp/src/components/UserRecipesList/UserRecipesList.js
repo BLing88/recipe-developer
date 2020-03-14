@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./UserRecipesList.module.css";
+import { LoadingSpinner } from "../LoadingSpinner";
 
 import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 
@@ -10,10 +11,16 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
       <h1 className={styles.title}>My Recipes</h1>
 
       {loading ? (
-        <div className={styles.loadingRecipes}>Loading recipes...</div>
+        <section className={styles.loadingRecipes}>
+          <p>Loading recipes...</p> <LoadingSpinner size="SMALL" />
+        </section>
       ) : null}
 
-      {error ? <div>Error loading recipes. Try again.</div> : null}
+      {error ? (
+        <section className={styles.errorMsg}>
+          <p>Error loading recipes. Try again.</p>
+        </section>
+      ) : null}
 
       {!loading &&
         !error &&

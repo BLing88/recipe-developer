@@ -1,5 +1,3 @@
-.svgSpinner {
-    width: 150px;
-    height: 150px;
-    /* border: solid 1px black */
-} 
+.spinnerDot {
+    fill: rgb(11, 162, 254)
+}

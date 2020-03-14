@@ -8,6 +8,13 @@
     cursor: pointer;
 }
 
+.recipeNameInput {
+    width: 100%;
+    padding: 0.35em 0.4em;
+    border-radius: 0.5em;
+    border: solid 1px var(--input-border-color);
+}
+
 @media only screen and (max-width: 450px) {
     .createRecipeForm {
         display: flex;
@@ -19,8 +26,6 @@
         padding: 0.35em 0.4em;
         width: 85%;
         transition: width 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-        border-radius: 0.5em;
-        border: solid 1px var(--input-border-color);
     }
 
     .recipeNameInput:focus {

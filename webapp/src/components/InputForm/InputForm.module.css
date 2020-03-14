@@ -83,3 +83,67 @@
     }
 
 }
+
+@media only screen and (max-width: 1000px){ 
+    .inputListItem {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        grid-template-areas: 
+        "input-name delete-btn"
+        "input input";
+    }
+
+    .addInputBtn {
+        display: block;
+        padding: 0.5em 0.5em;
+        margin: 0 0 0 auto;
+    }
+
+    .inputLabel {
+        grid-area: input-name;
+    }
+
+        
+    .input {
+        grid-area: input;
+        margin: 0 0 0.5em 0;
+        padding: 0.35em 0.4em;
+        border-radius: 0.5em;
+    }
+
+    .input:focus {
+        width: 100%;
+    }
+
+    textarea.input {
+        resize: none;
+        width: 85%;
+        height: 4em;
+        font-family: inherit;
+        grid-column-end: -1;
+        /* transition: grid-column-end 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95); */
+        transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    }
+
+    textarea.input:focus {
+        height: 7em;
+        /* grid-column-end: -2; */
+    }
+    
+    .deleteInputBtn {
+        grid-area: delete-btn;
+        justify-self: end;
+        padding: 0;
+        width: 10px;
+        height: 10px;
+        text-align: center;
+        background: none;
+        height: 1.5em;
+        border: none;
+        font-size: 1.5em;
+        /* font-weight: bold; */
+    }
+
+}

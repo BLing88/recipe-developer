@@ -21,7 +21,9 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
           <p>Error loading recipes. Try again.</p>
         </section>
       ) : null}
-
+      <section className={styles.noRecipesMsg}>
+        <p>You have no recipes!</p>
+      </section>
       {!loading &&
         !error &&
         (recipes && recipes.length ? (
@@ -39,7 +41,9 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
             ))}
           </ul>
         ) : (
-          <div className={styles.noRecipesMessage}>You have no recipes</div>
+          <section className={styles.noRecipesMsg}>
+            <p>You have no recipes</p>
+          </section>
         ))}
     </article>
   );

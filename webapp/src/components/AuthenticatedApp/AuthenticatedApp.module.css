@@ -6,7 +6,7 @@
     color: var(--primary-color);
     font-weight: bold;
     padding: 0 0.5em;
-    margin-top: 0.5em;
+    margin-top: 1em;
 }
 
 @media only screen and (max-width: 450px) {
@@ -14,7 +14,6 @@
         display: flex;
         height: 100vh;
         flex-direction: column;
-        /* justify-content: space-around; */
     }
 
     .navbar{
@@ -45,5 +44,14 @@
 @media only screen and (min-width: 800px) {
     .mainContent {
         padding: 3em 10em;
+        /* width: 900px; */
+        margin: 0 auto;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    .mainContent {
+        padding: 3em 0;
+        width: 800px;
+        margin: 0 auto;
     }
 }

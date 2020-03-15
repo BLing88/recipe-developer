@@ -29,18 +29,6 @@ import {
   buildRecipe,
 } from "../../utils/recipe";
 
-export const arraysHaveSameElementsInOrder = (a, b) => {
-  if (a.length !== b.length) {
-    return false;
-  }
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) {
-      return false;
-    }
-  }
-  return true;
-};
-
 const projectRecipe = augmentedRecipe => {
   return {
     authorId: authorOfRecipe(augmentedRecipe),
@@ -152,52 +140,16 @@ const AuthenticatedApp = () => {
   };
 
   const updateRecipeHandler = async (recipe, newRecipe) => {
-    const oldRecipeName = nameOfRecipe(recipe);
-    const newRecipeName = nameOfRecipe(newRecipe);
-    const oldIngredients = ingredientsOfRecipe(recipe);
-    const newIngredients = ingredientsOfRecipe(newRecipe);
-    const oldInstructions = instructionsOfRecipe(recipe);
-    const newInstructions = instructionsOfRecipe(newRecipe);
-    const oldNotes = notesOfRecipe(recipe);
-    const newNotes = notesOfRecipe(newRecipe);
-
-    const recipeName = newRecipeName !== oldRecipeName ? newRecipeName : null;
-    const ingredients = !arraysHaveSameElementsInOrder(
-      oldIngredients.map(getIngredientOf),
-      newIngredients.map(getIngredientOf)
-    )
-      ? newIngredients
-      : null;
-    const instructions = !arraysHaveSameElementsInOrder(
-      oldInstructions.map(getInstructionOf),
-      newInstructions.map(getInstructionOf)
-    )
-      ? newInstructions
-      : null;
-    const notes = !arraysHaveSameElementsInOrder(
-      oldNotes.map(getNoteOf),
-      newNotes.map(getNoteOf)
-    )
-      ? newNotes
-      : null;
-
-    const updatedRecipe = {
-      authorId: authorOfRecipe(recipe),
-      recipeId: idOfRecipe(recipe),
-      recipeName,
-      ingredients,
-      instructions,
-      notes,
-    };
-    const updateResult = await updateRecipe({ variables: updatedRecipe });
-
-    if (updateResult.data) {
+    try {
+      await updateRecipe({ variables: newRecipe });
       refetchRecipe({
         variables: {
           authorId: authorOfRecipe(recipe),
           recipeId: idOfRecipe(recipe),
         },
       });
+    } catch (e) {
+      console.error(e);
     }
   };
 

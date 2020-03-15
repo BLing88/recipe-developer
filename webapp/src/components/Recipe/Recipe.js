@@ -24,6 +24,18 @@ import {
 } from "../../utils/recipe";
 import { InputForm } from "../InputForm";
 
+const arraysHaveSameElementsInOrder = (a, b) => {
+  if (a.length !== b.length) {
+    return false;
+  }
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const EDITING_NAME = "EDITING_NAME";
 const UPDATE_RECIPE_NAME_INPUT = "UPDATE_RECIPE_NAME_INPUT";
 const SHOW_MISSING_RECIPE_NAME = "SHOW_MISSING_RECIPE_NAME";
@@ -267,19 +279,56 @@ const Recipe = ({
         dispatch({ type: HIDE_EMPTY_INPUTS_MESSAGE });
       }
     } else {
-      const updatedRecipe = {
-        authorId: authorOfRecipe(recipe),
-        recipeId: idOfRecipe(recipe),
-        recipeName: state.recipeName,
-        ingredients: state.ingredients.filter(
-          ingredient => getIngredientOf(ingredient) !== ""
-        ),
-        instructions: state.instructions.filter(
-          instruction => getInstructionOf(instruction) !== ""
-        ),
-        notes: state.notes.filter(note => getNoteOf(note) !== ""),
-      };
-      updateHandler(recipe, updatedRecipe);
+      const oldRecipeName = nameOfRecipe(recipe);
+      const newRecipeName = state.recipeName;
+      const oldIngredients = ingredientsOfRecipe(recipe);
+      const newIngredients = state.ingredients.filter(
+        ingredient => getIngredientOf(ingredient) !== ""
+      );
+      const oldInstructions = instructionsOfRecipe(recipe);
+      const newInstructions = state.instructions.filter(
+        instruction => getInstructionOf(instruction) !== ""
+      );
+      const oldNotes = notesOfRecipe(recipe);
+      const newNotes = state.notes.filter(note => getNoteOf(note) !== "");
+
+      const recipeName = newRecipeName !== oldRecipeName ? newRecipeName : null;
+      const ingredients = !arraysHaveSameElementsInOrder(
+        oldIngredients.map(getIngredientOf),
+        newIngredients.map(getIngredientOf)
+      )
+        ? newIngredients
+        : null;
+      const instructions = !arraysHaveSameElementsInOrder(
+        oldInstructions.map(getInstructionOf),
+        newInstructions.map(getInstructionOf)
+      )
+        ? newInstructions
+        : null;
+      const notes = !arraysHaveSameElementsInOrder(
+        oldNotes.map(getNoteOf),
+        newNotes.map(getNoteOf)
+      )
+        ? newNotes
+        : null;
+
+      if (
+        ingredients === null &&
+        instructions === null &&
+        notes === null &&
+        recipeName === null
+      ) {
+      } else {
+        const updatedRecipe = {
+          authorId: authorOfRecipe(recipe),
+          recipeId: idOfRecipe(recipe),
+          recipeName,
+          ingredients,
+          instructions,
+          notes,
+        };
+        updateHandler(recipe, updatedRecipe);
+      }
     }
   };
 

@@ -1,5 +1,6 @@
 .navbar {
     --navbar-height: 2.5em;
+    --navbar-height-desktop: 3.5em;
 }
 
 .navbarItems {
@@ -54,29 +55,26 @@
     .navbar {
         display: flex;
         flex-direction: row;
-        height: 3em;
+        height: var(--navbar-height-desktop);
         justify-content: flex-end;
+        background: var(--primary-color);
     }
 
     .navbarItems {
         width: 50vw;
         height: 100%;
-        /* justify-content: flex-start; */
-        /* border: solid 1px black; */
     }
     
     .navbarItem {
         flex: 1 1 auto;
         border: none;
+        font-weight: bold;
+        font-size: 0.95em;
         cursor: pointer;
+        background: var(--primary-color);
     }
-    
+
     .navbarItem:hover {
-        background: aqua;
+        border-bottom: solid var(--accent-color);
     }
-    
 }
-
-/* @media only screen and (min-width: 900px) {
-
-} */

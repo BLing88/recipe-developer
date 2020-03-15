@@ -22,19 +22,8 @@ import {
   ingredientsOfRecipe,
   notesOfRecipe,
 } from "../../utils/recipe";
+import { arraysHaveSameElementsInOrder } from "../../utils/arraysHaveSameElementsInOrder";
 import { InputForm } from "../InputForm";
-
-const arraysHaveSameElementsInOrder = (a, b) => {
-  if (a.length !== b.length) {
-    return false;
-  }
-  for (let i = 0; i < a.length; i++) {
-    if (a[i] !== b[i]) {
-      return false;
-    }
-  }
-  return true;
-};
 
 const EDITING_NAME = "EDITING_NAME";
 const UPDATE_RECIPE_NAME_INPUT = "UPDATE_RECIPE_NAME_INPUT";

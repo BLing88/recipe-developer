@@ -19,7 +19,21 @@
 
 .input {
     grid-area: input;
+    font-family: inherit;
     border: solid 1px var(--input-border-color);
+    resize: none;
+    margin: 0 0 0.5em 0;
+    padding: 0.35em 0.4em;
+    border-radius: 0.5em;
+    width: 85%;
+    height: 4em;
+    font-family: inherit;
+    transition: width 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.input:focus {
+    width: 100%
 }
 
 .deleteInputBtn, .addInputBtn {
@@ -36,55 +50,16 @@
 
 .deleteInputBtn {
     grid-area: delete-btn;
+    padding: 0;
+    background: none;
+    height: 1.5em;
+    border: none;
+    font-size: 1.5em;
+    justify-self: end;
 }
 
 .deleteInputBtn:hover {
     color: var(--accent-color);
-}
-
-@media only screen and (max-width: 450px){ 
-    .addInputBtn {
-        display: block;
-        padding: 0.5em 0.5em;
-        margin: 0 0 0 auto;
-    }
-        
-    .input {
-        margin: 0 0 0.5em 0;
-        padding: 0.35em 0.4em;
-        border-radius: 0.5em;
-        /* transition: width 1s cubic-bezier(0.445, 0.05, 0.55, 0.95); */
-    }
-
-    .input:focus {
-        width: 85%;
-    }
-
-    textarea.input {
-        resize: none;
-        width: 85%;
-        height: 4em;
-        font-family: inherit;
-        transition: width 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-        transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-    }
-
-    textarea.input:focus {
-        height: 8em;
-        width: 100%
-    }
-    
-    .deleteInputBtn {
-        padding: 0;
-        width: 10px;
-        height: 10px;
-        text-align: center;
-        background: none;
-        height: 1.5em;
-        border: none;
-        font-size: 1.5em;
-    }
-
 }
 
 @media only screen and (max-width: 1000px){ 
@@ -108,45 +83,17 @@
         grid-area: input-name;
     }
 
-        
     .input {
-        grid-area: input;
-        margin: 0 0 0.5em 0;
-        padding: 0.35em 0.4em;
-        border-radius: 0.5em;
+        height: 4em;
     }
 
     .input:focus {
-        width: 100%;
-    }
-
-    textarea.input {
-        resize: none;
-        width: 85%;
-        height: 4em;
-        font-family: inherit;
-        grid-column-end: -1;
-        /* transition: grid-column-end 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95); */
-        transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
-    }
-
-    textarea.input:focus {
         height: 7em;
-        /* grid-column-end: -2; */
     }
-    
-    .deleteInputBtn {
-        grid-area: delete-btn;
-        justify-self: end;
-        padding: 0;
-        width: 10px;
-        height: 10px;
-        text-align: center;
-        background: none;
-        height: 1.5em;
-        border: none;
-        font-size: 1.5em;
-        /* font-weight: bold; */
-    }
+}
 
+@media only screen and (min-width: 1000px) {
+    .input:focus {
+        height: 6em;
+    }
 }

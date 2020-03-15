@@ -294,7 +294,9 @@ const Recipe = ({
         </h1>
       ) : (
         <>
-          <label htmlFor="recipe-name">Recipe name:</label>
+          <label className={styles.recipeNameLabel} htmlFor="recipe-name">
+            Recipe name:
+          </label>
           <input
             className={styles.recipeNameInput}
             id="recipe-name"
@@ -315,89 +317,95 @@ const Recipe = ({
         <img src={require("../../assets/gimbap-mobile.png")} alt="gimbap" />
       </picture> */}
       {/* abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz */}
-      {!state.editIngredients ? (
-        <Ingredients
-          onClick={() => dispatch({ type: EDITING_INGREDIENTS })}
-          ingredients={ingredients}
-        />
-      ) : (
-        <InputForm
-          title={"Ingredients"}
-          objectName={"ingredient"}
-          displayName={"ingredient"}
-          displayType={"textarea"}
-          objects={state.ingredients}
-          getValueOfObject={getIngredientOf}
-          getIdOfObject={idOfIngredient}
-          inputChangeHandler={ingredientInputChangeHandler}
-          addObjectHandler={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_INGREDIENT });
-          }}
-          deleteObjectHandler={targetIndex => {
-            dispatch({
-              type: DELETE_INGREDIENT,
-              targetIngredient: targetIndex,
-            });
-          }}
-        />
-      )}
+      <div className={styles.ingredients}>
+        {!state.editIngredients ? (
+          <Ingredients
+            onClick={() => dispatch({ type: EDITING_INGREDIENTS })}
+            ingredients={ingredients}
+          />
+        ) : (
+          <InputForm
+            title={"Ingredients"}
+            objectName={"ingredient"}
+            displayName={"ingredient"}
+            displayType={"textarea"}
+            objects={state.ingredients}
+            getValueOfObject={getIngredientOf}
+            getIdOfObject={idOfIngredient}
+            inputChangeHandler={ingredientInputChangeHandler}
+            addObjectHandler={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_INGREDIENT });
+            }}
+            deleteObjectHandler={targetIndex => {
+              dispatch({
+                type: DELETE_INGREDIENT,
+                targetIngredient: targetIndex,
+              });
+            }}
+          />
+        )}
+      </div>
 
-      {!state.editInstructions ? (
-        <Instructions
-          onClick={() => dispatch({ type: EDITING_INSTRUCTIONS })}
-          instructions={instructions}
-        />
-      ) : (
-        <InputForm
-          title={"Instructions"}
-          objectName={"instruction"}
-          displayType={"textarea"}
-          displayName={"step"}
-          objects={state.instructions}
-          getValueOfObject={getInstructionOf}
-          getIdOfObject={idOfInstruction}
-          inputChangeHandler={instructionInputChangeHandler}
-          addObjectHandler={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_INSTRUCTION });
-          }}
-          deleteObjectHandler={targetIndex => {
-            dispatch({
-              type: DELETE_INSTRUCTION,
-              targetInstruction: targetIndex,
-            });
-          }}
-        />
-      )}
+      <div className={styles.instructions}>
+        {!state.editInstructions ? (
+          <Instructions
+            onClick={() => dispatch({ type: EDITING_INSTRUCTIONS })}
+            instructions={instructions}
+          />
+        ) : (
+          <InputForm
+            title={"Instructions"}
+            objectName={"instruction"}
+            displayType={"textarea"}
+            displayName={"step"}
+            objects={state.instructions}
+            getValueOfObject={getInstructionOf}
+            getIdOfObject={idOfInstruction}
+            inputChangeHandler={instructionInputChangeHandler}
+            addObjectHandler={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_INSTRUCTION });
+            }}
+            deleteObjectHandler={targetIndex => {
+              dispatch({
+                type: DELETE_INSTRUCTION,
+                targetInstruction: targetIndex,
+              });
+            }}
+          />
+        )}
+      </div>
 
-      {!state.editNotes ? (
-        <Notes
-          onClick={() => dispatch({ type: EDITING_NOTES })}
-          notes={notes}
-        />
-      ) : (
-        <InputForm
-          title={"Notes"}
-          objectName={"note"}
-          displayName={"note"}
-          displayType={"textarea"}
-          objects={state.notes}
-          getValueOfObject={getNoteOf}
-          getIdOfObject={idOfNote}
-          inputChangeHandler={noteInputChangeHandler}
-          addObjectHandler={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_NOTE });
-          }}
-          deleteObjectHandler={targetIndex => {
-            dispatch({
-              type: DELETE_NOTE,
-              targetNote: targetIndex,
-            });
-          }}
-        />
-      )}
+      <div className={styles.notes}>
+        {!state.editNotes ? (
+          <Notes
+            onClick={() => dispatch({ type: EDITING_NOTES })}
+            notes={notes}
+          />
+        ) : (
+          <InputForm
+            title={"Notes"}
+            objectName={"note"}
+            displayName={"note"}
+            displayType={"textarea"}
+            objects={state.notes}
+            getValueOfObject={getNoteOf}
+            getIdOfObject={idOfNote}
+            inputChangeHandler={noteInputChangeHandler}
+            addObjectHandler={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_NOTE });
+            }}
+            deleteObjectHandler={targetIndex => {
+              dispatch({
+                type: DELETE_NOTE,
+                targetNote: targetIndex,
+              });
+            }}
+          />
+        )}
+      </div>
 
       {state.missingRecipeName ? (
         <section className={styles.nameRequiredMsg}>

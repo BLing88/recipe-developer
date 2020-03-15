@@ -1,7 +1,6 @@
 .createRecipeForm {
     --add-and-create-button-color: rgba(99, 121, 110,0.75);
     --input-border-color: rgb(11, 162, 254, 0.5);
-    margin: 0 2em;
     display: flex;
     flex-direction: column;
 }
@@ -41,8 +40,6 @@
     align-items: center;
     color: var(--primary-color);
     font-weight: bold;
-    /* border: solid 2px var(--primary-color);
-    border-radius: 0.5em; */
     padding: 0 0.5em;
     margin-top: 0.5em;
 }
@@ -70,7 +67,66 @@
     }
 
     .createRecipeBtn {
-        /* margin: 5em 0 5em 0; */
         width: 100%
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .createRecipeForm {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        grid-template-rows: auto auto 1fr auto 4em;
+        grid-column-gap: 2em;
+        column-gap: 2em;
+        grid-template-areas: 
+          "recipe-name recipe-name" 
+          "ingredients instructions"
+          "ingredients notes"
+          "messages create-btn"
+    }
+    .recipeNameAndInput {
+        grid-area: recipe-name;
+    }
+
+    .recipe h2 {
+        cursor: pointer;
+    }
+
+    .ingredients {
+        grid-area: ingredients;
+    }
+
+    .instructions {
+        grid-area: instructions;
+    }
+    
+    .notes {
+        grid-area: notes;
+    }
+
+    .recipeNameLabel {
+        justify-self: end;
+        padding-right: 0.5em;
+    }
+
+    .recipeNameInput {
+        height: 1.5em;
+    }
+
+    .createRecipeBtn {
+        grid-area: create-btn;
+        justify-self: center;
+        width: 50%;
+        align-self: center;
+        justify-self: center;
+    } 
+
+    .nameRequiredMsg,
+    .loadingMsg,
+    .errorMsg {
+        grid-area: messages;
+        margin-top: 0.5em;
+        align-self: center;
+        height: 3em;
     }
 }

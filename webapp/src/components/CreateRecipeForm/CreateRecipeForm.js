@@ -183,82 +183,91 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
         className={styles.createRecipeForm}
         data-testid="create-recipe-form"
       >
-        <label htmlFor="recipe-name">
-          <h1 className={styles.recipeName}>Recipe name:</h1>
-        </label>
-        <input
-          className={styles.recipeNameInput}
-          id="recipe-name"
-          type="text"
-          value={state.recipeName}
-          onChange={e => {
-            e.preventDefault();
-            dispatch({ type: UPDATE_NAME_INPUT, recipeName: e.target.value });
-          }}
-          required
-        />
-        <InputForm
-          title={"Ingredients"}
-          objectName={"ingredient"}
-          displayName={"ingredient"}
-          displayType={"textarea"}
-          objects={state.ingredients}
-          getValueOfObject={getIngredientOf}
-          getIdOfObject={idOfIngredient}
-          inputChangeHandler={ingredientInputChangeHandler}
-          addObjectHandler={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_INGREDIENT });
-          }}
-          deleteObjectHandler={targetIndex => {
-            dispatch({
-              type: DELETE_INGREDIENT,
-              targetIngredient: targetIndex,
-            });
-          }}
-        />
+        <section className={styles.recipeNameAndInput}>
+          <label htmlFor="recipe-name">
+            <h1 className={styles.recipeName}>Recipe name:</h1>
+          </label>
+          <input
+            className={styles.recipeNameInput}
+            id="recipe-name"
+            type="text"
+            value={state.recipeName}
+            onChange={e => {
+              e.preventDefault();
+              dispatch({ type: UPDATE_NAME_INPUT, recipeName: e.target.value });
+            }}
+            required
+          />
+        </section>
 
-        <InputForm
-          title={"Instructions"}
-          objectName={"instruction"}
-          displayType={"textarea"}
-          displayName={"step"}
-          objects={state.instructions}
-          getValueOfObject={getInstructionOf}
-          getIdOfObject={idOfInstruction}
-          inputChangeHandler={instructionInputChangeHandler}
-          addObjectHandler={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_INSTRUCTION });
-          }}
-          deleteObjectHandler={targetIndex => {
-            dispatch({
-              type: DELETE_INSTRUCTION,
-              targetInstruction: targetIndex,
-            });
-          }}
-        />
+        <div className={styles.ingredients}>
+          <InputForm
+            title={"Ingredients"}
+            objectName={"ingredient"}
+            displayName={"ingredient"}
+            displayType={"textarea"}
+            objects={state.ingredients}
+            getValueOfObject={getIngredientOf}
+            getIdOfObject={idOfIngredient}
+            inputChangeHandler={ingredientInputChangeHandler}
+            addObjectHandler={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_INGREDIENT });
+            }}
+            deleteObjectHandler={targetIndex => {
+              dispatch({
+                type: DELETE_INGREDIENT,
+                targetIngredient: targetIndex,
+              });
+            }}
+          />
+        </div>
 
-        <InputForm
-          title={"Notes"}
-          objectName={"note"}
-          displayName={"note"}
-          displayType={"textarea"}
-          objects={state.notes}
-          getValueOfObject={getNoteOf}
-          getIdOfObject={idOfNote}
-          inputChangeHandler={noteInputChangeHandler}
-          addObjectHandler={e => {
-            e.preventDefault();
-            dispatch({ type: ADD_NOTE });
-          }}
-          deleteObjectHandler={targetIndex => {
-            dispatch({
-              type: DELETE_NOTE,
-              targetNote: targetIndex,
-            });
-          }}
-        />
+        <div className={styles.instructions}>
+          <InputForm
+            title={"Instructions"}
+            objectName={"instruction"}
+            displayType={"textarea"}
+            displayName={"step"}
+            objects={state.instructions}
+            getValueOfObject={getInstructionOf}
+            getIdOfObject={idOfInstruction}
+            inputChangeHandler={instructionInputChangeHandler}
+            addObjectHandler={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_INSTRUCTION });
+            }}
+            deleteObjectHandler={targetIndex => {
+              dispatch({
+                type: DELETE_INSTRUCTION,
+                targetInstruction: targetIndex,
+              });
+            }}
+          />
+        </div>
+
+        <div className={styles.notes}>
+          <InputForm
+            title={"Notes"}
+            objectName={"note"}
+            displayName={"note"}
+            displayType={"textarea"}
+            objects={state.notes}
+            getValueOfObject={getNoteOf}
+            getIdOfObject={idOfNote}
+            inputChangeHandler={noteInputChangeHandler}
+            addObjectHandler={e => {
+              e.preventDefault();
+              dispatch({ type: ADD_NOTE });
+            }}
+            deleteObjectHandler={targetIndex => {
+              dispatch({
+                type: DELETE_NOTE,
+                targetNote: targetIndex,
+              });
+            }}
+          />
+        </div>
 
         {state.showMissingRecipeName ? (
           <section className={styles.nameRequiredMsg}>

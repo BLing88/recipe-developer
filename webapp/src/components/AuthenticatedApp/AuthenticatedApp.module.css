@@ -9,6 +9,10 @@
     margin-top: 1em;
 }
 
+.notFoundPage {
+    font-size: 1.5em;
+}
+
 @media only screen and (max-width: 450px) {
     .authenticatedApp {
         display: flex;

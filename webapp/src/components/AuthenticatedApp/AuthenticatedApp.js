@@ -233,6 +233,12 @@ const AuthenticatedApp = () => {
               getRecipe={recipeClickHandler}
             />
           </Route>
+
+          <Route>
+            <main className={styles.notFoundPage}>
+              <p className={styles.pageNotFoundMsg}>Page not found&hellip;</p>
+            </main>
+          </Route>
         </Switch>
       </main>
     </div>

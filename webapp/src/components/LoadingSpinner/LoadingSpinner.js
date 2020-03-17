@@ -32,7 +32,7 @@ const LoadingSpinner = ({ size = DEFAULT_SIZE }) => {
   }, []);
 
   return (
-    <svg width={svgWidth} height={svgHeight}>
+    <svg data-testid="loading-spinner" width={svgWidth} height={svgHeight}>
       {/* <circle
         cx={svgWidth / 2}
         cy={svgHeight / 2}

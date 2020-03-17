@@ -421,6 +421,7 @@ const Recipe = ({
                 targetIngredient: targetIndex,
               });
             }}
+            showCancelBtn={true}
             cancelHandler={e => {
               e.preventDefault();
               dispatch({
@@ -458,6 +459,7 @@ const Recipe = ({
                 targetInstruction: targetIndex,
               });
             }}
+            showCancelBtn={true}
             cancelHandler={e => {
               e.preventDefault();
               dispatch({
@@ -495,6 +497,7 @@ const Recipe = ({
                 targetNote: targetIndex,
               });
             }}
+            showCancelBtn={true}
             cancelHandler={e => {
               e.preventDefault();
               dispatch({

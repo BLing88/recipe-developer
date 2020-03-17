@@ -77,7 +77,8 @@
 }
 
 .updatingRecipeMsg,
-.deletingRecipeMsg {
+.deletingRecipeMsg,
+.noUpdatesMsg {
     display: flex;
     flex-flow: row wrap;
     justify-content: center;
@@ -164,7 +165,8 @@
     
     .nameRequiredMsg,
     .emptyRecipeMsg,
-    .errorMsg {
+    .errorMsg,
+    .noUpdatesMsg {
         grid-area: messages;
     }
 }

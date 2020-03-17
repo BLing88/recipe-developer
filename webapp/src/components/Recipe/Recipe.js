@@ -48,6 +48,8 @@ const UPDATE_NOTES_INPUT = "UPDATE_NOTES_INPUT";
 const ADD_NOTE = "ADD_NOTE";
 const DELETE_NOTE = "DELETE_NOTE";
 
+const SHOW_NO_NEW_UPDATES_MESSAGE = "SHOW_NO_NEW_UPDATES_MESSAGE";
+
 const SHOW_EMPTY_INPUTS_MESSAGE = "SHOW_EMPTY_INPUTS_MESSAGE";
 const HIDE_EMPTY_INPUTS_MESSAGE = "HIDE_EMPTY_INPUTS_MESSAGE";
 const haveEmptyInputs = (a, b, c) => {
@@ -69,6 +71,7 @@ const initialState = recipe => {
     notes: [...notesOfRecipe(recipe)],
     missingRecipeName: false,
     showEmptyInputsMessage: false,
+    showNoNewUpdatesMessage: false,
   };
 };
 
@@ -84,6 +87,9 @@ const recipeReducer = (state, action) => {
         ...state,
         editName: false,
         recipeName: action.recipeName,
+        showNoNewUpdatesMessage:
+          state.showNoNewUpdatesMessage &&
+          (state.editInstructions || state.editNotes || state.editIngredients),
       };
     case UPDATE_RECIPE_NAME_INPUT:
       return {
@@ -100,6 +106,9 @@ const recipeReducer = (state, action) => {
         ...state,
         ingredients: action.ingredients,
         editIngredients: false,
+        showNoNewUpdatesMessage:
+          state.showNoNewUpdatesMessage &&
+          (state.editInstructions || state.editNotes || state.editName),
       };
     case UPDATE_INGREDIENTS_INPUT:
       return {
@@ -137,6 +146,9 @@ const recipeReducer = (state, action) => {
         ...state,
         editInstructions: false,
         instructions: action.instructions,
+        showNoNewUpdatesMessage:
+          state.showNoNewUpdatesMessage &&
+          (state.editIngredients || state.editNotes || state.editName),
       };
     case UPDATE_INSTRUCTIONS_INPUT:
       return {
@@ -174,6 +186,9 @@ const recipeReducer = (state, action) => {
         ...state,
         editNotes: false,
         notes: action.notes,
+        showNoNewUpdatesMessage:
+          state.showNoNewUpdatesMessage &&
+          (state.editInstructions || state.editName || state.editIngredients),
       };
     case UPDATE_NOTES_INPUT:
       return {
@@ -215,6 +230,11 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         showEmptyInputsMessage: false,
+      };
+    case SHOW_NO_NEW_UPDATES_MESSAGE:
+      return {
+        ...state,
+        showNoNewUpdatesMessage: true,
       };
     default:
       return {
@@ -335,6 +355,7 @@ const Recipe = ({
         notes === null &&
         recipeName === null
       ) {
+        dispatch({ type: SHOW_NO_NEW_UPDATES_MESSAGE });
       } else {
         const updatedRecipe = {
           authorId: authorOfRecipe(recipe),
@@ -540,6 +561,12 @@ const Recipe = ({
         <section className={styles.deletingRecipeMsg}>
           <p>Deleting recipe&hellip;</p>
           <LoadingSpinner size="SMALL" />
+        </section>
+      ) : null}
+
+      {state.showNoNewUpdatesMessage ? (
+        <section className={styles.noUpdatesMsg}>
+          <p>Nothing to update</p>
         </section>
       ) : null}
 

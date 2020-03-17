@@ -14,7 +14,6 @@ import { ApolloProvider } from "@apollo/react-hooks";
 const App = () => {
   const {
     loading,
-    user,
     isAuthenticated,
     loginWithRedirect,
     getTokenSilently,
@@ -24,7 +23,7 @@ const App = () => {
     return <SplashPage />;
   }
 
-  if (!user) {
+  if (!isAuthenticated) {
     return (
       <LandingPage
         loginWithRedirect={loginWithRedirect}

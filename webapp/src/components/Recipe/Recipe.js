@@ -26,20 +26,24 @@ import { arraysHaveSameElementsInOrder } from "../../utils/arraysHaveSameElement
 import { InputForm } from "../InputForm";
 
 const EDITING_NAME = "EDITING_NAME";
+const CANCEL_EDITING_NAME = "CANCEL_EDITING_NAME";
 const UPDATE_RECIPE_NAME_INPUT = "UPDATE_RECIPE_NAME_INPUT";
 const SHOW_MISSING_RECIPE_NAME = "SHOW_MISSING_RECIPE_NAME";
 
 const EDITING_INGREDIENTS = "EDITING_INGREDIENTS";
+const CANCEL_EDITING_INGREDIENTS = "CANCEL_EDITING_INGREDIENTS";
 const UPDATE_INGREDIENTS_INPUT = "UPDATE_INGREDIENTS_INPUT";
 const ADD_INGREDIENT = "ADD_INGREDIENT";
 const DELETE_INGREDIENT = "DELETE_INGREDIENT";
 
 const EDITING_INSTRUCTIONS = "EDITING_INSTRUCTIONS";
+const CANCEL_EDITING_INSTRUCTIONS = "CANCEL_EDITING_INSTRUCTIONS";
 const UPDATE_INSTRUCTIONS_INPUT = "UPDATE_INSTRUCTIONS_INPUT";
 const ADD_INSTRUCTION = "ADD_INSTRUCTION";
 const DELETE_INSTRUCTION = "DELETE_INSTRUCTION";
 
 const EDITING_NOTES = "EDITING_NOTES";
+const CANCEL_EDITING_NOTES = "CANCEL_EDITING_NOTES";
 const UPDATE_NOTES_INPUT = "UPDATE_NOTES_INPUT";
 const ADD_NOTE = "ADD_NOTE";
 const DELETE_NOTE = "DELETE_NOTE";
@@ -75,6 +79,12 @@ const recipeReducer = (state, action) => {
         ...state,
         editName: true,
       };
+    case CANCEL_EDITING_NAME:
+      return {
+        ...state,
+        editName: false,
+        recipeName: action.recipeName,
+      };
     case UPDATE_RECIPE_NAME_INPUT:
       return {
         ...state,
@@ -84,6 +94,12 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         editIngredients: true,
+      };
+    case CANCEL_EDITING_INGREDIENTS:
+      return {
+        ...state,
+        ingredients: action.ingredients,
+        editIngredients: false,
       };
     case UPDATE_INGREDIENTS_INPUT:
       return {
@@ -116,6 +132,12 @@ const recipeReducer = (state, action) => {
         ...state,
         editInstructions: true,
       };
+    case CANCEL_EDITING_INSTRUCTIONS:
+      return {
+        ...state,
+        editInstructions: false,
+        instructions: action.instructions,
+      };
     case UPDATE_INSTRUCTIONS_INPUT:
       return {
         ...state,
@@ -146,6 +168,12 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         editNotes: true,
+      };
+    case CANCEL_EDITING_NOTES:
+      return {
+        ...state,
+        editNotes: false,
+        notes: action.notes,
       };
     case UPDATE_NOTES_INPUT:
       return {
@@ -331,7 +359,7 @@ const Recipe = ({
           {recipeName}
         </h1>
       ) : (
-        <>
+        <div className={styles.recipeNameHeader}>
           <label className={styles.recipeNameLabel} htmlFor="recipe-name">
             Recipe name:
           </label>
@@ -349,7 +377,19 @@ const Recipe = ({
             }}
             required
           />
-        </>
+          <button
+            className={styles.cancelEditNameBtn}
+            onClick={e => {
+              e.preventDefault();
+              dispatch({
+                type: CANCEL_EDITING_NAME,
+                recipeName: nameOfRecipe(recipe),
+              });
+            }}
+          >
+            Cancel edit
+          </button>
+        </div>
       )}
       {/* <picture className="recipe-image">
         <img src={require("../../assets/gimbap-mobile.png")} alt="gimbap" />
@@ -379,6 +419,13 @@ const Recipe = ({
               dispatch({
                 type: DELETE_INGREDIENT,
                 targetIngredient: targetIndex,
+              });
+            }}
+            cancelHandler={e => {
+              e.preventDefault();
+              dispatch({
+                type: CANCEL_EDITING_INGREDIENTS,
+                ingredients: ingredientsOfRecipe(recipe),
               });
             }}
           />
@@ -411,6 +458,13 @@ const Recipe = ({
                 targetInstruction: targetIndex,
               });
             }}
+            cancelHandler={e => {
+              e.preventDefault();
+              dispatch({
+                type: CANCEL_EDITING_INSTRUCTIONS,
+                instructions: instructionsOfRecipe(recipe),
+              });
+            }}
           />
         )}
       </div>
@@ -439,6 +493,13 @@ const Recipe = ({
               dispatch({
                 type: DELETE_NOTE,
                 targetNote: targetIndex,
+              });
+            }}
+            cancelHandler={e => {
+              e.preventDefault();
+              dispatch({
+                type: CANCEL_EDITING_NOTES,
+                notes: notesOfRecipe(recipe),
               });
             }}
           />

@@ -3,6 +3,25 @@
     --input-border-color:rgba(11, 162, 254, 0.5);
 }
 
+.sectionHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancelEditBtn {
+    background: var(--input-border-color);
+    font-size: 0.75em;
+    font-weight: bold;
+    border: solid 1px var(--add-and-update-button-color);
+    border-radius: 4px;
+} 
+
+.cancelEditBtn:hover {
+    cursor: pointer;
+} 
+
 .inputListItem {
     display: grid;
     align-items: center;

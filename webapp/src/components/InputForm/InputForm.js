@@ -13,10 +13,16 @@ const InputForm = ({
   inputChangeHandler,
   addObjectHandler,
   deleteObjectHandler,
+  cancelHandler,
 }) => {
   return (
     <section className={styles.inputForm}>
-      <h2 className={styles.title}>{title}</h2>
+      <div className={styles.sectionHeader}>
+        <h2 className={styles.title}>{title}</h2>{" "}
+        <button className={styles.cancelEditBtn} onClick={cancelHandler}>
+          Cancel edit
+        </button>
+      </div>
       <ul className={styles.inputList}>
         {objects.map((object, i) => {
           return (

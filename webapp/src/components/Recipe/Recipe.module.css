@@ -12,7 +12,27 @@
 .recipe li {
     margin-bottom: 0.5em;
 }
+
+.recipeNameHeader {
+    display: grid;
+    grid-template-columns: auto minmax(7em,1fr) auto;
+    grid-template-areas: 
+      "label input cancel-btn";
+    grid-gap: 0.5em;
+}
+
+.cancelEditNameBtn {
+    grid-area: cancel-btn;
+    align-self: start;
+    background: var(--input-border-color);
+    font-size: 0.75em;
+    font-weight: bold;
+    border: solid 1px var(--add-and-update-button-color);
+    border-radius: 4px;
+} 
+
 .recipeNameInput {
+    grid-area: input;
     margin: 0 0 0.5em 0;
     padding: 0.35em 0.4em;
     border-radius: 0.5em;
@@ -20,6 +40,7 @@
 }
 
 .recipeNameLabel {
+    grid-area: label;
     font-weight: bold;
     align-self: start;
 }
@@ -92,8 +113,11 @@
           "delete-btn update-btn"
     }
 
-    .recipeName {
+    .recipeNameHeader {
         grid-area: recipe-name;
+    }
+
+    .recipeName {
         cursor: pointer;
     }
 

@@ -4,6 +4,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1em 1.5em;
 }
 
 .appTitle { 
@@ -24,4 +25,21 @@
 
 .recipeImage{
   margin-bottom: 1em;
+}
+
+.appTitle {
+  line-height: 1em;
+}
+
+@media only screen and (min-width: 400px) {
+  .loginBtn {
+    width: 300px;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .landingPage {
+    padding: 3em 10em;
+    margin: 0 auto;
+  }
 }

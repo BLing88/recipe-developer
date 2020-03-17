@@ -225,7 +225,7 @@ const AuthenticatedApp = () => {
             </>
           </Route>
 
-          <Route>
+          <Route path="/" exact>
             <UserRecipesList
               loading={getAllRecipesLoading}
               error={getAllRecipesError}

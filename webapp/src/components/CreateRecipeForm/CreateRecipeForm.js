@@ -269,22 +269,24 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
           />
         </div>
 
-        {state.showMissingRecipeName ? (
-          <section className={styles.nameRequiredMsg}>
-            <p>Recipe name required</p>
-          </section>
-        ) : null}
-        {loading ? (
-          <section className={styles.loadingMsg}>
-            <p>Creating recipe&hellip;</p>
-            <LoadingSpinner size={"SMALL"} />
-          </section>
-        ) : null}
-        {error ? (
-          <section className={styles.errorMsg}>
-            <p>Error creating recipe. Try again.</p>
-          </section>
-        ) : null}
+        <div className={styles.messages}>
+          {state.showMissingRecipeName ? (
+            <section className={styles.nameRequiredMsg}>
+              <p>Recipe name required</p>
+            </section>
+          ) : null}
+          {loading ? (
+            <section className={styles.loadingMsg}>
+              <p>Creating recipe&hellip;</p>
+              <LoadingSpinner size={"SMALL"} />
+            </section>
+          ) : null}
+          {error ? (
+            <section className={styles.errorMsg}>
+              <p>Error creating recipe. Try again.</p>
+            </section>
+          ) : null}
+        </div>
         <button
           className={styles.createRecipeBtn}
           onClick={e => {

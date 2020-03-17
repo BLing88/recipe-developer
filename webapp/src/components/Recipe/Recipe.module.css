@@ -110,6 +110,7 @@
           "recipe-name recipe-name" 
           "ingredients instructions"
           "ingredients notes"
+          ". messages"
           "delete-btn update-btn"
     }
 
@@ -159,5 +160,11 @@
         /* margin: 0; */
         align-self: center;
         justify-self: center;
+    }
+    
+    .nameRequiredMsg,
+    .emptyRecipeMsg,
+    .errorMsg {
+        grid-area: messages;
     }
 }

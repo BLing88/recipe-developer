@@ -124,9 +124,13 @@
     .nameRequiredMsg,
     .loadingMsg,
     .errorMsg {
-        grid-area: messages;
+        
         margin-top: 0.5em;
-        align-self: center;
-        height: 3em;
+        /* align-self: center; */
+        /* height: 3em; */
+    }
+
+    .messages{
+        grid-area: messages;
     }
 }

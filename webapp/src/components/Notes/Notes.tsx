@@ -5,7 +5,7 @@ const Notes = ({
   notes,
   onClick,
 }: {
-  notes: Recipe.Note[];
+  notes: Recipes.Note[];
   onClick: () => void;
 }) => {
   return (

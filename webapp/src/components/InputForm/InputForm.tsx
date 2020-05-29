@@ -6,14 +6,14 @@ interface InputFormProps {
   objectName: string;
   displayName: string;
   displayType: "text" | "textarea";
-  objects: Recipe.ComponentArray;
-  getValueOfObject: (x: Recipe.Component) => string;
-  getIdOfObject: (x: Recipe.Component) => string;
+  objects: Recipes.ComponentArray;
+  getValueOfObject: (x: Recipes.Component) => string;
+  getIdOfObject: (x: Recipes.Component) => string;
   inputChangeHandler: (
     e:
       | React.ChangeEvent<HTMLTextAreaElement>
       | React.ChangeEvent<HTMLInputElement>,
-    x: Recipe.Component,
+    x: Recipes.Component,
     i: number
   ) => void;
   addObjectHandler: (

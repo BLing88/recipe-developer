@@ -7,7 +7,7 @@ const Ingredients = ({
   ingredients,
   onClick,
 }: {
-  ingredients: Recipe.Ingredient[];
+  ingredients: Recipes.Ingredient[];
   onClick: () => void;
 }) => (
   <section className="ingredients">

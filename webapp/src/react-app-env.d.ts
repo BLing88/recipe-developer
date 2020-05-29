@@ -1,6 +1,6 @@
 /// <reference types="react-scripts" />
 
-namespace Recipe {
+namespace Recipes {
   interface Ingredient {
     ingredient: string;
     ingredientId: string;

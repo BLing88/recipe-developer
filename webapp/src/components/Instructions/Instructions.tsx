@@ -6,7 +6,7 @@ const Instructions = ({
   instructions,
   onClick,
 }: {
-  instructions: Recipe.Instruction[];
+  instructions: Recipes.Instruction[];
   onClick: () => void;
 }) => (
   <section className="instructions">

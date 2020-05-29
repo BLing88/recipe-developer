@@ -1,8 +1,3 @@
-// type RecipeComponents =
-//   | Recipe.Ingredient[]
-//   | Recipe.Instruction[]
-//   | Recipe.Note[];
-
 export const arraysHaveSameElementsInOrder = (a: any[], b: any[]) => {
   if (a.length !== b.length) {
     return false;

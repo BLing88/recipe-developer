@@ -1,5 +1,4 @@
 import React, { useReducer } from "react";
-import PropTypes from "prop-types";
 import styles from "./Recipe.module.css";
 import { Ingredients } from "../Ingredients";
 import { Instructions } from "../Instructions";
@@ -24,6 +23,7 @@ import {
 } from "../../utils/recipe";
 import { arraysHaveSameElementsInOrder } from "../../utils/arraysHaveSameElementsInOrder";
 import { InputForm } from "../InputForm";
+import { ApolloError } from "apollo-boost";
 
 const EDITING_NAME = "EDITING_NAME";
 const CANCEL_EDITING_NAME = "CANCEL_EDITING_NAME";
@@ -52,14 +52,29 @@ const SHOW_NO_NEW_UPDATES_MESSAGE = "SHOW_NO_NEW_UPDATES_MESSAGE";
 
 const SHOW_EMPTY_INPUTS_MESSAGE = "SHOW_EMPTY_INPUTS_MESSAGE";
 const HIDE_EMPTY_INPUTS_MESSAGE = "HIDE_EMPTY_INPUTS_MESSAGE";
-const haveEmptyInputs = (a, b, c) => {
+const haveEmptyInputs = (a: string[], b: string[], c: string[]) => {
   return (
-    a.filter(a => a !== "").length === 0 &&
-    b.filter(b => b !== "").length === 0 &&
-    c.filter(c => c !== "").length === 0
+    a.filter((a) => a !== "").length === 0 &&
+    b.filter((b) => b !== "").length === 0 &&
+    c.filter((c) => c !== "").length === 0
   );
 };
-const initialState = recipe => {
+
+interface DisplayRecipe {
+  recipeName: string;
+  ingredients: Recipes.Ingredient[];
+  instructions: Recipes.Instruction[];
+  notes: Recipes.Note[];
+  editName: boolean;
+  editIngredients: boolean;
+  editInstructions: boolean;
+  editNotes: boolean;
+  showEmptyInputsMessage: boolean;
+  showNoNewUpdatesMessage: boolean;
+  missingRecipeName: boolean;
+}
+
+const initialState = (recipe: Recipes.Recipe): DisplayRecipe => {
   return {
     editName: false,
     recipeName: nameOfRecipe(recipe),
@@ -75,7 +90,27 @@ const initialState = recipe => {
   };
 };
 
-const recipeReducer = (state, action) => {
+interface RecipeReducerAction {
+  type: string;
+  recipeName?: string;
+  ingredient?: Recipes.Ingredient;
+  ingredients?: Recipes.Ingredient[];
+  instruction?: Recipes.Instruction;
+  instructions?: Recipes.Instruction[];
+  note?: Recipes.Note;
+  notes?: Recipes.Note[];
+  ingredientNumber?: number;
+  instructionNumber?: number;
+  noteNumber?: number;
+  targetIngredient?: number;
+  targetInstruction?: number;
+  targetNote?: number;
+}
+
+const recipeReducer = (
+  state: DisplayRecipe,
+  action: RecipeReducerAction
+): DisplayRecipe => {
   switch (action.type) {
     case EDITING_NAME:
       return {
@@ -86,7 +121,7 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         editName: false,
-        recipeName: action.recipeName,
+        recipeName: action.recipeName!,
         showNoNewUpdatesMessage:
           state.showNoNewUpdatesMessage &&
           (state.editInstructions || state.editNotes || state.editIngredients),
@@ -94,7 +129,7 @@ const recipeReducer = (state, action) => {
     case UPDATE_RECIPE_NAME_INPUT:
       return {
         ...state,
-        recipeName: action.recipeName,
+        recipeName: action.recipeName!,
       };
     case EDITING_INGREDIENTS:
       return {
@@ -104,7 +139,7 @@ const recipeReducer = (state, action) => {
     case CANCEL_EDITING_INGREDIENTS:
       return {
         ...state,
-        ingredients: action.ingredients,
+        ingredients: action.ingredients!,
         editIngredients: false,
         showNoNewUpdatesMessage:
           state.showNoNewUpdatesMessage &&
@@ -115,8 +150,8 @@ const recipeReducer = (state, action) => {
         ...state,
         ingredients: [
           ...state.ingredients.slice(0, action.ingredientNumber),
-          action.ingredient,
-          ...state.ingredients.slice(action.ingredientNumber + 1),
+          action.ingredient!,
+          ...state.ingredients.slice(action.ingredientNumber! + 1),
         ],
       };
     case ADD_INGREDIENT:
@@ -133,7 +168,7 @@ const recipeReducer = (state, action) => {
             ? [buildIngredient("")]
             : [
                 ...state.ingredients.slice(0, action.targetIngredient),
-                ...state.ingredients.slice(action.targetIngredient + 1),
+                ...state.ingredients.slice(action.targetIngredient! + 1),
               ],
       };
     case EDITING_INSTRUCTIONS:
@@ -145,7 +180,7 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         editInstructions: false,
-        instructions: action.instructions,
+        instructions: action.instructions!,
         showNoNewUpdatesMessage:
           state.showNoNewUpdatesMessage &&
           (state.editIngredients || state.editNotes || state.editName),
@@ -155,8 +190,8 @@ const recipeReducer = (state, action) => {
         ...state,
         instructions: [
           ...state.instructions.slice(0, action.instructionNumber),
-          action.instruction,
-          ...state.instructions.slice(action.instructionNumber + 1),
+          action.instruction!,
+          ...state.instructions.slice(action.instructionNumber! + 1),
         ],
       };
     case ADD_INSTRUCTION:
@@ -173,7 +208,7 @@ const recipeReducer = (state, action) => {
             ? [buildInstruction("")]
             : [
                 ...state.instructions.slice(0, action.targetInstruction),
-                ...state.instructions.slice(action.targetInstruction + 1),
+                ...state.instructions.slice(action.targetInstruction! + 1),
               ],
       };
     case EDITING_NOTES:
@@ -185,7 +220,7 @@ const recipeReducer = (state, action) => {
       return {
         ...state,
         editNotes: false,
-        notes: action.notes,
+        notes: action.notes!,
         showNoNewUpdatesMessage:
           state.showNoNewUpdatesMessage &&
           (state.editInstructions || state.editName || state.editIngredients),
@@ -195,8 +230,8 @@ const recipeReducer = (state, action) => {
         ...state,
         notes: [
           ...state.notes.slice(0, action.noteNumber),
-          action.note,
-          ...state.notes.slice(action.noteNumber + 1),
+          action.note!,
+          ...state.notes.slice(action.noteNumber! + 1),
         ],
       };
     case ADD_NOTE:
@@ -213,7 +248,7 @@ const recipeReducer = (state, action) => {
             ? [buildNote("")]
             : [
                 ...state.notes.slice(0, action.targetNote),
-                ...state.notes.slice(action.targetNote + 1),
+                ...state.notes.slice(action.targetNote! + 1),
               ],
       };
     case SHOW_MISSING_RECIPE_NAME:
@@ -243,6 +278,25 @@ const recipeReducer = (state, action) => {
   }
 };
 
+interface UpdatedRecipe {
+  authorId: string;
+  recipeId: string;
+  recipeName: string | null;
+  ingredients: Recipes.Ingredient[] | null;
+  instructions: Recipes.Instruction[] | null;
+  notes: Recipes.Note[] | null;
+}
+
+interface RecipeProps {
+  recipe: Recipes.Recipe;
+  updateHandler: (recipe: Recipes.Recipe, newRecipe: UpdatedRecipe) => void;
+  updateRecipeError: ApolloError | undefined;
+  updateRecipeLoading: boolean;
+  deleteHandler: (recipe: Recipes.Recipe) => void;
+  deleteRecipeError: ApolloError | undefined;
+  deleteRecipeLoading: boolean;
+}
+
 const Recipe = ({
   recipe,
   updateHandler,
@@ -251,11 +305,17 @@ const Recipe = ({
   deleteHandler,
   deleteRecipeError,
   deleteRecipeLoading,
-}) => {
+}: RecipeProps) => {
   const { recipeName, ingredients, instructions, notes } = recipe;
   const [state, dispatch] = useReducer(recipeReducer, recipe, initialState);
 
-  const ingredientInputChangeHandler = (e, ingredient, index) => {
+  const ingredientInputChangeHandler = (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+    ingredient: Recipes.Ingredient,
+    index: number
+  ) => {
     e.preventDefault();
     const newIngredient = ingredient.ingredientId
       ? {
@@ -270,7 +330,13 @@ const Recipe = ({
     });
   };
 
-  const instructionInputChangeHandler = (e, instruction, index) => {
+  const instructionInputChangeHandler = (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+    instruction: Recipes.Instruction,
+    index: number
+  ) => {
     e.preventDefault();
     const newInstruction = idOfInstruction(instruction)
       ? {
@@ -285,7 +351,13 @@ const Recipe = ({
     });
   };
 
-  const noteInputChangeHandler = (e, note, index) => {
+  const noteInputChangeHandler = (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+    note: Recipes.Note,
+    index: number
+  ) => {
     e.preventDefault();
     const newNote = idOfNote(note)
       ? {
@@ -300,7 +372,9 @@ const Recipe = ({
     });
   };
 
-  const submitHandler = async e => {
+  const submitHandler = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     if (!state.recipeName) {
       dispatch({ type: SHOW_MISSING_RECIPE_NAME });
@@ -320,14 +394,14 @@ const Recipe = ({
       const newRecipeName = state.recipeName;
       const oldIngredients = ingredientsOfRecipe(recipe);
       const newIngredients = state.ingredients.filter(
-        ingredient => getIngredientOf(ingredient) !== ""
+        (ingredient) => getIngredientOf(ingredient) !== ""
       );
       const oldInstructions = instructionsOfRecipe(recipe);
       const newInstructions = state.instructions.filter(
-        instruction => getInstructionOf(instruction) !== ""
+        (instruction) => getInstructionOf(instruction) !== ""
       );
       const oldNotes = notesOfRecipe(recipe);
-      const newNotes = state.notes.filter(note => getNoteOf(note) !== "");
+      const newNotes = state.notes.filter((note) => getNoteOf(note) !== "");
 
       const recipeName = newRecipeName !== oldRecipeName ? newRecipeName : null;
       const ingredients = !arraysHaveSameElementsInOrder(
@@ -357,7 +431,7 @@ const Recipe = ({
       ) {
         dispatch({ type: SHOW_NO_NEW_UPDATES_MESSAGE });
       } else {
-        const updatedRecipe = {
+        const updatedRecipe: UpdatedRecipe = {
           authorId: authorOfRecipe(recipe),
           recipeId: idOfRecipe(recipe),
           recipeName,
@@ -389,7 +463,7 @@ const Recipe = ({
             id="recipe-name"
             type="text"
             value={state.recipeName}
-            onChange={e => {
+            onChange={(e) => {
               e.preventDefault();
               dispatch({
                 type: UPDATE_RECIPE_NAME_INPUT,
@@ -400,7 +474,7 @@ const Recipe = ({
           />
           <button
             className={styles.cancelEditNameBtn}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               dispatch({
                 type: CANCEL_EDITING_NAME,
@@ -432,18 +506,18 @@ const Recipe = ({
             getValueOfObject={getIngredientOf}
             getIdOfObject={idOfIngredient}
             inputChangeHandler={ingredientInputChangeHandler}
-            addObjectHandler={e => {
+            addObjectHandler={(e) => {
               e.preventDefault();
               dispatch({ type: ADD_INGREDIENT });
             }}
-            deleteObjectHandler={targetIndex => {
+            deleteObjectHandler={(targetIndex) => {
               dispatch({
                 type: DELETE_INGREDIENT,
                 targetIngredient: targetIndex,
               });
             }}
             showCancelBtn={true}
-            cancelHandler={e => {
+            cancelHandler={(e) => {
               e.preventDefault();
               dispatch({
                 type: CANCEL_EDITING_INGREDIENTS,
@@ -470,18 +544,18 @@ const Recipe = ({
             getValueOfObject={getInstructionOf}
             getIdOfObject={idOfInstruction}
             inputChangeHandler={instructionInputChangeHandler}
-            addObjectHandler={e => {
+            addObjectHandler={(e) => {
               e.preventDefault();
               dispatch({ type: ADD_INSTRUCTION });
             }}
-            deleteObjectHandler={targetIndex => {
+            deleteObjectHandler={(targetIndex) => {
               dispatch({
                 type: DELETE_INSTRUCTION,
                 targetInstruction: targetIndex,
               });
             }}
             showCancelBtn={true}
-            cancelHandler={e => {
+            cancelHandler={(e) => {
               e.preventDefault();
               dispatch({
                 type: CANCEL_EDITING_INSTRUCTIONS,
@@ -508,18 +582,18 @@ const Recipe = ({
             getValueOfObject={getNoteOf}
             getIdOfObject={idOfNote}
             inputChangeHandler={noteInputChangeHandler}
-            addObjectHandler={e => {
+            addObjectHandler={(e) => {
               e.preventDefault();
               dispatch({ type: ADD_NOTE });
             }}
-            deleteObjectHandler={targetIndex => {
+            deleteObjectHandler={(targetIndex) => {
               dispatch({
                 type: DELETE_NOTE,
                 targetNote: targetIndex,
               });
             }}
             showCancelBtn={true}
-            cancelHandler={e => {
+            cancelHandler={(e) => {
               e.preventDefault();
               dispatch({
                 type: CANCEL_EDITING_NOTES,
@@ -580,7 +654,7 @@ const Recipe = ({
       ) : null}
 
       <button
-        onClick={e => {
+        onClick={(e) => {
           e.preventDefault();
           const confirmDelete = window.prompt(
             `Enter "Delete ${nameOfRecipe(recipe)}"`
@@ -595,15 +669,6 @@ const Recipe = ({
       </button>
     </article>
   );
-};
-Recipe.propTypes = {
-  recipe: PropTypes.object.isRequired,
-  updateHandler: PropTypes.func.isRequired,
-  updateRecipeError: PropTypes.object,
-  updateRecipeLoading: PropTypes.bool.isRequired,
-  deleteHandler: PropTypes.func.isRequired,
-  deleteRecipeError: PropTypes.object,
-  deleteRecipeLoading: PropTypes.bool.isRequired,
 };
 
 export { Recipe };

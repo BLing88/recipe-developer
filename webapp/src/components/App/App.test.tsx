@@ -1,15 +1,30 @@
 import React from "react";
 import { render } from "@testing-library/react";
-import App from "./App";
+import { App } from "./App";
 
 jest.mock("../../react-auth0-spa");
-import { useAuth0 as mockUseAuth0 } from "../../react-auth0-spa";
+import { useAuth0 } from "../../react-auth0-spa";
+const mockUseAuth0 = useAuth0 as jest.MockedFunction<typeof useAuth0>;
+const mockAuth0Value = {
+  isAuthenticated: false,
+  user: null,
+  loading: true,
+  popupOpen: false,
+  loginWithPopup: jest.fn().mockName("mockLoginWithPopup"),
+  handleRedirectCallback: jest.fn().mockName("mockHandleRedirectCallback"),
+  getIdTokenClaims: jest.fn().mockName("mockGetIdTokenClaims"),
+  loginWithRedirect: jest.fn().mockName("mockLoginWithRedirect"),
+  getTokenSilently: jest.fn().mockName("mockGetTokenSilently"),
+  getTokenWithPopup: jest.fn().mockName("mockGetTokenWithPopup"),
+  logout: jest.fn().mockName("mockLogout"),
+};
 
 describe("App", () => {
   test("shows splash page when first loading", () => {
     const mockLoginWithRedirect = jest.fn().mockName("loginWithRedirect");
 
     mockUseAuth0.mockReturnValueOnce({
+      ...mockAuth0Value,
       loading: true,
       isAuthenticated: false,
       loginWithRedirect: mockLoginWithRedirect,
@@ -30,12 +45,14 @@ describe("App", () => {
   test("shows landing page after loading but not logged in", () => {
     const mockLoginWithRedirect = jest.fn().mockName("loginWithRedirect");
     mockUseAuth0.mockReturnValueOnce({
+      ...mockAuth0Value,
       loading: true,
       isAuthenticated: false,
       loginWithRedirect: mockLoginWithRedirect,
     });
-    const { getByText, queryByText, queryByTestId, rerender } = render(<App />);
+    const { getByText, queryByTestId, rerender } = render(<App />);
     mockUseAuth0.mockReturnValueOnce({
+      ...mockAuth0Value,
       loading: false,
       isAuthenticated: false,
       loginWithRedirect: mockLoginWithRedirect,
@@ -58,19 +75,14 @@ describe("App", () => {
     const mockLoginWithRedirect = jest.fn().mockName("loginWithRedirect");
     const mockGetTokenSilently = jest.fn().mockName("getTokenSilently");
     mockUseAuth0.mockReturnValueOnce({
+      ...mockAuth0Value,
       loading: true,
       isAuthenticated: false,
       loginWithRedirect: mockLoginWithRedirect,
     });
     const { getByText, queryByText, rerender } = render(<App />);
-    // mockUseAuth0.mockReturnValueOnce({
-    //   loading: true,
-    //   user: { email: "fake email", name: "fake name" },
-    //   isAuthenticated: false,
-    //   loginWithRedirect: mockLoginWithRedirect,
-    // });
-    // rerender(<App />);
     mockUseAuth0.mockReturnValue({
+      ...mockAuth0Value,
       loading: false,
       user: { email: "fake email", name: "fake name" },
       isAuthenticated: true,

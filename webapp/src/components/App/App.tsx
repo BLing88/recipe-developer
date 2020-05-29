@@ -5,9 +5,7 @@ import { SplashPage } from "../SplashPage";
 import { AuthenticatedApp } from "../AuthenticatedApp";
 import { GRAPHQL_URL } from "../../graphql-configs";
 import { BrowserRouter } from "react-router-dom";
-
 import { useAuth0 } from "../../react-auth0-spa";
-
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "@apollo/react-hooks";
 
@@ -17,24 +15,15 @@ const App = () => {
     isAuthenticated,
     loginWithRedirect,
     getTokenSilently,
-  } = useAuth0();
+  } = useAuth0()!;
 
   if (loading) {
     return <SplashPage />;
   }
 
-  if (!isAuthenticated) {
-    return (
-      <LandingPage
-        loginWithRedirect={loginWithRedirect}
-        signup={loginWithRedirect}
-      />
-    );
-  }
-
   const client = new ApolloClient({
     uri: GRAPHQL_URL,
-    request: async operation => {
+    request: async (operation) => {
       // Get token or get refreshed token
       const token = isAuthenticated ? await getTokenSilently() : null;
 
@@ -55,6 +44,7 @@ const App = () => {
       </BrowserRouter>
     );
   }
+  return <LandingPage loginWithRedirect={loginWithRedirect} />;
 };
 
 export default App;

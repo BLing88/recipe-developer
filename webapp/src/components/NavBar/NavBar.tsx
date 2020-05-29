@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { useAuth0 } from "../../react-auth0-spa";
 import styles from "./NavBar.module.css";
 import { useHistory } from "react-router-dom";
@@ -8,8 +7,12 @@ const NavBar = ({
   isCreatingRecipe,
   isShowingProfile,
   isShowingAllRecipes,
+}: {
+  isCreatingRecipe: boolean;
+  isShowingProfile: boolean;
+  isShowingAllRecipes: boolean;
 }) => {
-  const { logout } = useAuth0();
+  const { logout } = useAuth0()!;
   const history = useHistory();
 
   return (
@@ -18,7 +21,7 @@ const NavBar = ({
         {!isShowingAllRecipes && (
           <button
             className={`${styles.navbarItem} ${styles.myRecipesBtn}`}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               history.push("/my-recipes");
             }}
@@ -29,7 +32,7 @@ const NavBar = ({
         {!isCreatingRecipe && (
           <button
             className={`${styles.navbarItem} ${styles.createRecipeBtn}`}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               history.push("/create-recipe");
             }}
@@ -40,7 +43,7 @@ const NavBar = ({
         {!isShowingProfile && (
           <button
             className={`${styles.navbarItem} ${styles.profileBtn}`}
-            onClick={e => {
+            onClick={(e) => {
               e.preventDefault();
               history.push("/my-profile");
             }}
@@ -52,7 +55,7 @@ const NavBar = ({
           className={`${styles.navbarItem} ${styles.logoutBtn}`}
           onClick={() => {
             logout();
-            history.push("/logout");
+            // history.push("/logout");
           }}
         >
           Log out
@@ -60,11 +63,6 @@ const NavBar = ({
       </div>
     </nav>
   );
-};
-NavBar.propTypes = {
-  isCreatingRecipe: PropTypes.bool.isRequired,
-  isShowingProfile: PropTypes.bool.isRequired,
-  isShowingAllRecipes: PropTypes.bool.isRequired,
 };
 
 export { NavBar };

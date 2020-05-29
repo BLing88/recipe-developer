@@ -3,17 +3,34 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { App } from "./components/App";
 import * as serviceWorker from "./serviceWorker";
-
+import { RedirectLoginResult } from "@auth0/auth0-spa-js";
 import { Auth0Provider } from "./react-auth0-spa";
 import config from "./auth_config.json";
 import history from "./utils/history";
 
-const onRedirectCallback = appState => {
-  history.push(
-    appState && appState.targetUrl
-      ? appState.targetUrl
-      : window.location.pathname
+interface TargetUrl {
+  targetUrl: string;
+}
+
+function isTargetUrl(x: RedirectLoginResult | TargetUrl): x is TargetUrl {
+  return (
+    (x as TargetUrl).targetUrl !== null &&
+    (x as TargetUrl).targetUrl !== undefined
   );
+}
+
+const onRedirectCallback = (
+  appState:
+    | RedirectLoginResult
+    | {
+        targetUrl: string;
+      }
+) => {
+  if (isTargetUrl(appState)) {
+    history.push(appState.targetUrl);
+  } else {
+    history.push(window.location.pathname);
+  }
 };
 
 ReactDOM.render(

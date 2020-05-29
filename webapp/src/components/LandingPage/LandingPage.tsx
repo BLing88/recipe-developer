@@ -1,9 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import "./LandingPage.module.css";
 import styles from "./LandingPage.module.css";
+import { RedirectLoginOptions } from "@auth0/auth0-spa-js";
 
-const LandingPage = ({ loginWithRedirect, signup }) => {
+const LandingPage = ({
+  loginWithRedirect,
+}: {
+  loginWithRedirect: (p?: RedirectLoginOptions) => Promise<void>;
+}) => {
   return (
     <main className={styles.landingPage}>
       <h1 className={styles.appTitle}>Recipe Developer</h1>
@@ -22,10 +26,6 @@ const LandingPage = ({ loginWithRedirect, signup }) => {
       <p>Easily develop all your recipes in one location.</p>
     </main>
   );
-};
-LandingPage.propTypes = {
-  loginWithRedirect: PropTypes.func.isRequired,
-  signup: PropTypes.func.isRequired,
 };
 
 export default LandingPage;

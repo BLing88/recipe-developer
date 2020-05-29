@@ -1,11 +1,28 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./UserRecipesList.module.css";
 import { LoadingSpinner } from "../LoadingSpinner";
 
 import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 
-const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
+interface RecipeListItem {
+  recipeName: string;
+  recipeId: string;
+}
+
+const UserRecipesList = ({
+  loading,
+  error,
+  recipes,
+  getRecipe,
+}: {
+  loading: boolean;
+  error: any;
+  recipes: RecipeListItem[];
+  getRecipe: (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    recipe: RecipeListItem
+  ) => void;
+}) => {
   return (
     <article className={styles.userRecipesList}>
       <h1 className={styles.title}>My Recipes</h1>
@@ -26,10 +43,10 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
         !error &&
         (recipes && recipes.length ? (
           <ul className={styles.recipeList}>
-            {recipes.map(recipe => (
+            {recipes.map((recipe) => (
               <li
                 className={styles.recipeName}
-                onClick={e => {
+                onClick={(e) => {
                   getRecipe(e, recipe);
                 }}
                 key={idOfRecipe(recipe)}
@@ -45,12 +62,6 @@ const UserRecipesList = ({ loading, error, recipes, getRecipe }) => {
         ))}
     </article>
   );
-};
-UserRecipesList.propTypes = {
-  loading: PropTypes.bool.isRequired,
-  error: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  recipes: PropTypes.arrayOf(PropTypes.object),
-  getRecipe: PropTypes.func.isRequired,
 };
 
 export { UserRecipesList };

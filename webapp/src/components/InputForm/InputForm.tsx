@@ -1,6 +1,31 @@
 import React from "react";
-import PropTypes from "prop-types";
 import styles from "./InputForm.module.css";
+
+type RecipeComponent = Recipe.Ingredient | Recipe.Instruction | Recipe.Note;
+type RecipeComponentArray = RecipeComponent[];
+
+interface InputFormProps {
+  title: string;
+  objectName: string;
+  displayName: string;
+  displayType: "text" | "textarea";
+  objects: RecipeComponentArray;
+  getValueOfObject: (x: RecipeComponent) => string;
+  getIdOfObject: (x: RecipeComponent) => string;
+  inputChangeHandler: (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+    x: RecipeComponent,
+    i: number
+  ) => void;
+  addObjectHandler: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  deleteObjectHandler: (i: number) => void;
+  showCancelBtn: boolean;
+  cancelHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
 
 const InputForm = ({
   title,
@@ -15,7 +40,7 @@ const InputForm = ({
   deleteObjectHandler,
   showCancelBtn,
   cancelHandler,
-}) => {
+}: InputFormProps) => {
   return (
     <section className={styles.inputForm}>
       <div className={styles.sectionHeader}>
@@ -27,7 +52,7 @@ const InputForm = ({
         )}
       </div>
       <ul className={styles.inputList}>
-        {objects.map((object, i) => {
+        {objects.map((object: RecipeComponent, i: number) => {
           return (
             <li className={styles.inputListItem} key={getIdOfObject(object)}>
               <label
@@ -42,15 +67,14 @@ const InputForm = ({
                   id={`${objectName}-${i + 1}`}
                   type="text"
                   value={getValueOfObject(object)}
-                  onChange={e => inputChangeHandler(e, object, i)}
+                  onChange={(e) => inputChangeHandler(e, object, i)}
                 />
               ) : (
                 <textarea
                   className={styles.input}
                   id={`${objectName}-${i + 1}`}
-                  type="text"
                   value={getValueOfObject(object)}
-                  onChange={e => inputChangeHandler(e, object, i)}
+                  onChange={(e) => inputChangeHandler(e, object, i)}
                 />
               )}
 
@@ -71,18 +95,6 @@ const InputForm = ({
       </button>
     </section>
   );
-};
-InputForm.propTypes = {
-  title: PropTypes.string.isRequired,
-  objectName: PropTypes.string.isRequired,
-  displayName: PropTypes.string.isRequired,
-  displayType: PropTypes.oneOf(["text", "textarea"]).isRequired,
-  objects: PropTypes.arrayOf(PropTypes.object).isRequired,
-  getValueOfObject: PropTypes.func.isRequired,
-  getIdOfObject: PropTypes.func.isRequired,
-  inputChangeHandler: PropTypes.func.isRequired,
-  addObjectHandler: PropTypes.func.isRequired,
-  deleteObjectHandler: PropTypes.func.isRequired,
 };
 
 export { InputForm };

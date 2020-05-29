@@ -1,13 +1,18 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import { idOfInstruction, getInstructionOf } from "../../utils/recipe";
 
-const Instructions = ({ instructions, onClick }) => (
+const Instructions = ({
+  instructions,
+  onClick,
+}: {
+  instructions: Recipe.Instruction[];
+  onClick: () => void;
+}) => (
   <section className="instructions">
     <h2 onClick={onClick}>Instructions</h2>
     <ol className="recipe-instructions">
-      {instructions.map(instruction => (
+      {instructions.map((instruction) => (
         <li onClick={onClick} key={idOfInstruction(instruction)}>
           {getInstructionOf(instruction)}
         </li>
@@ -15,9 +20,5 @@ const Instructions = ({ instructions, onClick }) => (
     </ol>
   </section>
 );
-Instructions.propTypes = {
-  instructions: PropTypes.arrayOf(PropTypes.object).isRequired,
-  onClick: PropTypes.func.isRequired,
-};
 
 export { Instructions };

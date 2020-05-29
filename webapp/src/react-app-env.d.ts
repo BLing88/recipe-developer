@@ -24,4 +24,9 @@ namespace Recipe {
     instructions: Instruction[];
     notes: Note[];
   }
+
+  interface RecipeSummary {
+    recipeName: string;
+    recipeId: string;
+  }
 }

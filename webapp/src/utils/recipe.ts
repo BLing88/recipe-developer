@@ -1,59 +1,59 @@
 import { v4 as randomId } from "uuid";
 
-export const nameOfRecipe = (recipe: Recipe.Recipe | Recipe.RecipeSummary) =>
+export const nameOfRecipe = (recipe: Recipes.Recipe | Recipes.RecipeSummary) =>
   recipe.recipeName;
 
-export const authorOfRecipe = (recipe: Recipe.Recipe) => recipe.authorId;
+export const authorOfRecipe = (recipe: Recipes.Recipe) => recipe.authorId;
 
-export const idOfRecipe = (recipe: Recipe.Recipe | Recipe.RecipeSummary) =>
+export const idOfRecipe = (recipe: Recipes.Recipe | Recipes.RecipeSummary) =>
   recipe.recipeId;
 
-export const ingredientsOfRecipe = (recipe: Recipe.Recipe) =>
+export const ingredientsOfRecipe = (recipe: Recipes.Recipe) =>
   recipe.ingredients;
-export const getIngredientOf = (ingredient: Recipe.Ingredient) =>
+export const getIngredientOf = (ingredient: Recipes.Ingredient) =>
   ingredient.ingredient;
-export const idOfIngredient = (ingredient: Recipe.Ingredient) =>
+export const idOfIngredient = (ingredient: Recipes.Ingredient) =>
   ingredient.ingredientId;
 
-export const instructionsOfRecipe = (recipe: Recipe.Recipe) =>
+export const instructionsOfRecipe = (recipe: Recipes.Recipe) =>
   recipe.instructions;
-export const getInstructionOf = (instruction: Recipe.Instruction) =>
+export const getInstructionOf = (instruction: Recipes.Instruction) =>
   instruction.instruction;
-export const idOfInstruction = (instruction: Recipe.Instruction) =>
+export const idOfInstruction = (instruction: Recipes.Instruction) =>
   instruction.instructionId;
 
-export const notesOfRecipe = (recipe: Recipe.Recipe) => recipe.notes;
-export const getNoteOf = (note: Recipe.Note) => note.note;
-export const idOfNote = (note: Recipe.Note) => note.noteId;
+export const notesOfRecipe = (recipe: Recipes.Recipe) => recipe.notes;
+export const getNoteOf = (note: Recipes.Note) => note.note;
+export const idOfNote = (note: Recipes.Note) => note.noteId;
 
 const isIngredient = (
-  ingredient: Recipe.Ingredient | string
-): ingredient is Recipe.Ingredient => {
+  ingredient: Recipes.Ingredient | string
+): ingredient is Recipes.Ingredient => {
   return (
-    (ingredient as Recipe.Ingredient).ingredient !== undefined &&
-    (ingredient as Recipe.Ingredient).ingredientId !== undefined
+    (ingredient as Recipes.Ingredient).ingredient !== undefined &&
+    (ingredient as Recipes.Ingredient).ingredientId !== undefined
   );
 };
 
 const isInstruction = (
-  instruction: Recipe.Instruction | string
-): instruction is Recipe.Instruction => {
+  instruction: Recipes.Instruction | string
+): instruction is Recipes.Instruction => {
   return (
-    (instruction as Recipe.Instruction).instruction !== undefined &&
-    (instruction as Recipe.Instruction).instructionId !== undefined
+    (instruction as Recipes.Instruction).instruction !== undefined &&
+    (instruction as Recipes.Instruction).instructionId !== undefined
   );
 };
 
-const isNote = (note: Recipe.Note | string): note is Recipe.Note => {
+const isNote = (note: Recipes.Note | string): note is Recipes.Note => {
   return (
-    (note as Recipe.Note).note !== undefined &&
-    (note as Recipe.Note).noteId !== undefined
+    (note as Recipes.Note).note !== undefined &&
+    (note as Recipes.Note).noteId !== undefined
   );
 };
 
 export const buildIngredient = (
-  ingredient: string | Recipe.Ingredient
-): Recipe.Ingredient =>
+  ingredient: string | Recipes.Ingredient
+): Recipes.Ingredient =>
   isIngredient(ingredient)
     ? ingredient
     : {
@@ -61,7 +61,7 @@ export const buildIngredient = (
         ingredientId: randomId(),
       };
 
-export const buildInstruction = (instruction: Recipe.Instruction | string) =>
+export const buildInstruction = (instruction: Recipes.Instruction | string) =>
   isInstruction(instruction)
     ? instruction
     : {
@@ -69,7 +69,7 @@ export const buildInstruction = (instruction: Recipe.Instruction | string) =>
         instructionId: randomId(),
       };
 
-export const buildNote = (note: Recipe.Note) =>
+export const buildNote = (note: string | Recipes.Note) =>
   isNote(note)
     ? note
     : {
@@ -83,7 +83,7 @@ export const buildRecipe = ({
   ingredients = [],
   instructions = [],
   notes = [],
-}: Recipe.Recipe): Recipe.Recipe => {
+}: Recipes.Recipe): Recipes.Recipe => {
   return {
     recipeName,
     authorId,

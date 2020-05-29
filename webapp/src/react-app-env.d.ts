@@ -31,5 +31,5 @@ namespace Recipes {
   }
 
   type Component = Ingredient | Instruction | Note;
-  type ComponentArray = Component[];
+  type ComponentArray = Ingredient[] | Instruction[] | Note[];
 }

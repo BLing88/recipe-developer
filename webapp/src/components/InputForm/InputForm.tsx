@@ -1,21 +1,29 @@
 import React from "react";
 import styles from "./InputForm.module.css";
 
-interface InputFormProps {
+interface RecipeComponentProjection<T> {
+  (x: T): string;
+}
+
+interface InputChangeHandler<T> {
+  (
+    e:
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLInputElement>,
+    x: T,
+    i: number
+  ): void;
+}
+
+interface InputFormProps<T> {
   title: string;
   objectName: string;
   displayName: string;
   displayType: "text" | "textarea";
-  objects: Recipes.ComponentArray;
-  getValueOfObject: (x: Recipes.Component) => string;
-  getIdOfObject: (x: Recipes.Component) => string;
-  inputChangeHandler: (
-    e:
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLInputElement>,
-    x: Recipes.Component,
-    i: number
-  ) => void;
+  objects: T[];
+  getValueOfObject: RecipeComponentProjection<T>;
+  getIdOfObject: RecipeComponentProjection<T>;
+  inputChangeHandler: InputChangeHandler<T>;
   addObjectHandler: (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
@@ -23,6 +31,11 @@ interface InputFormProps {
   showCancelBtn: boolean;
   cancelHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
+
+type RecipeInputFormProps =
+  | InputFormProps<Recipes.Ingredient>
+  | InputFormProps<Recipes.Instruction>
+  | InputFormProps<Recipes.Note>;
 
 const InputForm = ({
   title,
@@ -37,7 +50,7 @@ const InputForm = ({
   deleteObjectHandler,
   showCancelBtn,
   cancelHandler,
-}: InputFormProps) => {
+}: RecipeInputFormProps) => {
   return (
     <section className={styles.inputForm}>
       <div className={styles.sectionHeader}>
@@ -49,7 +62,7 @@ const InputForm = ({
         )}
       </div>
       <ul className={styles.inputList}>
-        {objects.map((object, i) => {
+        {(objects as any[]).map((object, i) => {
           return (
             <li className={styles.inputListItem} key={getIdOfObject(object)}>
               <label

@@ -1,8 +1,8 @@
-import { arraysHaveSameElementsInOrder } from "./AuthenticatedApp";
+import { arraysHaveSameElementsInOrder } from "./arraysHaveSameElementsInOrder";
 import cases from "jest-in-case";
 
-const casify = objs =>
-  objs.map(obj => ({
+const casify = (objs: { arr1: any[]; arr2: any[] }[]) =>
+  objs.map((obj) => ({
     name: `[${obj.arr1}] and [${obj.arr2}]`,
     arr1: obj.arr1,
     arr2: obj.arr2,
@@ -11,7 +11,7 @@ const casify = objs =>
 describe("arraysHaveSameElementsInOrder", () => {
   cases(
     "returns true if arrays have same elements in order",
-    args => {
+    (args) => {
       expect(arraysHaveSameElementsInOrder(args.arr1, args.arr1)).toBe(true);
     },
     casify([
@@ -24,7 +24,7 @@ describe("arraysHaveSameElementsInOrder", () => {
   );
   cases(
     "returns false if arrays have same elements but in different order",
-    args => {
+    (args) => {
       expect(arraysHaveSameElementsInOrder(args.arr1, args.arr2)).toBe(false);
     },
     casify([
@@ -41,7 +41,7 @@ describe("arraysHaveSameElementsInOrder", () => {
 
   cases(
     "returns false if arrays have different elements but same length",
-    args => {
+    (args) => {
       expect(arraysHaveSameElementsInOrder(args.arr1, args.arr2)).toBe(false);
     },
     casify([
@@ -58,7 +58,7 @@ describe("arraysHaveSameElementsInOrder", () => {
 
   cases(
     "returns false if arrays have different lengths",
-    args => {
+    (args) => {
       expect(arraysHaveSameElementsInOrder(args.arr1, args.arr2)).toBe(false);
     },
     casify([

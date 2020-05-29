@@ -1,22 +1,19 @@
 import React from "react";
 import styles from "./InputForm.module.css";
 
-type RecipeComponent = Recipe.Ingredient | Recipe.Instruction | Recipe.Note;
-type RecipeComponentArray = RecipeComponent[];
-
 interface InputFormProps {
   title: string;
   objectName: string;
   displayName: string;
   displayType: "text" | "textarea";
-  objects: RecipeComponentArray;
-  getValueOfObject: (x: RecipeComponent) => string;
-  getIdOfObject: (x: RecipeComponent) => string;
+  objects: Recipe.ComponentArray;
+  getValueOfObject: (x: Recipe.Component) => string;
+  getIdOfObject: (x: Recipe.Component) => string;
   inputChangeHandler: (
     e:
       | React.ChangeEvent<HTMLTextAreaElement>
       | React.ChangeEvent<HTMLInputElement>,
-    x: RecipeComponent,
+    x: Recipe.Component,
     i: number
   ) => void;
   addObjectHandler: (
@@ -52,7 +49,7 @@ const InputForm = ({
         )}
       </div>
       <ul className={styles.inputList}>
-        {objects.map((object: RecipeComponent, i: number) => {
+        {objects.map((object, i) => {
           return (
             <li className={styles.inputListItem} key={getIdOfObject(object)}>
               <label

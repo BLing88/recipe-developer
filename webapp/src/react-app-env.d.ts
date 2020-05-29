@@ -29,4 +29,7 @@ namespace Recipe {
     recipeName: string;
     recipeId: string;
   }
+
+  type Component = Ingredient | Instruction | Note;
+  type ComponentArray = Component[];
 }

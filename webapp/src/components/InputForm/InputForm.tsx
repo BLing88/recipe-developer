@@ -1,41 +1,10 @@
 import React from "react";
 import styles from "./InputForm.module.css";
 
-interface RecipeComponentProjection<T> {
-  (x: T): string;
-}
-
-interface InputChangeHandler<T> {
-  (
-    e:
-      | React.ChangeEvent<HTMLTextAreaElement>
-      | React.ChangeEvent<HTMLInputElement>,
-    x: T,
-    i: number
-  ): void;
-}
-
-interface InputFormProps<T> {
-  title: string;
-  objectName: string;
-  displayName: string;
-  displayType: "text" | "textarea";
-  objects: T[];
-  getValueOfObject: RecipeComponentProjection<T>;
-  getIdOfObject: RecipeComponentProjection<T>;
-  inputChangeHandler: InputChangeHandler<T>;
-  addObjectHandler: (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void;
-  deleteObjectHandler: (i: number) => void;
-  showCancelBtn: boolean;
-  cancelHandler: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-}
-
 type RecipeInputFormProps =
-  | InputFormProps<Recipes.Ingredient>
-  | InputFormProps<Recipes.Instruction>
-  | InputFormProps<Recipes.Note>;
+  | InputForm.InputFormProps<Recipes.Ingredient>
+  | InputForm.InputFormProps<Recipes.Instruction>
+  | InputForm.InputFormProps<Recipes.Note>;
 
 const InputForm = ({
   title,

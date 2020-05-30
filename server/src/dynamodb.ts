@@ -1,4 +1,4 @@
-const AWS = require("aws-sdk");
+import AWS from "aws-sdk";
 
 const localDevConfig = {
   accessKeyId: "fakeMyKeyId",
@@ -17,9 +17,25 @@ const RECIPE_TABLE =
     ? process.env.RECIPE_TABLE
     : `recipe-developer-recipes-dev-${process.env.PORT}`;
 
-const getAllRecipesById = ({ authorId, db = dynamoDB }) => {
+interface DBParameters {
+  authorId: string;
+  recipeId: string;
+  recipeName?: string;
+  ingredients?: Ingredient[];
+  instructions?: Instruction[];
+  notes?: Note[];
+  db: AWS.DynamoDB.DocumentClient;
+}
+
+export const getAllRecipesById = ({
+  authorId,
+  db = dynamoDB,
+}: {
+  authorId: string;
+  db: AWS.DynamoDB.DocumentClient;
+}) => {
   const filterParams = {
-    TableName: RECIPE_TABLE,
+    TableName: RECIPE_TABLE!,
     KeyConditionExpression: "authorId = :authorId",
     ExpressionAttributeValues: {
       ":authorId": authorId,
@@ -38,17 +54,21 @@ const getAllRecipesById = ({ authorId, db = dynamoDB }) => {
   });
 };
 
-const getRecipeById = ({ authorId, recipeId, db = dynamoDB }) => {
+export const getRecipeById = ({
+  authorId,
+  recipeId,
+  db = dynamoDB,
+}: DBParameters) => {
   return new Promise((resolve, reject) => {
     db.get(
       {
-        TableName: RECIPE_TABLE,
+        TableName: RECIPE_TABLE!,
         Key: {
           recipeId,
           authorId,
         },
         ReturnValues: "ALL_NEW",
-      },
+      } as AWS.DynamoDB.GetItemInput,
       (err, data) => {
         if (err) {
           console.log(err);
@@ -61,7 +81,7 @@ const getRecipeById = ({ authorId, recipeId, db = dynamoDB }) => {
   });
 };
 
-const updateRecipe = ({
+export const updateRecipe = ({
   authorId,
   recipeId,
   recipeName,
@@ -69,7 +89,7 @@ const updateRecipe = ({
   instructions,
   notes,
   db = dynamoDB,
-}) => {
+}: DBParameters) => {
   const newRecipeName = recipeName ? "recipeName=:recipeName, " : "";
   const newIngredients = ingredients ? "ingredients=:ingredients, " : "";
   const newInstructions = instructions ? "instructions=:instructions, " : "";
@@ -88,7 +108,7 @@ const updateRecipe = ({
 
   return new Promise((resolve, reject) => {
     const updateParams = {
-      TableName: RECIPE_TABLE,
+      TableName: RECIPE_TABLE!,
       Key: {
         recipeId,
         authorId,
@@ -108,9 +128,13 @@ const updateRecipe = ({
   });
 };
 
-const deleteRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
+export const deleteRecipe = ({
+  authorId,
+  recipeId,
+  db = dynamoDB,
+}: DBParameters) => {
   const deleteParams = {
-    TableName: RECIPE_TABLE,
+    TableName: RECIPE_TABLE!,
     Key: {
       recipeId,
       authorId,
@@ -127,11 +151,4 @@ const deleteRecipe = ({ authorId, recipeId, db = dynamoDB }) => {
       }
     });
   });
-};
-
-module.exports = {
-  getAllRecipesById,
-  getRecipeById,
-  updateRecipe,
-  deleteRecipe,
 };

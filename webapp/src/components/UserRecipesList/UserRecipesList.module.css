@@ -1,50 +1,51 @@
 .userRecipesList {
-    margin: 1em 1em 4em 1em; 
+  margin: 1em 1em 4em 1em;
 }
 
 .recipeName {
-    /* border: solid 1px; */
-    margin-bottom: 1em;
-    padding: 0.5em 1em;
-    border-radius: 0.5em;
-    background: rgba(11, 162, 254, 0.5);
-    cursor: pointer
+  /* border: solid 1px; */
+  margin-bottom: 1em;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  background: rgba(11, 162, 254, 0.5);
+  cursor: pointer;
+  box-shadow: 0 0 2px grey;
 }
 
 .recipeName:hover {
-    color: var(--accent-color);
-    font-weight: bold;
+  color: var(--accent-color);
+  font-weight: bold;
 }
 
 .loadingRecipes {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    color: var(--primary-color);
-    font-weight: bold;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+  font-weight: bold;
 }
 
 .errorMsg {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    color: var(--accent-color);
-    font-weight: bold;
-    border: solid 2px var(--accent-color);
-    border-radius: 0.5em;
-    padding: 0 0.5em;
-    margin-top: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  color: var(--accent-color);
+  font-weight: bold;
+  border: solid 2px var(--accent-color);
+  border-radius: 0.5em;
+  padding: 0 0.5em;
+  margin-top: 0.5em;
 }
 
 .noRecipesMsg {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-content: center;
-    color: var(--primary-color);
-    font-weight: bold;
-    padding: 0 0.5em;
-    margin-top: 0.5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-content: center;
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 0 0.5em;
+  margin-top: 0.5em;
 }

@@ -1,172 +1,175 @@
 .recipe {
-    --add-and-update-button-color: rgba(99, 121, 110,0.75);
-    --input-border-color:rgb(11, 162, 254, 0.5);
-    display: flex;
-    flex-direction: column;
+  --add-and-update-button-color: rgba(99, 121, 110, 0.75);
+  --input-border-color: rgb(11, 162, 254, 0.5);
+  display: flex;
+  flex-direction: column;
 }
 
-.recipe .recipeImage { 
-    margin: 0 auto;
+.recipe .recipeImage {
+  margin: 0 auto;
 }
 
 .recipe li {
-    margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .recipeNameHeader {
-    display: grid;
-    grid-template-columns: auto minmax(7em,1fr) auto;
-    grid-template-areas: 
-      "label input cancel-btn";
-    grid-gap: 0.5em;
+  display: grid;
+  grid-template-columns: auto minmax(7em, 1fr) auto;
+  grid-template-areas: "label input cancel-btn";
+  grid-gap: 0.5em;
 }
 
 .cancelEditNameBtn {
-    grid-area: cancel-btn;
-    align-self: start;
-    background: var(--input-border-color);
-    font-size: 0.75em;
-    font-weight: bold;
-    border: solid 1px var(--add-and-update-button-color);
-    border-radius: 4px;
-} 
+  grid-area: cancel-btn;
+  align-self: start;
+  background: var(--input-border-color);
+  font-size: 0.75em;
+  font-weight: bold;
+  border: none;
+  /* border: solid 1px var(--add-and-update-button-color); */
+  border-radius: 4px;
+}
 
 .recipeNameInput {
-    grid-area: input;
-    margin: 0 0 0.5em 0;
-    padding: 0.35em 0.4em;
-    border-radius: 0.5em;
-    border: solid 1px var(--input-border-color);
+  grid-area: input;
+  margin: 0 0 0.5em 0;
+  padding: 0.35em 0.4em;
+  border-radius: 0.5em;
+  border: solid 1px var(--input-border-color);
+  box-shadow: 0 0 1px grey;
 }
 
 .recipeNameLabel {
-    grid-area: label;
-    font-weight: bold;
-    align-self: start;
+  grid-area: label;
+  font-weight: bold;
+  align-self: start;
 }
 
 .ingredients textarea {
-    height: 2.25em;
+  height: 2.25em;
 }
 
 .ingredients textarea:focus {
-    height: 4em;
+  height: 4em;
 }
 
 .deleteRecipeBtn {
-    width: 45%;
-    height: 1.5em;
-    padding: 0 0.5em 0 0.5em;
-    font-size: 0.75em;
-    font-weight: bolder;
-    margin: 10em auto 3em auto;
-    border: none;
-    cursor: pointer;
-    border-radius: 10px;
-    background: var(--accent-color);
+  width: 45%;
+  height: 1.5em;
+  padding: 0 0.5em 0 0.5em;
+  font-size: 0.75em;
+  font-weight: bolder;
+  margin: 10em auto 3em auto;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  background: var(--accent-color);
+  box-shadow: 0 0 1px grey;
 }
 
-.updateRecipeBtn{
-    margin: 5em 0 0 0;
-    font-weight: bold;
-    background: var( --add-and-update-button-color);
-    border: none;
-    border-radius: 10px;
-    padding: 0.15em 0;
-    cursor: pointer;
+.updateRecipeBtn {
+  margin: 5em 0 0 0;
+  font-weight: bold;
+  background: var(--add-and-update-button-color);
+  border: none;
+  border-radius: 10px;
+  padding: 0.15em 0;
+  cursor: pointer;
+  box-shadow: 0 0 2px grey;
 }
 
 .updatingRecipeMsg,
 .deletingRecipeMsg,
 .noUpdatesMsg {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    align-items: center;
-    color: var(--primary-color);
-    font-weight: bold;
-    padding: 0 0.5em;
-    margin-top: 0.5em;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  color: var(--primary-color);
+  font-weight: bold;
+  padding: 0 0.5em;
+  margin-top: 0.5em;
 }
 
 .nameRequiredMsg,
 .emptyRecipeMsg,
 .errorMsg {
-    color: var(--accent-color);
-    font-weight: bold;
-    border: solid 2px var(--accent-color);
-    border-radius: 0.5em;
-    padding: 0 0.5em;
-    margin-top: 0.5em;
+  color: var(--accent-color);
+  font-weight: bold;
+  border: solid 2px var(--accent-color);
+  border-radius: 0.5em;
+  padding: 0 0.5em;
+  margin-top: 0.5em;
 }
 
 @media only screen and (min-width: 1000px) {
-    .recipe {
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        grid-template-rows: auto auto 1fr auto 4em;
-        grid-column-gap: 2em;
-        column-gap: 2em;
-        grid-template-areas: 
-          "recipe-name recipe-name" 
-          "ingredients instructions"
-          "ingredients notes"
-          ". messages"
-          "delete-btn update-btn"
-    }
+  .recipe {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: auto auto 1fr auto 4em;
+    grid-column-gap: 2em;
+    column-gap: 2em;
+    grid-template-areas:
+      "recipe-name recipe-name"
+      "ingredients instructions"
+      "ingredients notes"
+      ". messages"
+      "delete-btn update-btn";
+  }
 
-    .recipeNameHeader {
-        grid-area: recipe-name;
-    }
+  .recipeNameHeader {
+    grid-area: recipe-name;
+  }
 
-    .recipeName {
-        cursor: pointer;
-    }
+  .recipeName {
+    cursor: pointer;
+  }
 
-    .recipe h2 {
-        cursor: pointer;
-    }
+  .recipe h2 {
+    cursor: pointer;
+  }
 
-    .ingredients {
-        grid-area: ingredients;
-    }
+  .ingredients {
+    grid-area: ingredients;
+  }
 
-    .instructions {
-        grid-area: instructions;
-    }
-    
-    .notes {
-        grid-area: notes;
-    }
+  .instructions {
+    grid-area: instructions;
+  }
 
-    .recipeNameLabel {
-        justify-self: end;
-        padding-right: 0.5em;
-    }
+  .notes {
+    grid-area: notes;
+  }
 
-    .recipeNameInput {
-        height: 1.5em;
-    }
+  .recipeNameLabel {
+    justify-self: end;
+    padding-right: 0.5em;
+  }
 
-    .updateRecipeBtn {
-        grid-area: update-btn;
-        justify-self: center;
-        width: 50%;
-        /* margin:0; */
-        align-self: center;
-        justify-self: center;
-    } 
-    .deleteRecipeBtn {
-        grid-area: delete-btn;
-        /* margin: 0; */
-        align-self: center;
-        justify-self: center;
-    }
-    
-    .nameRequiredMsg,
-    .emptyRecipeMsg,
-    .errorMsg,
-    .noUpdatesMsg {
-        grid-area: messages;
-    }
+  .recipeNameInput {
+    height: 1.5em;
+  }
+
+  .updateRecipeBtn {
+    grid-area: update-btn;
+    justify-self: center;
+    width: 50%;
+    /* margin:0; */
+    align-self: center;
+    justify-self: center;
+  }
+  .deleteRecipeBtn {
+    grid-area: delete-btn;
+    /* margin: 0; */
+    align-self: center;
+    justify-self: center;
+  }
+
+  .nameRequiredMsg,
+  .emptyRecipeMsg,
+  .errorMsg,
+  .noUpdatesMsg {
+    grid-area: messages;
+  }
 }

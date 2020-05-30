@@ -1,7 +1,7 @@
 import { getAuthorization } from "../getAuthorization";
 
 jest.mock("../validate");
-import { isTokenValid } from "../validate";
+import { isTokenValid, isDecodedResponse } from "../validate";
 
 describe("getAuthorization", () => {
   test("returns true if valid access token", async () => {
@@ -13,8 +13,10 @@ describe("getAuthorization", () => {
       },
     });
 
+    isDecodedResponse.mockReturnValueOnce(true);
+
     const { isAuthorized } = await getAuthorization({
-      accessToken: "fake token",
+      accessToken: process.env.VALID_TOKEN,
     });
     expect(isAuthorized).toBe(true);
   });
@@ -25,6 +27,7 @@ describe("getAuthorization", () => {
         message: "Some error message",
       },
     });
+    isDecodedResponse.mockReturnValueOnce(false);
 
     const { isAuthorized } = await getAuthorization({
       accessToken: "fake token",
@@ -40,6 +43,8 @@ describe("getAuthorization", () => {
         exp: (Date.now() - 3600000) / 1000,
       },
     });
+    isDecodedResponse.mockReturnValueOnce(false);
+
     const { isAuthorized } = await getAuthorization({
       accessToken: "fake token",
     });
@@ -54,6 +59,8 @@ describe("getAuthorization", () => {
         exp: (Date.now() + 3600000) / 1000,
       },
     });
+    isDecodedResponse.mockReturnValueOnce(false);
+
     const { isAuthorized } = await getAuthorization({
       accessToken: "fake token",
     });
@@ -68,6 +75,8 @@ describe("getAuthorization", () => {
         exp: (Date.now() + 3600000) / 1000,
       },
     });
+    isDecodedResponse.mockReturnValueOnce(false);
+
     const { isAuthorized } = await getAuthorization({
       accessToken: "fake token",
     });

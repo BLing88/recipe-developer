@@ -24,7 +24,7 @@ interface DBParameters {
   ingredients?: Ingredient[];
   instructions?: Instruction[];
   notes?: Note[];
-  db: AWS.DynamoDB.DocumentClient;
+  db?: AWS.DynamoDB.DocumentClient;
 }
 
 export const getAllRecipesById = ({
@@ -32,7 +32,7 @@ export const getAllRecipesById = ({
   db = dynamoDB,
 }: {
   authorId: string;
-  db: AWS.DynamoDB.DocumentClient;
+  db?: AWS.DynamoDB.DocumentClient;
 }) => {
   const filterParams = {
     TableName: RECIPE_TABLE!,

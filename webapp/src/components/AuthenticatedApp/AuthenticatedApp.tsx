@@ -29,20 +29,28 @@ import {
   buildRecipe,
 } from "../../utils/recipe";
 
-const projectRecipe = augmentedRecipe => {
+interface ApolloResponseRecipe extends Recipes.Recipe {
+  __typename: string;
+}
+
+const projectRecipe = (
+  augmentedRecipe: ApolloResponseRecipe
+): Recipes.Recipe => {
   return {
     authorId: authorOfRecipe(augmentedRecipe),
     recipeId: idOfRecipe(augmentedRecipe),
     recipeName: nameOfRecipe(augmentedRecipe),
-    ingredients: ingredientsOfRecipe(augmentedRecipe).map(ingredientObj => ({
+    ingredients: ingredientsOfRecipe(augmentedRecipe).map((ingredientObj) => ({
       ingredient: getIngredientOf(ingredientObj),
       ingredientId: idOfIngredient(ingredientObj),
     })),
-    instructions: instructionsOfRecipe(augmentedRecipe).map(instructionObj => ({
-      instruction: getInstructionOf(instructionObj),
-      instructionId: idOfInstruction(instructionObj),
-    })),
-    notes: notesOfRecipe(augmentedRecipe).map(noteObj => ({
+    instructions: instructionsOfRecipe(augmentedRecipe).map(
+      (instructionObj) => ({
+        instruction: getInstructionOf(instructionObj),
+        instructionId: idOfInstruction(instructionObj),
+      })
+    ),
+    notes: notesOfRecipe(augmentedRecipe).map((noteObj) => ({
       note: getNoteOf(noteObj),
       noteId: idOfNote(noteObj),
     })),
@@ -54,8 +62,15 @@ const CREATE_RECIPE_PATH = "/create-recipe";
 const PROFILE_PATH = "/my-profile";
 const RECIPE_PATH = "/recipe/";
 
+interface RecipeData {
+  recipeName: string;
+  ingredients: Recipes.Ingredient[];
+  instructions: Recipes.Instruction[];
+  notes: Recipes.Note[];
+}
+
 const AuthenticatedApp = () => {
-  const { user } = useAuth0();
+  const { user } = useAuth0()!;
   const history = useHistory();
   const location = useLocation();
   const {
@@ -98,19 +113,19 @@ const AuthenticatedApp = () => {
     { loading: deleteRecipeLoading, error: deleteRecipeError },
   ] = useMutation(DELETE_RECIPE);
 
-  const createRecipeHandler = async recipeData => {
+  const createRecipeHandler = async (recipeData: RecipeData) => {
     const { recipeName, ingredients, instructions, notes } = recipeData;
 
     const recipe = buildRecipe({
       authorId: user.sub,
       recipeName,
       ingredients: ingredients.filter(
-        ingredient => getIngredientOf(ingredient) !== ""
+        (ingredient) => getIngredientOf(ingredient) !== ""
       ),
       instructions: instructions.filter(
-        instruction => getInstructionOf(instruction) !== ""
+        (instruction) => getInstructionOf(instruction) !== ""
       ),
-      notes: notes.filter(note => getNoteOf(note) !== ""),
+      notes: notes.filter((note) => getNoteOf(note) !== ""),
     });
     const result = await createRecipe({
       variables: {
@@ -124,7 +139,10 @@ const AuthenticatedApp = () => {
     }
   };
 
-  const recipeClickHandler = (e, recipe) => {
+  const recipeClickHandler: (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    recipe: Recipes.RecipeListItem
+  ) => void = (e, recipe) => {
     e.preventDefault();
     getRecipe({
       variables: {
@@ -139,7 +157,10 @@ const AuthenticatedApp = () => {
     );
   };
 
-  const updateRecipeHandler = async (recipe, newRecipe) => {
+  const updateRecipeHandler = async (
+    recipe: Recipes.Recipe,
+    newRecipe: Recipes.UpdatedRecipe
+  ) => {
     try {
       await updateRecipe({ variables: newRecipe });
       refetchRecipe({
@@ -153,7 +174,7 @@ const AuthenticatedApp = () => {
     }
   };
 
-  const deleteRecipeHandler = async recipe => {
+  const deleteRecipeHandler = async (recipe: Recipes.Recipe) => {
     const deleteRes = await deleteRecipe({
       variables: {
         authorId: authorOfRecipe(recipe),
@@ -196,10 +217,23 @@ const AuthenticatedApp = () => {
           </Route>
 
           <Route path={PROFILE_PATH}>
-            <Profile />
+            <Profile
+              recipeCount={
+                getAllRecipesData && getAllRecipesData.getAllRecipes.length
+              }
+            />
           </Route>
 
-          <Route path={RECIPE_PATH}>
+          <Route
+            path={RECIPE_PATH} // leave path=Recipe_path then fetch in recipe component
+            // path={
+            //   getRecipeData
+            //     ? `${RECIPE_PATH}${
+            //         projectRecipe(getRecipeData.getRecipe).recipeName
+            //       }`
+            //     : RECIPE_PATH
+            // }
+          >
             <>
               {getRecipeLoading ? (
                 <section className={styles.loadingRecipe}>

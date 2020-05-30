@@ -14,18 +14,13 @@ interface TargetUrl {
 
 function isTargetUrl(x: RedirectLoginResult | TargetUrl): x is TargetUrl {
   return (
+    x &&
     (x as TargetUrl).targetUrl !== null &&
     (x as TargetUrl).targetUrl !== undefined
   );
 }
 
-const onRedirectCallback = (
-  appState:
-    | RedirectLoginResult
-    | {
-        targetUrl: string;
-      }
-) => {
+const onRedirectCallback = (appState: RedirectLoginResult | TargetUrl) => {
   if (isTargetUrl(appState)) {
     history.push(appState.targetUrl);
   } else {

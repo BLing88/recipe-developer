@@ -106,26 +106,28 @@ export const updateRecipe = ({
     ...(newNotes && { ":notes": notes }),
   };
 
-  return new Promise((resolve, reject) => {
-    const updateParams = {
-      TableName: RECIPE_TABLE!,
-      Key: {
-        recipeId,
-        authorId,
-      },
-      ReturnValues: "ALL_NEW",
-      UpdateExpression: UpdateExpressionString,
-      ExpressionAttributeValues,
-    };
-    db.update(updateParams, (err, data) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      } else {
-        resolve(data.Attributes);
-      }
-    });
-  });
+  return new Promise<AWS.DynamoDB.DocumentClient.UpdateItemOutput>(
+    (resolve, reject) => {
+      const updateParams = {
+        TableName: RECIPE_TABLE!,
+        Key: {
+          recipeId,
+          authorId,
+        },
+        ReturnValues: "ALL_NEW",
+        UpdateExpression: UpdateExpressionString,
+        ExpressionAttributeValues,
+      };
+      db.update(updateParams, (err, data) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          resolve(data.Attributes);
+        }
+      });
+    }
+  );
 };
 
 export const deleteRecipe = ({
@@ -141,14 +143,16 @@ export const deleteRecipe = ({
     },
     ReturnValues: "ALL_OLD",
   };
-  return new Promise((resolve, reject) => {
-    db.delete(deleteParams, (err, data) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      } else {
-        resolve(data.Attributes);
-      }
-    });
-  });
+  return new Promise<AWS.DynamoDB.DocumentClient.DeleteItemOutput>(
+    (resolve, reject) => {
+      db.delete(deleteParams, (err, data) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          resolve(data.Attributes);
+        }
+      });
+    }
+  );
 };

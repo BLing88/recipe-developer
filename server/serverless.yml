@@ -3,19 +3,74 @@ app: recipe-developer-dev
 service: recipe-developer
 
 provider:
-    name: aws
-    runtime: nodejs12.x
-    stage: dev
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  environment:
+    RECIPE_TABLE: ${self:service}-recipes-${self:provider.stage}
+    # USER_TABLE: ${self:service}-users-${self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.RECIPE_TABLE}"
+    # - Effect: Allow
+    # Action:
+    #     - dynamodb:Query
+    #     - dynamodb:Scan
+    #     - dynamodb:GetItem
+    #     - dynamodb:PutItem
+    #     - dynamodb:UpdateItem
+    #     - dynamodb:DeleteItem
+    # Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USER_TABLE}"
 
 functions:
-    graphql:
-        handler: src/graphql.handler
-        events:
-            - http:
-                path: graphql
-                method: GET
-                cors: true
-            - http:
-                path: graphql
-                method: POST
-                cors: true
+  graphql:
+    handler: dist/graphql.handler
+    events:
+      - http:
+          path: graphql
+          method: GET
+          cors: true
+      - http:
+          path: graphql
+          method: POST
+          cors: true
+
+resources:
+  Resources:
+    RecipesTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: recipeId
+            AttributeType: S
+          - AttributeName: authorId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: authorId
+            KeyType: HASH
+          - AttributeName: recipeId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.RECIPE_TABLE}
+    # UsersTable:
+    #     Type: "AWS::DynamoDB::Table"
+    #     Properties:
+    #         AttributeDefinitions:
+    #             - AttributeName: userId
+    #               AttributeType: S
+    #         KeySchema:
+    #             - AttributeName: userId
+    #               KeyType: HASH
+    #         ProvisionedThroughput:
+    #             ReadCapacityUnits: 1
+    #             WriteCapacityUnits: 1
+    #         TableName: ${self:provider.environment.USER_TABLE}

@@ -1,4 +1,5 @@
 {
     "domain": "dev-ls1kv3e9.auth0.com",
-    "clientId": "IpSNHzsKlPT7BhtCgKnTN5gJlR7N8xwZ"
+    "clientId": "IpSNHzsKlPT7BhtCgKnTN5gJlR7N8xwZ",
+    "audience": "https://fxpbqbe7q2.execute-api.us-east-1.amazonaws.com/graphql"
 }

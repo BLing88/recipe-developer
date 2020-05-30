@@ -8,7 +8,7 @@ test("it lists every instruction", () => {
   const testInstructions = buildTestInstructions();
 
   const { getAllByText } = render(
-    <Instructions instructions={testInstructions} />
+    <Instructions instructions={testInstructions} onClick={jest.fn()} />
   );
 
   const instructionSet = new Set(

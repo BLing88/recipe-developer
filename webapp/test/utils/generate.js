@@ -5,7 +5,7 @@ export const buildArray = (length, fn) => {
 };
 
 export const buildTestIngredients = (overrides = {}) => {
-  const numberOfIngredients = overrides.number || 1 + faker.random.number(15);
+  const numberOfIngredients = overrides.number || 2 + faker.random.number(15);
   return buildArray(numberOfIngredients, () => ({
     ingredient: faker.commerce.productMaterial(),
     ingredientId: faker.random.uuid(),
@@ -14,7 +14,7 @@ export const buildTestIngredients = (overrides = {}) => {
 };
 
 export const buildTestNotes = (overrides = {}) => {
-  const numberOfNotes = overrides.number || 1 + faker.random.number(15);
+  const numberOfNotes = overrides.number || 2 + faker.random.number(15);
   return buildArray(numberOfNotes, () => ({
     note: faker.lorem.sentences(),
     noteId: faker.random.uuid(),
@@ -23,7 +23,7 @@ export const buildTestNotes = (overrides = {}) => {
 };
 
 export const buildTestInstructions = (overrides = {}) => {
-  const numberOfInstructions = overrides.number || 1 + faker.random.number(15);
+  const numberOfInstructions = overrides.number || 2 + faker.random.number(15);
   return buildArray(numberOfInstructions, () => ({
     instruction: faker.lorem.sentences(),
     instructionId: faker.random.uuid(),
@@ -46,7 +46,7 @@ export const buildTestUser = (overrides = {}) => {
   const numberOfRecipes =
     overrides.numberOfRecipes || 1 + faker.random.number(15);
   return {
-    userId: userId,
+    sub: userId,
     username: faker.name.findName(),
     recipes: buildArray(numberOfRecipes, () =>
       buildTestRecipe({

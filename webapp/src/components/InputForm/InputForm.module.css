@@ -1,0 +1,118 @@
+.inputForm {
+    --add-and-update-button-color: rgba(99, 121, 110,0.5);
+    --input-border-color:rgba(11, 162, 254, 0.5);
+}
+
+.sectionHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cancelEditBtn {
+    background: var(--input-border-color);
+    font-size: 0.75em;
+    font-weight: bold;
+    border: solid 1px var(--add-and-update-button-color);
+    border-radius: 4px;
+} 
+
+.cancelEditBtn:hover {
+    cursor: pointer;
+} 
+
+.inputListItem {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas: 
+    "input-name delete-btn"
+    "input input";
+}
+
+.inputLabel {
+    grid-area: input-name;
+}
+
+.input {
+    grid-area: input;
+    font-family: inherit;
+    border: solid 1px var(--input-border-color);
+    resize: none;
+    margin: 0 0 0.5em 0;
+    padding: 0.35em 0.4em;
+    border-radius: 0.5em;
+    width: 85%;
+    height: 4em;
+    font-family: inherit;
+    transition: width 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    transition: height 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+}
+
+.input:focus {
+    width: 100%
+}
+
+.deleteInputBtn, .addInputBtn {
+    cursor: pointer;
+}
+
+.addInputBtn {
+    font-size: 0.8em;
+    background: var(--add-and-update-button-color);
+    border: solid 1px var(--add-and-update-button-color);
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.deleteInputBtn {
+    grid-area: delete-btn;
+    padding: 0;
+    background: none;
+    height: 1.5em;
+    border: none;
+    font-size: 1.5em;
+    justify-self: end;
+}
+
+.deleteInputBtn:hover {
+    color: var(--accent-color);
+}
+
+@media only screen and (max-width: 1000px){ 
+    .inputListItem {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto;
+        grid-template-areas: 
+        "input-name delete-btn"
+        "input input";
+    }
+
+    .addInputBtn {
+        display: block;
+        padding: 0.5em 0.5em;
+        margin: 0 0 0 auto;
+    }
+
+    .inputLabel {
+        grid-area: input-name;
+    }
+
+    .input {
+        height: 4em;
+    }
+
+    .input:focus {
+        height: 7em;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .input:focus {
+        height: 6em;
+    }
+}

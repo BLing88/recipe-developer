@@ -1,0 +1,61 @@
+.loadingRecipe {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-color);
+    font-weight: bold;
+    padding: 0 0.5em;
+    margin-top: 1em;
+}
+
+.notFoundPage {
+    font-size: 1.5em;
+}
+
+@media only screen and (max-width: 450px) {
+    .authenticatedApp {
+        display: flex;
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .navbar{
+        order: 2;
+        position: fixed;
+        top: calc(100% - 2.5em);
+        left: 1em;
+        width: calc(100vw - 2em); 
+    }
+
+    .mainContent {
+        order: 1;
+        /* flex: 1 */
+}}
+
+@media only screen and (max-width: 450px) {
+    .mainContent {
+        padding: 1em 1.5em;
+    }
+}
+
+@media only screen and (min-width: 451px) {
+    .mainContent {
+        padding: 2em 5em;
+    }
+}
+
+@media only screen and (min-width: 800px) {
+    .mainContent {
+        padding: 3em 10em;
+        /* width: 900px; */
+        margin: 0 auto;
+    }
+}
+@media only screen and (min-width: 1200px) {
+    .mainContent {
+        padding: 3em 0;
+        width: 800px;
+        margin: 0 auto;
+    }
+}

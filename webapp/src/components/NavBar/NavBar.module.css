@@ -1,0 +1,80 @@
+.navbar {
+    --navbar-height: 2.5em;
+    --navbar-height-desktop: 3.5em;
+}
+
+.navbarItems {
+    display: flex;
+    flex-direction: row;
+}
+
+@media only screen and (max-width: 450px) {
+    .navbar {
+        height: var(--navbar-height);
+        margin: 0 -1em;
+        position: fixed;
+        top: calc(100% - var(--navbar-height));
+        left: 1em;
+        width: calc(100vw); 
+    }
+
+    .navbarItems {
+        height: 100%;
+    }
+
+    .navbarItem {
+        flex: 1 1 calc(100vw / 4);
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        background: var(--primary-color);
+        font-size: 0.8em;
+    }
+
+    .logoutBtn {
+        order: 1;
+    }
+
+    .profileBtn {
+        order: 2;
+    }
+
+    .createRecipeBtn {
+        order: 3;
+    }
+
+    .myRecipesBtn {
+        order: 4;
+    }
+    .navbarItem {
+        border-right: solid 1px var(--border-color);
+    } 
+}
+
+@media only screen and (min-width: 451px) {
+    .navbar {
+        display: flex;
+        flex-direction: row;
+        height: var(--navbar-height-desktop);
+        justify-content: flex-end;
+        background: var(--primary-color);
+    }
+
+    .navbarItems {
+        width: 50vw;
+        height: 100%;
+    }
+    
+    .navbarItem {
+        flex: 1 1 auto;
+        border: none;
+        font-weight: bold;
+        font-size: 0.95em;
+        cursor: pointer;
+        background: var(--primary-color);
+    }
+
+    .navbarItem:hover {
+        border-bottom: solid var(--accent-color);
+    }
+}

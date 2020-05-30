@@ -22,9 +22,10 @@ const LoadingSpinner = ({ size = DEFAULT_SIZE }) => {
   }
   const svgHeight = svgWidth;
   const radius = svgWidth / 4;
-  const updateTheta = theta => (theta + (2 * PI) / angularSpeed) % (2 * PI);
-  const xPos = theta => radius * cos(theta);
-  const yPos = theta => radius * sin(theta);
+  const updateTheta = (theta: number) =>
+    (theta + (2 * PI) / angularSpeed) % (2 * PI);
+  const xPos = (theta: number) => radius * cos(theta);
+  const yPos = (theta: number) => radius * sin(theta);
 
   useEffect(() => {
     const interval = setInterval(() => setTheta(updateTheta), angularSpeed);

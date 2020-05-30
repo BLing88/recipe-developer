@@ -1,6 +1,7 @@
-const { ApolloServer, gql } = require("apollo-server-lambda");
-const { getAllRecipes, getRecipe } = require("./query-resolvers");
-const {
+import { APIGatewayProxyEvent } from "aws-lambda";
+import { ApolloServer, gql } from "apollo-server-lambda";
+import { getAllRecipes, getRecipe } from "./query-resolvers";
+import {
   createRecipe,
   updateRecipe,
   updateRecipeName,
@@ -8,9 +9,9 @@ const {
   updateInstructions,
   updateNotes,
   deleteRecipe,
-} = require("./mutation-resolvers");
+} from "./mutation-resolvers";
 
-const { typeDefsString } = require("./typeDefs");
+import { typeDefsString } from "./typeDefs";
 const typeDefs = gql`
   ${typeDefsString}
 `;
@@ -31,7 +32,7 @@ const resolvers = {
   },
 };
 
-const createContext = ({ event }) => {
+const createContext = ({ event }: { event: APIGatewayProxyEvent }) => {
   const accessToken = event.headers.Authorization || "";
 
   return {
@@ -39,13 +40,13 @@ const createContext = ({ event }) => {
   };
 };
 
-const server = new ApolloServer({
+export const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: createContext,
 });
 
-const handler = server.createHandler({
+export const handler = server.createHandler({
   cors: {
     origin: "*", // for security in production, lock this to your real endpoints
     credentials: true,
@@ -54,12 +55,7 @@ const handler = server.createHandler({
     //
     // If you'd like to have GraphQL Playground and introspection enabled in production,
     // the `playground` and `introspection` options must be set explicitly to `true`.
-    playground: true,
-    introspection: true,
+    // playground: true,
+    // introspection: true,
   },
 });
-
-module.exports = {
-  handler,
-  server,
-};

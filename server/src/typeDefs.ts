@@ -1,4 +1,4 @@
-const typeDefsString = `
+export const typeDefsString = `
   type Recipe {
     recipeId: ID!
     recipeName: String!
@@ -70,7 +70,3 @@ const typeDefsString = `
     note: String!
   }
 `;
-
-module.exports = {
-  typeDefsString,
-};

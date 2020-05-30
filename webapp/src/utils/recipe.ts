@@ -83,7 +83,7 @@ export const buildRecipe = ({
   ingredients = [],
   instructions = [],
   notes = [],
-}: Recipes.Recipe): Recipes.Recipe => {
+}: Recipes.BuildInProgressRecipe): Recipes.Recipe => {
   return {
     recipeName,
     authorId,

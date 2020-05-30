@@ -32,6 +32,28 @@ namespace Recipes {
 
   type Component = Ingredient | Instruction | Note;
   type ComponentArray = Ingredient[] | Instruction[] | Note[];
+
+  interface BuildInProgressRecipe {
+    authorId: string;
+    recipeName: string;
+    ingredients: Recipes.Ingredient[];
+    instructions: Recipes.Instruction[];
+    notes: Recipes.Note[];
+  }
+
+  interface RecipeListItem {
+    recipeName: string;
+    recipeId: string;
+  }
+
+  interface UpdatedRecipe {
+    authorId: string;
+    recipeId: string;
+    recipeName: string | null;
+    ingredients: Recipes.Ingredient[] | null;
+    instructions: Recipes.Instruction[] | null;
+    notes: Recipes.Note[] | null;
+  }
 }
 
 namespace InputForm {

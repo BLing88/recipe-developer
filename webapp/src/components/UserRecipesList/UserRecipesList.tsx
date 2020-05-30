@@ -4,11 +4,6 @@ import { LoadingSpinner } from "../LoadingSpinner";
 
 import { idOfRecipe, nameOfRecipe } from "../../utils/recipe";
 
-interface RecipeListItem {
-  recipeName: string;
-  recipeId: string;
-}
-
 const UserRecipesList = ({
   loading,
   error,
@@ -17,10 +12,10 @@ const UserRecipesList = ({
 }: {
   loading: boolean;
   error: any;
-  recipes: RecipeListItem[];
+  recipes: Recipes.RecipeListItem[];
   getRecipe: (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    recipe: RecipeListItem
+    recipe: Recipes.RecipeListItem
   ) => void;
 }) => {
   return (

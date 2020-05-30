@@ -278,18 +278,12 @@ const recipeReducer = (
   }
 };
 
-interface UpdatedRecipe {
-  authorId: string;
-  recipeId: string;
-  recipeName: string | null;
-  ingredients: Recipes.Ingredient[] | null;
-  instructions: Recipes.Instruction[] | null;
-  notes: Recipes.Note[] | null;
-}
-
 interface RecipeProps {
   recipe: Recipes.Recipe;
-  updateHandler: (recipe: Recipes.Recipe, newRecipe: UpdatedRecipe) => void;
+  updateHandler: (
+    recipe: Recipes.Recipe,
+    newRecipe: Recipes.UpdatedRecipe
+  ) => void;
   updateRecipeError: ApolloError | undefined;
   updateRecipeLoading: boolean;
   deleteHandler: (recipe: Recipes.Recipe) => void;
@@ -431,7 +425,7 @@ const Recipe = ({
       ) {
         dispatch({ type: SHOW_NO_NEW_UPDATES_MESSAGE });
       } else {
-        const updatedRecipe: UpdatedRecipe = {
+        const updatedRecipe: Recipes.UpdatedRecipe = {
           authorId: authorOfRecipe(recipe),
           recipeId: idOfRecipe(recipe),
           recipeName,

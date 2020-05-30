@@ -1,8 +1,7 @@
 import React, { useReducer } from "react";
-import PropTypes from "prop-types";
 import styles from "./CreateRecipeForm.module.css";
 import { LoadingSpinner } from "../LoadingSpinner";
-
+import { ApolloError } from "apollo-boost";
 import { InputForm } from "../InputForm";
 import {
   buildIngredient,
@@ -16,7 +15,15 @@ import {
   buildNote,
 } from "../../utils/recipe";
 
-const defaultState = {
+interface CreateRecipeState {
+  recipeName: string;
+  ingredients: Recipes.Ingredient[];
+  instructions: Recipes.Instruction[];
+  notes: Recipes.Note[];
+  showMissingRecipeName: boolean;
+}
+
+const defaultState: CreateRecipeState = {
   recipeName: "",
   ingredients: [buildIngredient("")],
   instructions: [buildInstruction("")],
@@ -34,12 +41,32 @@ const DELETE_INSTRUCTION = "DELETE_INSTRUCTION";
 const UPDATE_NOTES_INPUT = "UPDATE_NOTES_INPUT";
 const ADD_NOTE = "ADD_NOTE";
 const DELETE_NOTE = "DELETE_NOTE";
-const reducer = (state, action) => {
+
+interface CreateRecipeAction {
+  type: string;
+  recipeName?: string;
+  ingredient?: Recipes.Ingredient;
+  ingredients?: Recipes.Ingredient[];
+  instruction?: Recipes.Instruction;
+  instructions?: Recipes.Instruction[];
+  note?: Recipes.Note;
+  notes?: Recipes.Note[];
+  ingredientNumber?: number;
+  instructionNumber?: number;
+  noteNumber?: number;
+  targetIngredient?: number;
+  targetInstruction?: number;
+  targetNote?: number;
+}
+const reducer = (
+  state: CreateRecipeState,
+  action: CreateRecipeAction
+): CreateRecipeState => {
   switch (action.type) {
     case UPDATE_NAME_INPUT:
       return {
         ...state,
-        recipeName: action.recipeName,
+        recipeName: action.recipeName!,
       };
     case SHOW_MISSING_RECIPE_NAME:
       return {
@@ -51,8 +78,8 @@ const reducer = (state, action) => {
         ...state,
         ingredients: [
           ...state.ingredients.slice(0, action.ingredientNumber),
-          action.ingredient,
-          ...state.ingredients.slice(action.ingredientNumber + 1),
+          action.ingredient!,
+          ...state.ingredients.slice(action.ingredientNumber! + 1),
         ],
       };
     case ADD_INGREDIENT:
@@ -69,7 +96,7 @@ const reducer = (state, action) => {
             ? [buildIngredient("")]
             : [
                 ...state.ingredients.slice(0, action.targetIngredient),
-                ...state.ingredients.slice(action.targetIngredient + 1),
+                ...state.ingredients.slice(action.targetIngredient! + 1),
               ],
       };
     case UPDATE_INSTRUCTIONS_INPUT:
@@ -77,8 +104,8 @@ const reducer = (state, action) => {
         ...state,
         instructions: [
           ...state.instructions.slice(0, action.instructionNumber),
-          action.instruction,
-          ...state.instructions.slice(action.instructionNumber + 1),
+          action.instruction!,
+          ...state.instructions.slice(action.instructionNumber! + 1),
         ],
       };
     case ADD_INSTRUCTION:
@@ -95,7 +122,7 @@ const reducer = (state, action) => {
             ? [buildInstruction("")]
             : [
                 ...state.instructions.slice(0, action.targetInstruction),
-                ...state.instructions.slice(action.targetInstruction + 1),
+                ...state.instructions.slice(action.targetInstruction! + 1),
               ],
       };
     case UPDATE_NOTES_INPUT:
@@ -103,8 +130,8 @@ const reducer = (state, action) => {
         ...state,
         notes: [
           ...state.notes.slice(0, action.noteNumber),
-          action.note,
-          ...state.notes.slice(action.noteNumber + 1),
+          action.note!,
+          ...state.notes.slice(action.noteNumber! + 1),
         ],
       };
     case ADD_NOTE:
@@ -121,7 +148,7 @@ const reducer = (state, action) => {
             ? [buildNote("")]
             : [
                 ...state.notes.slice(0, action.targetNote),
-                ...state.notes.slice(action.targetNote + 1),
+                ...state.notes.slice(action.targetNote! + 1),
               ],
       };
     default:
@@ -129,10 +156,29 @@ const reducer = (state, action) => {
   }
 };
 
-const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
+interface CreateRecipeFormProps {
+  createRecipeHandler: (recipeData: {
+    recipeName: string;
+    ingredients: Recipes.Ingredient[];
+    instructions: Recipes.Instruction[];
+    notes: Recipes.Note[];
+  }) => Promise<void>;
+  error: ApolloError | undefined;
+  loading: boolean;
+}
+
+const CreateRecipeForm = ({
+  createRecipeHandler,
+  error,
+  loading,
+}: CreateRecipeFormProps) => {
   const [state, dispatch] = useReducer(reducer, defaultState);
 
-  const ingredientInputChangeHandler = (e, ingredient, index) => {
+  const ingredientInputChangeHandler: InputForm.InputChangeHandler<Recipes.Ingredient> = (
+    e,
+    ingredient,
+    index
+  ) => {
     e.preventDefault();
     const newIngredient = ingredient.ingredientId
       ? {
@@ -147,7 +193,11 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
     });
   };
 
-  const instructionInputChangeHandler = (e, instruction, index) => {
+  const instructionInputChangeHandler: InputForm.InputChangeHandler<Recipes.Instruction> = (
+    e,
+    instruction,
+    index
+  ) => {
     e.preventDefault();
     const newInstruction = idOfInstruction(instruction)
       ? {
@@ -162,7 +212,11 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
     });
   };
 
-  const noteInputChangeHandler = (e, note, index) => {
+  const noteInputChangeHandler: InputForm.InputChangeHandler<Recipes.Note> = (
+    e,
+    note,
+    index
+  ) => {
     e.preventDefault();
     const newNote = idOfNote(note)
       ? {
@@ -192,7 +246,7 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
             id="recipe-name"
             type="text"
             value={state.recipeName}
-            onChange={e => {
+            onChange={(e) => {
               e.preventDefault();
               dispatch({ type: UPDATE_NAME_INPUT, recipeName: e.target.value });
             }}
@@ -210,16 +264,18 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
             getValueOfObject={getIngredientOf}
             getIdOfObject={idOfIngredient}
             inputChangeHandler={ingredientInputChangeHandler}
-            addObjectHandler={e => {
+            addObjectHandler={(e) => {
               e.preventDefault();
               dispatch({ type: ADD_INGREDIENT });
             }}
-            deleteObjectHandler={targetIndex => {
+            deleteObjectHandler={(targetIndex) => {
               dispatch({
                 type: DELETE_INGREDIENT,
                 targetIngredient: targetIndex,
               });
             }}
+            showCancelBtn={false}
+            cancelHandler={(e) => {}}
           />
         </div>
 
@@ -233,16 +289,18 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
             getValueOfObject={getInstructionOf}
             getIdOfObject={idOfInstruction}
             inputChangeHandler={instructionInputChangeHandler}
-            addObjectHandler={e => {
+            addObjectHandler={(e) => {
               e.preventDefault();
               dispatch({ type: ADD_INSTRUCTION });
             }}
-            deleteObjectHandler={targetIndex => {
+            deleteObjectHandler={(targetIndex) => {
               dispatch({
                 type: DELETE_INSTRUCTION,
                 targetInstruction: targetIndex,
               });
             }}
+            showCancelBtn={false}
+            cancelHandler={(e) => {}}
           />
         </div>
 
@@ -256,16 +314,18 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
             getValueOfObject={getNoteOf}
             getIdOfObject={idOfNote}
             inputChangeHandler={noteInputChangeHandler}
-            addObjectHandler={e => {
+            addObjectHandler={(e) => {
               e.preventDefault();
               dispatch({ type: ADD_NOTE });
             }}
-            deleteObjectHandler={targetIndex => {
+            deleteObjectHandler={(targetIndex) => {
               dispatch({
                 type: DELETE_NOTE,
                 targetNote: targetIndex,
               });
             }}
+            showCancelBtn={false}
+            cancelHandler={(e) => {}}
           />
         </div>
 
@@ -289,7 +349,7 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
         </div>
         <button
           className={styles.createRecipeBtn}
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault();
             if (!state.recipeName) {
               dispatch({ type: SHOW_MISSING_RECIPE_NAME });
@@ -309,9 +369,6 @@ const CreateRecipeForm = ({ createRecipeHandler, error, loading }) => {
       </form>
     </>
   );
-};
-CreateRecipeForm.propTypes = {
-  createRecipeHandler: PropTypes.func.isRequired,
 };
 
 export default CreateRecipeForm;

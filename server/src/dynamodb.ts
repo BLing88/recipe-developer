@@ -42,16 +42,18 @@ export const getAllRecipesById = ({
     },
   };
 
-  return new Promise((resolve, reject) => {
-    db.query(filterParams, (err, items) => {
-      if (err) {
-        console.log(err);
-        reject(err);
-      } else {
-        resolve(items.Items);
-      }
-    });
-  });
+  return new Promise<AWS.DynamoDB.DocumentClient.ItemList>(
+    (resolve, reject) => {
+      db.query(filterParams, (err, items) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        } else {
+          resolve(items.Items);
+        }
+      });
+    }
+  );
 };
 
 export const getRecipeById = ({
@@ -59,26 +61,28 @@ export const getRecipeById = ({
   recipeId,
   db = dynamoDB,
 }: DBParameters) => {
-  return new Promise((resolve, reject) => {
-    db.get(
-      {
-        TableName: RECIPE_TABLE!,
-        Key: {
-          recipeId,
-          authorId,
-        },
-        ReturnValues: "ALL_NEW",
-      } as AWS.DynamoDB.GetItemInput,
-      (err, data) => {
-        if (err) {
-          console.log(err);
-          reject(err);
-        } else {
-          resolve(data.Item);
+  return new Promise<AWS.DynamoDB.DocumentClient.QueryOutput>(
+    (resolve, reject) => {
+      db.get(
+        {
+          TableName: RECIPE_TABLE!,
+          Key: {
+            recipeId,
+            authorId,
+          },
+          ReturnValues: "ALL_NEW",
+        } as AWS.DynamoDB.GetItemInput,
+        (err, data) => {
+          if (err) {
+            console.log(err);
+            reject(err);
+          } else {
+            resolve(data.Item);
+          }
         }
-      }
-    );
-  });
+      );
+    }
+  );
 };
 
 export const updateRecipe = ({

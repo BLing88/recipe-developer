@@ -12,7 +12,6 @@ import {
   ingredientsOfRecipe,
   instructionsOfRecipe,
   notesOfRecipe,
-  idOfRecipe,
 } from "recipe";
 
 const {
@@ -99,21 +98,55 @@ const setExistingRecipe = async () => {
     ...recipe,
     db: dynamoDB,
   });
-  return recipe;
+  return { ...recipe };
+};
+
+const separateRecipe = (recipeResponse) => {
+  const {
+    recipeName,
+    recipeId,
+    authorId,
+    ingredients,
+    instructions,
+    notes,
+    lastModifiedOn,
+    createdOn,
+  } = recipeResponse;
+  return [
+    {
+      recipeName,
+      recipeId,
+      authorId,
+      ingredients,
+      instructions,
+      notes,
+      createdOn,
+    },
+    lastModifiedOn,
+  ];
 };
 
 describe("DynamoDB", () => {
   test("creates and gets new recipe", async () => {
-    const recipe = buildTestRecipe();
+    const baseRecipe = buildTestRecipe();
+    const recipe = {
+      ...baseRecipe,
+      createdOn: Date.now(),
+    };
     const beforeCreate = await getRecipeById({ ...recipe, db: dynamoDB });
     expect(beforeCreate).not.toBeDefined();
     const updateResult = await updateRecipe({
       ...recipe,
       db: dynamoDB,
     });
-    const getResult = await getRecipeById({ ...recipe, db: dynamoDB });
+    const getResult = await getRecipeById({
+      ...recipe,
+      db: dynamoDB,
+    });
+    const [newRecipe, lastModifiedOn] = separateRecipe(getResult);
+    expect(newRecipe).toEqual(recipe);
+    expect(newRecipe.createdOn < lastModifiedOn).toBe(true);
     expect(updateResult).toEqual(getResult);
-    expect(updateResult).toEqual(recipe);
   });
 
   test("updates name of existing recipe", async () => {
@@ -121,8 +154,15 @@ describe("DynamoDB", () => {
     const newName = faker.commerce.productName();
     const newRecipe = { ...oldRecipe, recipeName: newName };
 
-    const updatedRecipe = await updateRecipe(newRecipe);
+    const updatedRecipeResponse = await updateRecipe(newRecipe);
+    const [updatedRecipe, lastModifiedOn] = separateRecipe(
+      updatedRecipeResponse
+    );
+
     expect(updatedRecipe).toEqual(newRecipe);
+    expect(
+      updatedRecipe.createdOn < lastModifiedOn && lastModifiedOn < Date.now()
+    );
     expect(nameOfRecipe(updatedRecipe)).not.toEqual(nameOfRecipe(oldRecipe));
   });
 
@@ -131,8 +171,13 @@ describe("DynamoDB", () => {
     const newIngredients = buildTestIngredients();
     const newRecipe = { ...oldRecipe, ingredients: newIngredients };
 
-    const updatedRecipe = await updateRecipe(newRecipe);
+    const [updatedRecipe, lastModifiedOn] = separateRecipe(
+      await updateRecipe(newRecipe)
+    );
     expect(updatedRecipe).toEqual(newRecipe);
+    expect(
+      updatedRecipe.createdOn < lastModifiedOn && lastModifiedOn < Date.now()
+    );
     expect(ingredientsOfRecipe(updatedRecipe)).not.toEqual(
       ingredientsOfRecipe(oldRecipe)
     );
@@ -143,8 +188,13 @@ describe("DynamoDB", () => {
     const newInstructions = buildTestInstructions();
     const newRecipe = { ...oldRecipe, instructions: newInstructions };
 
-    const updatedRecipe = await updateRecipe(newRecipe);
+    const [updatedRecipe, lastModifiedOn] = separateRecipe(
+      await updateRecipe(newRecipe)
+    );
     expect(updatedRecipe).toEqual(newRecipe);
+    expect(
+      updatedRecipe.createdOn < lastModifiedOn && lastModifiedOn < Date.now()
+    );
     expect(instructionsOfRecipe(updatedRecipe)).not.toEqual(
       instructionsOfRecipe(oldRecipe)
     );
@@ -155,8 +205,13 @@ describe("DynamoDB", () => {
     const newNotes = buildTestNotes();
     const newRecipe = { ...oldRecipe, notes: newNotes };
 
-    const updatedRecipe = await updateRecipe(newRecipe);
+    const [updatedRecipe, lastModifiedOn] = separateRecipe(
+      await updateRecipe(newRecipe)
+    );
     expect(updatedRecipe).toEqual(newRecipe);
+    expect(
+      updatedRecipe.createdOn < lastModifiedOn && lastModifiedOn < Date.now()
+    );
     expect(notesOfRecipe(updatedRecipe)).not.toEqual(notesOfRecipe(oldRecipe));
   });
 
@@ -167,16 +222,20 @@ describe("DynamoDB", () => {
       await updateRecipe({ ...recipe, db: dynamoDB });
     }
     const allRecipes = await getAllRecipesById({ authorId: user.userId });
-    expect(recipes).toEqual(expect.arrayContaining(allRecipes));
-    expect(allRecipes).toEqual(expect.arrayContaining(recipes));
-    expect(recipes.length).toEqual(allRecipes.length);
+    const projectedAllRecipes = allRecipes.map(
+      (recipe) => separateRecipe(recipe)[0]
+    );
+    expect(recipes).toEqual(expect.arrayContaining(projectedAllRecipes));
+    expect(projectedAllRecipes).toEqual(expect.arrayContaining(recipes));
+    expect(recipes.length).toEqual(projectedAllRecipes.length);
   });
 
   test("deletes existing recipe", async () => {
     const oldRecipe = await setExistingRecipe();
+    const beforeDelete = await getRecipeById({ ...oldRecipe, db: dynamoDB });
     const wasDeleted = await deleteRecipe({ ...oldRecipe, db: dynamoDB });
-    expect(wasDeleted).toEqual(oldRecipe);
-    const checkDeleted = await getRecipeById({ ...oldRecipe, db: dynamoDB });
+    expect(wasDeleted).toEqual(beforeDelete);
+    const checkDeleted = await getRecipeById({ ...beforeDelete, db: dynamoDB });
     expect(checkDeleted).not.toBeDefined();
   });
 });

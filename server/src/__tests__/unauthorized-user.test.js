@@ -152,7 +152,7 @@ describe("server - for unauthorized users", () => {
       },
     });
     expect(
-      res.errors.map(err => err.message).includes(`You are not authorized`)
+      res.errors.map((err) => err.message).includes(`You are not authorized`)
     ).toBe(true);
     expect(res.data).toBeNull();
   });
@@ -169,7 +169,7 @@ describe("server - for unauthorized users", () => {
     expect(createRes.data.createRecipe).toBeNull();
     expect(
       createRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });
@@ -189,7 +189,7 @@ describe("server - for unauthorized users", () => {
     expect(changeNameRes.data.updateRecipeName).toBeNull();
     expect(
       changeNameRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });
@@ -210,7 +210,7 @@ describe("server - for unauthorized users", () => {
     expect(updateIngredientsRes.data.updateIngredients).toBeNull();
     expect(
       updateIngredientsRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });
@@ -230,7 +230,7 @@ describe("server - for unauthorized users", () => {
     expect(updateInstructionsRes.data.updateInstructions).toBeNull();
     expect(
       updateInstructionsRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });
@@ -250,7 +250,7 @@ describe("server - for unauthorized users", () => {
     expect(updateNotesRes.data.updateNotes).toBeNull();
     expect(
       updateNotesRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });
@@ -268,7 +268,7 @@ describe("server - for unauthorized users", () => {
     expect(deleteRes.data.deleteRecipe).toBeNull();
     expect(
       deleteRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });
@@ -290,7 +290,7 @@ describe("server - for unauthorized users", () => {
     expect(updateRecipeRes.data.updateRecipe).toBeNull();
     expect(
       updateRecipeRes.errors
-        .map(err => err.message)
+        .map((err) => err.message)
         .includes(`You are not authorized`)
     ).toBe(true);
   });

@@ -24,6 +24,7 @@ interface DBParameters {
   ingredients?: Ingredient[];
   instructions?: Instruction[];
   notes?: Note[];
+  createdOn?: string;
   db?: AWS.DynamoDB.DocumentClient;
 }
 
@@ -92,22 +93,29 @@ export const updateRecipe = ({
   ingredients,
   instructions,
   notes,
+  createdOn,
   db = dynamoDB,
 }: DBParameters) => {
   const newRecipeName = recipeName ? "recipeName=:recipeName, " : "";
   const newIngredients = ingredients ? "ingredients=:ingredients, " : "";
   const newInstructions = instructions ? "instructions=:instructions, " : "";
   const newNotes = notes ? "notes=:notes, " : "";
-  const UpdateExpressionString = `set ${newRecipeName}${newIngredients}${newInstructions}${newNotes}`.slice(
+  const newCreatedOn = createdOn ? "createdOn=:created_on, " : "";
+  const newLastModifiedOn = "lastModifiedOn=:last_modified_on, ";
+  const UpdateExpressionString = `set ${newRecipeName}${newIngredients}${newInstructions}${newNotes}${newCreatedOn}${newLastModifiedOn}`.slice(
     0,
     -2
   );
+
+  const lastModifiedOn = `${Date.now()}`;
 
   const ExpressionAttributeValues = {
     ...(newRecipeName && { ":recipeName": recipeName }),
     ...(newIngredients && { ":ingredients": ingredients }),
     ...(newInstructions && { ":instructions": instructions }),
     ...(newNotes && { ":notes": notes }),
+    ...(newCreatedOn && { ":created_on": createdOn }),
+    ...(newLastModifiedOn && { ":last_modified_on": lastModifiedOn }),
   };
 
   return new Promise<AWS.DynamoDB.DocumentClient.UpdateItemOutput>(

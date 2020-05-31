@@ -6,6 +6,8 @@ export const GET_RECIPE = gql`
       recipeName
       recipeId
       authorId
+      lastModifiedOn
+      createdOn
       ingredients {
         ingredient
         ingredientId
@@ -27,6 +29,8 @@ export const GET_ALL_RECIPES = gql`
     getAllRecipes(authorId: $authorId) {
       recipeName
       recipeId
+      lastModifiedOn
+      createdOn
     }
   }
 `;

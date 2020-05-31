@@ -1,4 +1,5 @@
-.loadingRecipe {
+.loadingRecipe,
+.loadingRecipes {
   display: flex;
   flex-flow: column wrap;
   justify-content: center;

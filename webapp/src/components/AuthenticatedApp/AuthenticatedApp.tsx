@@ -199,12 +199,27 @@ const AuthenticatedApp = () => {
       <main className={styles.mainContent}>
         <Switch>
           <Route path={USER_RECIPES_PATH}>
-            <UserRecipesList
-              loading={getAllRecipesLoading}
-              error={getAllRecipesError}
-              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
-              getRecipe={recipeClickHandler}
-            />
+            {getAllRecipesLoading ? (
+              <section className={styles.loadingRecipes}>
+                <p>Loading recipes&hellip; </p>{" "}
+                <LoadingSpinner width={30} height={30} />
+              </section>
+            ) : null}
+
+            {getAllRecipesError ? (
+              <section className={styles.errorMsg}>
+                <p>Error loading recipes. Try again.</p>
+              </section>
+            ) : null}
+
+            {getAllRecipesData &&
+            !getAllRecipesError &&
+            !getAllRecipesLoading ? (
+              <UserRecipesList
+                recipes={getAllRecipesData.getAllRecipes}
+                getRecipe={recipeClickHandler}
+              />
+            ) : null}
           </Route>
 
           <Route path={CREATE_RECIPE_PATH}>
@@ -236,7 +251,7 @@ const AuthenticatedApp = () => {
             <>
               {getRecipeLoading ? (
                 <section className={styles.loadingRecipe}>
-                  <p>Loading recipe</p>
+                  <p>Loading recipe&hellip;</p>
                   <LoadingSpinner width={30} height={30} />
                 </section>
               ) : null}
@@ -259,12 +274,27 @@ const AuthenticatedApp = () => {
           </Route>
 
           <Route path="/" exact>
-            <UserRecipesList
-              loading={getAllRecipesLoading}
-              error={getAllRecipesError}
-              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
-              getRecipe={recipeClickHandler}
-            />
+            {getAllRecipesLoading ? (
+              <section className={styles.loadingRecipes}>
+                <p>Loading recipes&hellip; </p>{" "}
+                <LoadingSpinner width={30} height={30} />
+              </section>
+            ) : null}
+
+            {getAllRecipesError ? (
+              <section className={styles.errorMsg}>
+                <p>Error loading recipes. Try again.</p>
+              </section>
+            ) : null}
+
+            {getAllRecipesData &&
+            !getAllRecipesError &&
+            !getAllRecipesLoading ? (
+              <UserRecipesList
+                recipes={getAllRecipesData.getAllRecipes}
+                getRecipe={recipeClickHandler}
+              />
+            ) : null}
           </Route>
 
           <Route>

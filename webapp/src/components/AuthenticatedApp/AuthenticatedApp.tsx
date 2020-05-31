@@ -151,9 +151,9 @@ const AuthenticatedApp = () => {
       },
     });
     history.push(
-      `${RECIPE_PATH}` //${nameOfRecipe(recipe)
-      // .split(" ")
-      // .join("-")}
+      `${RECIPE_PATH}${nameOfRecipe(recipe)
+        .split(" ")
+        .join("-")}/${recipe.recipeId}`
     );
   };
 
@@ -186,6 +186,22 @@ const AuthenticatedApp = () => {
       history.push(USER_RECIPES_PATH);
     }
   };
+
+  const reloadRecipe = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
+    const recipeId = location.pathname.match(
+      new RegExp("^/recipe/.+/(recipe-.+)")
+    )![1];
+    getRecipe({
+      variables: {
+        authorId: user.sub,
+        recipeId,
+      },
+    });
+  };
+
   return (
     <div className={styles.authenticatedApp}>
       <header className={styles.navbar}>
@@ -238,16 +254,7 @@ const AuthenticatedApp = () => {
             />
           </Route>
 
-          <Route
-            path={RECIPE_PATH} // leave path=Recipe_path then fetch in recipe component
-            // path={
-            //   getRecipeData
-            //     ? `${RECIPE_PATH}${
-            //         projectRecipe(getRecipeData.getRecipe).recipeName
-            //       }`
-            //     : RECIPE_PATH
-            // }
-          >
+          <Route path={RECIPE_PATH}>
             <>
               {getRecipeLoading ? (
                 <section className={styles.loadingRecipe}>
@@ -269,6 +276,17 @@ const AuthenticatedApp = () => {
                   deleteRecipeError={deleteRecipeError}
                   deleteRecipeLoading={deleteRecipeLoading}
                 />
+              ) : null}
+              {!getRecipeData && !getRecipeLoading && !getRecipeError ? (
+                <section className={styles.reloadRecipe}>
+                  <p>The recipe needs to be reloaded.</p>
+                  <button
+                    onClick={(e) => reloadRecipe(e)}
+                    className={styles.reloadRecipeBtn}
+                  >
+                    Reload recipe
+                  </button>
+                </section>
               ) : null}
             </>
           </Route>
@@ -298,9 +316,9 @@ const AuthenticatedApp = () => {
           </Route>
 
           <Route>
-            <main className={styles.notFoundPage}>
+            <section className={styles.notFoundPage}>
               <p className={styles.pageNotFoundMsg}>Page not found&hellip;</p>
-            </main>
+            </section>
           </Route>
         </Switch>
       </main>

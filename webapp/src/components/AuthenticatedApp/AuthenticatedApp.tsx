@@ -6,7 +6,7 @@ import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 import { Recipe } from "../Recipe";
 import { useHistory, useLocation, Route, Switch } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
-
+import { sortRecipeByName } from "../../utils/sortRecipeByName";
 import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
@@ -232,7 +232,7 @@ const AuthenticatedApp = () => {
             !getAllRecipesError &&
             !getAllRecipesLoading ? (
               <UserRecipesList
-                recipes={getAllRecipesData.getAllRecipes}
+                recipes={getAllRecipesData.getAllRecipes.sort(sortRecipeByName)}
                 getRecipe={recipeClickHandler}
               />
             ) : null}
@@ -309,7 +309,7 @@ const AuthenticatedApp = () => {
             !getAllRecipesError &&
             !getAllRecipesLoading ? (
               <UserRecipesList
-                recipes={getAllRecipesData.getAllRecipes}
+                recipes={getAllRecipesData.getAllRecipes.sort(sortRecipeByName)}
                 getRecipe={recipeClickHandler}
               />
             ) : null}

@@ -25,7 +25,7 @@
 @media only screen and (max-width: 450px) {
   .authenticatedApp {
     display: flex;
-    height: 100vh;
+    height: calc(100vh + 2.5em);
     flex-direction: column;
   }
 
@@ -38,7 +38,7 @@
   }
 
   .mainContent {
-    height: 100vh;
+    height: calc(100vh + 2.5em);
     order: 1;
     padding: 1em 1.5em;
   }

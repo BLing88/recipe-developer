@@ -24,7 +24,8 @@ const UserRecipesList = ({
 
       {loading ? (
         <section className={styles.loadingRecipes}>
-          <p>Loading recipes&hellip; </p> <LoadingSpinner size="SMALL" />
+          <p>Loading recipes&hellip; </p>{" "}
+          <LoadingSpinner width={30} height={30} />
         </section>
       ) : null}
 

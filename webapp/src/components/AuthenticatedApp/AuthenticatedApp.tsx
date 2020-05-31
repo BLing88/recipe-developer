@@ -151,9 +151,9 @@ const AuthenticatedApp = () => {
       },
     });
     history.push(
-      `${RECIPE_PATH}${nameOfRecipe(recipe)
-        .split(" ")
-        .join("-")}`
+      `${RECIPE_PATH}` //${nameOfRecipe(recipe)
+      // .split(" ")
+      // .join("-")}
     );
   };
 
@@ -186,7 +186,6 @@ const AuthenticatedApp = () => {
       history.push(USER_RECIPES_PATH);
     }
   };
-
   return (
     <div className={styles.authenticatedApp}>
       <header className={styles.navbar}>
@@ -237,8 +236,8 @@ const AuthenticatedApp = () => {
             <>
               {getRecipeLoading ? (
                 <section className={styles.loadingRecipe}>
-                  <p>Loading recipe&hellip;</p>
-                  <LoadingSpinner size="SMALL" />
+                  <p>Loading recipe</p>
+                  <LoadingSpinner width={30} height={30} />
                 </section>
               ) : null}
 

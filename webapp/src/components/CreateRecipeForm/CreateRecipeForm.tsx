@@ -338,7 +338,7 @@ const CreateRecipeForm = ({
           {loading ? (
             <section className={styles.loadingMsg}>
               <p>Creating recipe&hellip;</p>
-              <LoadingSpinner size={"SMALL"} />
+              <LoadingSpinner width={30} height={30} />
             </section>
           ) : null}
           {error ? (

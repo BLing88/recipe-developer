@@ -31,7 +31,7 @@ const UserRecipesList = ({
 }) => {
   const [sortFn, setSortFn] = useState(() => sortRecipesByLastModified);
   const [showDropdown, setShowDropdown] = useState(false);
-  const sortByHandler = () => {
+  const sortByClickHandler = () => {
     setShowDropdown((showDropdown) => !showDropdown);
   };
 
@@ -44,7 +44,7 @@ const UserRecipesList = ({
             className={styles.sortByBtn}
             onClick={(e) => {
               e.preventDefault();
-              sortByHandler();
+              sortByClickHandler();
             }}
           >
             <SortIcon />
@@ -59,6 +59,9 @@ const UserRecipesList = ({
                   setShowDropdown((showDropdown) => !showDropdown);
                 }}
               >
+                {sortFn === sortRecipesByLastModified ? (
+                  <span className={styles.sortByDot}>&#9679;</span>
+                ) : null}{" "}
                 last modified
               </li>
               <li
@@ -68,6 +71,9 @@ const UserRecipesList = ({
                   setShowDropdown((showDropdown) => !showDropdown);
                 }}
               >
+                {sortFn === sortByCreatedOn ? (
+                  <span className={styles.sortByDot}>&#9679;</span>
+                ) : null}{" "}
                 date created
               </li>
               <li
@@ -77,6 +83,9 @@ const UserRecipesList = ({
                   setShowDropdown((showDropdown) => !showDropdown);
                 }}
               >
+                {sortFn === sortRecipeByName ? (
+                  <span className={styles.sortByDot}>&#9679;</span>
+                ) : null}{" "}
                 recipe name
               </li>
             </ul>

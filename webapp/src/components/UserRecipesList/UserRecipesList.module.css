@@ -49,3 +49,38 @@
   padding: 0 0.5em;
   margin-top: 0.5em;
 }
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdownContainer {
+  position: relative;
+}
+
+.sortByBtn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+.sortByBtn svg {
+  margin-right: 0.25rem;
+}
+
+.dropdown {
+  position: absolute;
+  background-color: white;
+  margin: 0;
+  width: 150%;
+  right: 0;
+  text-align: center;
+}
+
+.dropdown li {
+  margin: 0.5rem 0;
+  cursor: pointer;
+}

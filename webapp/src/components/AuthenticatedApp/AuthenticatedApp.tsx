@@ -233,9 +233,7 @@ const AuthenticatedApp = () => {
             !getAllRecipesError &&
             !getAllRecipesLoading ? (
               <UserRecipesList
-                recipes={getAllRecipesData.getAllRecipes.sort(
-                  sortRecipesByLastModified
-                )}
+                recipes={getAllRecipesData.getAllRecipes}
                 getRecipe={recipeClickHandler}
               />
             ) : null}
@@ -312,9 +310,7 @@ const AuthenticatedApp = () => {
             !getAllRecipesError &&
             !getAllRecipesLoading ? (
               <UserRecipesList
-                recipes={getAllRecipesData.getAllRecipes.sort(
-                  sortRecipesByLastModified
-                )}
+                recipes={getAllRecipesData.getAllRecipes}
                 getRecipe={recipeClickHandler}
               />
             ) : null}

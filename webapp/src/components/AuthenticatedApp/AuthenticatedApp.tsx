@@ -6,7 +6,6 @@ import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 import { Recipe } from "../Recipe";
 import { useHistory, useLocation, Route, Switch } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
-import { sortRecipesByLastModified } from "../../utils/sortRecipesByLastModified";
 import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";

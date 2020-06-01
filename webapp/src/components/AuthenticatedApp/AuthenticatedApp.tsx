@@ -169,6 +169,7 @@ const AuthenticatedApp = () => {
           recipeId: idOfRecipe(recipe),
         },
       });
+      refetchGetAllRecipes();
     } catch (e) {
       console.error(e);
     }

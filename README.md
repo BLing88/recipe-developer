@@ -4,6 +4,8 @@
 
 This app was written in Typescript and React, with a full GraphQL [AWS Lambda][aws lambda] serverless backend using [Apollo server][apollo-server] and an [AWS DynamoDB][dynamodb] database, and login and authentication handled with [Auth0][auth0]. I deployed the front end with [Vercel] (formerly Zeit) and back end with [Serverless][serverless]. Integration and unit tests are written in [Jest][jest]. 
 
+I first wrote the large majority of this project with plain Javascript rather than Typescript, but then I decided to convert the whole project to Typescript. The only parts that have not been converted are the Jest unit and integration tests. 
+
 ## Concept
 
 I like to cook and often find myself modifying recipes or creating my own recipes, so I made an app to help me do that.
@@ -19,6 +21,7 @@ I like to cook and often find myself modifying recipes or creating my own recipe
 
  ## TODO
  - it would be nice to implement some sort of pagination for the user's recipe list so that all the recipes aren't listed all at once
+ - convert Jest unit and integrationn tests to Typescript
 
 [aws lambda]: https://aws.amazon.com/lambda/
 [apollo-server]: https://www.apollographql.com/docs/apollo-server/

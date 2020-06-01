@@ -5,6 +5,10 @@
   flex-direction: column;
 }
 
+.recipeName {
+  line-height: 1em;
+}
+
 .recipe .recipeImage {
   margin: 0 auto;
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import { LandingPage } from "../LandingPage";
 import { SplashPage } from "../SplashPage";
 import { AuthenticatedApp } from "../AuthenticatedApp";

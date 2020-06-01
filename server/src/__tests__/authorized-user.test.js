@@ -130,17 +130,77 @@ afterEach(async () => {
   });
 });
 
+const separateRecipe = (recipeResponse) => {
+  const {
+    recipeName,
+    recipeId,
+    authorId,
+    ingredients,
+    instructions,
+    notes,
+    lastModifiedOn,
+    createdOn,
+  } = recipeResponse;
+  return [
+    {
+      recipeName,
+      recipeId,
+      authorId,
+      ingredients,
+      instructions,
+      notes,
+      createdOn,
+    },
+    lastModifiedOn,
+  ];
+};
+
+const separateQueryRecipe = (recipeResponse) => {
+  const { recipeName, recipeId, lastModifiedOn, createdOn } = recipeResponse;
+  return [
+    {
+      recipeName,
+      recipeId,
+      createdOn,
+    },
+    lastModifiedOn,
+  ];
+};
+
+const projectToRecipe = (recipeResponse) => {
+  const {
+    recipeName,
+    recipeId,
+    authorId,
+    ingredients,
+    instructions,
+    notes,
+  } = recipeResponse;
+  return {
+    recipeName,
+    recipeId,
+    authorId,
+    ingredients,
+    instructions,
+    notes,
+  };
+};
+
 describe("server - for authorized users", () => {
   test("gets recipe by author and recipe ids", async () => {
     for (let recipe of testRecipes) {
-      const res = await query({
+      const response = await query({
         query: GET_RECIPE,
         variables: {
           authorId: testAuthorId,
           recipeId: recipe.recipeId,
         },
       });
-      expect(res.data.getRecipe).toEqual(recipe);
+      const [recipeRes, lastModifiedOn] = separateRecipe(
+        response.data.getRecipe
+      );
+      expect(recipeRes).toEqual(recipe);
+      expect(recipeRes.createdOn < lastModifiedOn);
     }
   });
 
@@ -152,10 +212,13 @@ describe("server - for authorized users", () => {
       },
     });
 
-    const resRecipes = res.data.getAllRecipes;
-    const expectedResult = testRecipes.map(recipe => ({
+    const resRecipes = res.data.getAllRecipes.map(
+      (recipe) => separateQueryRecipe(recipe)[0]
+    );
+    const expectedResult = testRecipes.map((recipe) => ({
       recipeId: recipe.recipeId,
       recipeName: recipe.recipeName,
+      createdOn: recipe.createdOn,
     }));
     expect(resRecipes.length).toBe(testRecipes.length);
     expect(resRecipes).toEqual(expect.arrayContaining(expectedResult));
@@ -187,7 +250,9 @@ describe("server - for authorized users", () => {
         authorId: testAuthorId,
       },
     });
-    expect(createRes.data.createRecipe).toEqual(newRecipe);
+    expect(projectToRecipe(createRes.data.createRecipe)).toEqual(
+      projectToRecipe(newRecipe)
+    );
 
     const numRecipesAfterRes = await query({
       query: GET_ALL_RECIPES,
@@ -205,7 +270,9 @@ describe("server - for authorized users", () => {
         recipeId: newRecipe.recipeId,
       },
     });
-    expect(checkCreateQuery.data.getRecipe).toEqual(newRecipe);
+    expect(projectToRecipe(checkCreateQuery.data.getRecipe)).toEqual(
+      projectToRecipe(newRecipe)
+    );
   });
 
   test("updates just recipe name", async () => {
@@ -240,7 +307,7 @@ describe("server - for authorized users", () => {
         recipeId: targetRecipeId,
       },
     });
-    expect(checkChangeNameRes.data.getRecipe).toEqual({
+    expect(separateRecipe(checkChangeNameRes.data.getRecipe)[0]).toEqual({
       ...targetRecipe,
       recipeName: newRecipeName,
     });
@@ -367,7 +434,9 @@ describe("server - for authorized users", () => {
         recipeId: targetRecipeId,
       },
     });
-    expect(beforeDeleteRecipeRes.data.getRecipe).toEqual(targetRecipe);
+    expect(separateRecipe(beforeDeleteRecipeRes.data.getRecipe)[0]).toEqual(
+      targetRecipe
+    );
 
     const deleteRes = await mutate({
       mutation: DELETE_RECIPE,
@@ -402,7 +471,9 @@ describe("server - for authorized users", () => {
         ...newRecipe,
       },
     });
-    expect(updateRecipeRes.data.updateRecipe).toEqual(newRecipe);
+    expect(projectToRecipe(updateRecipeRes.data.updateRecipe)).toEqual(
+      projectToRecipe(newRecipe)
+    );
 
     const checkUpdatedRecipeRes = await query({
       query: GET_RECIPE,
@@ -411,6 +482,8 @@ describe("server - for authorized users", () => {
         recipeId: targetRecipeId,
       },
     });
-    expect(checkUpdatedRecipeRes.data.getRecipe).toEqual(newRecipe);
+    expect(projectToRecipe(checkUpdatedRecipeRes.data.getRecipe)).toEqual(
+      projectToRecipe(newRecipe)
+    );
   });
 });

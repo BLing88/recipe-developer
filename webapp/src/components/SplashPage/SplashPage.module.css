@@ -1,17 +1,11 @@
 .splashPage {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .appName {
-    margin: 0;
+  margin: 0 0 0.5em 0;
 }
-
-
-
-/* .spinnerDot {
-    animation: 2s linear 0s infinite 
-} */

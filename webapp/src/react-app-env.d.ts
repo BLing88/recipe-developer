@@ -44,6 +44,8 @@ namespace Recipes {
   interface RecipeListItem {
     recipeName: string;
     recipeId: string;
+    lastModifiedOn: string;
+    createdOn: string;
   }
 
   interface UpdatedRecipe {

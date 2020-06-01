@@ -6,6 +6,8 @@ export const typeDefsString = `
     ingredients: [Ingredient!]!
     instructions: [Instruction!]!
     notes: [Note!]!
+    lastModifiedOn: String!
+    createdOn: String!
   }
 
   type Ingredient {
@@ -50,6 +52,7 @@ export const typeDefsString = `
     recipeId: ID!
     recipeName: String!
     authorId: ID!
+    createdOn: String
     ingredients: [IngredientInput!]!
     instructions: [InstructionInput!]!
     notes: [NoteInput!]!

@@ -27,7 +27,8 @@ export const createRecipe = async (
 ) => {
   const { isAuthorized } = await getAuthorization(context);
   if (isAuthorized) {
-    return await dbUpdateRecipe({ ...recipeInput, authorId });
+    const createdOn = `${Date.now()}`;
+    return await dbUpdateRecipe({ ...recipeInput, createdOn, authorId });
   } else {
     throw new ForbiddenError(`You are not authorized`);
   }

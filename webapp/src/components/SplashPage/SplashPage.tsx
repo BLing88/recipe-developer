@@ -5,7 +5,7 @@ import { LoadingSpinner } from "../LoadingSpinner";
 const SplashPage = () => (
   <main className={styles.splashPage}>
     <h1 className={styles.appName}>Recipe Developer</h1>
-    <LoadingSpinner />
+    <LoadingSpinner width={30} height={30} />
   </main>
 );
 

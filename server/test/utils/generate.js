@@ -31,13 +31,14 @@ const buildTestInstructions = (overrides = {}) => {
   }));
 };
 
-const buildTestRecipe = overrides => ({
+const buildTestRecipe = (overrides) => ({
   recipeName: faker.commerce.productName(),
   recipeId: faker.random.uuid(),
   authorId: faker.name.findName(),
   ingredients: buildTestIngredients(),
   instructions: buildTestInstructions(),
   notes: buildTestNotes(),
+  createdOn: `${Date.now()}`,
   ...overrides,
 });
 

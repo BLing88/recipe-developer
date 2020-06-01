@@ -6,7 +6,6 @@ import { UserRecipesList } from "../UserRecipesList/UserRecipesList";
 import { Recipe } from "../Recipe";
 import { useHistory, useLocation, Route, Switch } from "react-router-dom";
 import { LoadingSpinner } from "../LoadingSpinner";
-
 import { useLazyQuery, useQuery, useMutation } from "@apollo/react-hooks";
 import { useAuth0 } from "../../react-auth0-spa";
 import { CreateRecipeForm } from "../CreateRecipeForm";
@@ -153,7 +152,7 @@ const AuthenticatedApp = () => {
     history.push(
       `${RECIPE_PATH}${nameOfRecipe(recipe)
         .split(" ")
-        .join("-")}`
+        .join("-")}/${recipe.recipeId}`
     );
   };
 
@@ -169,6 +168,7 @@ const AuthenticatedApp = () => {
           recipeId: idOfRecipe(recipe),
         },
       });
+      refetchGetAllRecipes();
     } catch (e) {
       console.error(e);
     }
@@ -187,6 +187,21 @@ const AuthenticatedApp = () => {
     }
   };
 
+  const reloadRecipe = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
+    e.preventDefault();
+    const recipeId = location.pathname.match(
+      new RegExp("^/recipe/.+/(recipe-.+)")
+    )![1];
+    getRecipe({
+      variables: {
+        authorId: user.sub,
+        recipeId,
+      },
+    });
+  };
+
   return (
     <div className={styles.authenticatedApp}>
       <header className={styles.navbar}>
@@ -200,12 +215,27 @@ const AuthenticatedApp = () => {
       <main className={styles.mainContent}>
         <Switch>
           <Route path={USER_RECIPES_PATH}>
-            <UserRecipesList
-              loading={getAllRecipesLoading}
-              error={getAllRecipesError}
-              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
-              getRecipe={recipeClickHandler}
-            />
+            {getAllRecipesLoading ? (
+              <section className={styles.loadingRecipes}>
+                <p>Loading recipes&hellip; </p>{" "}
+                <LoadingSpinner width={30} height={30} />
+              </section>
+            ) : null}
+
+            {getAllRecipesError ? (
+              <section className={styles.errorMsg}>
+                <p>Error loading recipes. Try again.</p>
+              </section>
+            ) : null}
+
+            {getAllRecipesData &&
+            !getAllRecipesError &&
+            !getAllRecipesLoading ? (
+              <UserRecipesList
+                recipes={getAllRecipesData.getAllRecipes}
+                getRecipe={recipeClickHandler}
+              />
+            ) : null}
           </Route>
 
           <Route path={CREATE_RECIPE_PATH}>
@@ -224,21 +254,12 @@ const AuthenticatedApp = () => {
             />
           </Route>
 
-          <Route
-            path={RECIPE_PATH} // leave path=Recipe_path then fetch in recipe component
-            // path={
-            //   getRecipeData
-            //     ? `${RECIPE_PATH}${
-            //         projectRecipe(getRecipeData.getRecipe).recipeName
-            //       }`
-            //     : RECIPE_PATH
-            // }
-          >
+          <Route path={RECIPE_PATH}>
             <>
               {getRecipeLoading ? (
                 <section className={styles.loadingRecipe}>
                   <p>Loading recipe&hellip;</p>
-                  <LoadingSpinner size="SMALL" />
+                  <LoadingSpinner width={30} height={30} />
                 </section>
               ) : null}
 
@@ -256,22 +277,48 @@ const AuthenticatedApp = () => {
                   deleteRecipeLoading={deleteRecipeLoading}
                 />
               ) : null}
+              {!getRecipeData && !getRecipeLoading && !getRecipeError ? (
+                <section className={styles.reloadRecipe}>
+                  <p>The recipe needs to be reloaded.</p>
+                  <button
+                    onClick={(e) => reloadRecipe(e)}
+                    className={styles.reloadRecipeBtn}
+                  >
+                    Reload recipe
+                  </button>
+                </section>
+              ) : null}
             </>
           </Route>
 
           <Route path="/" exact>
-            <UserRecipesList
-              loading={getAllRecipesLoading}
-              error={getAllRecipesError}
-              recipes={getAllRecipesData && getAllRecipesData.getAllRecipes}
-              getRecipe={recipeClickHandler}
-            />
+            {getAllRecipesLoading ? (
+              <section className={styles.loadingRecipes}>
+                <p>Loading recipes&hellip; </p>{" "}
+                <LoadingSpinner width={30} height={30} />
+              </section>
+            ) : null}
+
+            {getAllRecipesError ? (
+              <section className={styles.errorMsg}>
+                <p>Error loading recipes. Try again.</p>
+              </section>
+            ) : null}
+
+            {getAllRecipesData &&
+            !getAllRecipesError &&
+            !getAllRecipesLoading ? (
+              <UserRecipesList
+                recipes={getAllRecipesData.getAllRecipes}
+                getRecipe={recipeClickHandler}
+              />
+            ) : null}
           </Route>
 
           <Route>
-            <main className={styles.notFoundPage}>
+            <section className={styles.notFoundPage}>
               <p className={styles.pageNotFoundMsg}>Page not found&hellip;</p>
-            </main>
+            </section>
           </Route>
         </Switch>
       </main>

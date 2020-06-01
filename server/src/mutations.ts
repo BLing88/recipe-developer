@@ -6,6 +6,8 @@ export const CREATE_RECIPE = gql`
       recipeName
       recipeId
       authorId
+      lastModifiedOn
+      createdOn
       ingredients {
         ingredient
         ingredientId
@@ -42,6 +44,8 @@ export const UPDATE_RECIPE = gql`
       authorId
       recipeId
       recipeName
+      lastModifiedOn
+      createdOn
       ingredients {
         ingredient
         ingredientId

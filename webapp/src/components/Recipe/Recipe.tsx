@@ -615,8 +615,8 @@ const Recipe = ({
       ) : null}
       {updateRecipeLoading ? (
         <section className={styles.updatingRecipeMsg}>
-          <p>Updating recipe&hellip;</p>
-          <LoadingSpinner size="SMALL" />
+          <p>Updating recipe</p>
+          <LoadingSpinner width={30} height={30} />
         </section>
       ) : null}
 
@@ -627,8 +627,8 @@ const Recipe = ({
       ) : null}
       {deleteRecipeLoading ? (
         <section className={styles.deletingRecipeMsg}>
-          <p>Deleting recipe&hellip;</p>
-          <LoadingSpinner size="SMALL" />
+          <p>Deleting recipe</p>
+          <LoadingSpinner width={30} height={30} />
         </section>
       ) : null}
 

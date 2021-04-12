@@ -385,17 +385,25 @@ const Recipe = ({
       }
     } else {
       const oldRecipeName = nameOfRecipe(recipe);
-      const newRecipeName = state.recipeName;
+      const newRecipeName = state.recipeName.trim();
       const oldIngredients = ingredientsOfRecipe(recipe);
-      const newIngredients = state.ingredients.filter(
-        (ingredient) => getIngredientOf(ingredient) !== ""
-      );
+      const newIngredients = state.ingredients
+        .filter((ingredient) => getIngredientOf(ingredient) !== "")
+        .map((ingredient) => ({
+          ...ingredient,
+          ingredient: ingredient.ingredient.trim(),
+        }));
       const oldInstructions = instructionsOfRecipe(recipe);
-      const newInstructions = state.instructions.filter(
-        (instruction) => getInstructionOf(instruction) !== ""
-      );
+      const newInstructions = state.instructions
+        .filter((instruction) => getInstructionOf(instruction) !== "")
+        .map((instruction) => ({
+          ...instruction,
+          instruction: instruction.instruction.trim(),
+        }));
       const oldNotes = notesOfRecipe(recipe);
-      const newNotes = state.notes.filter((note) => getNoteOf(note) !== "");
+      const newNotes = state.notes
+        .filter((note) => getNoteOf(note) !== "")
+        .map((note) => ({ ...note, note: note.note.trim() }));
 
       const recipeName = newRecipeName !== oldRecipeName ? newRecipeName : null;
       const ingredients = !arraysHaveSameElementsInOrder(

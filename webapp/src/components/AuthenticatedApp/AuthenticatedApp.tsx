@@ -117,14 +117,22 @@ const AuthenticatedApp = () => {
 
     const recipe = buildRecipe({
       authorId: user.sub,
-      recipeName,
-      ingredients: ingredients.filter(
-        (ingredient) => getIngredientOf(ingredient) !== ""
-      ),
-      instructions: instructions.filter(
-        (instruction) => getInstructionOf(instruction) !== ""
-      ),
-      notes: notes.filter((note) => getNoteOf(note) !== ""),
+      recipeName: recipeName.trim(),
+      ingredients: ingredients
+        .filter((ingredient) => getIngredientOf(ingredient) !== "")
+        .map((ingredient) => ({
+          ...ingredient,
+          ingredient: ingredient.ingredient.trim(),
+        })),
+      instructions: instructions
+        .filter((instruction) => getInstructionOf(instruction) !== "")
+        .map((instruction) => ({
+          ...instruction,
+          instruction: instruction.instruction.trim(),
+        })),
+      notes: notes
+        .filter((note) => getNoteOf(note) !== "")
+        .map((note) => ({ ...note, note: note.note.trim() })),
     });
     const result = await createRecipe({
       variables: {

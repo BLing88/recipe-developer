@@ -1,6 +1,6 @@
 # Recipe Developer
 
-Check it out at https://recipe-developer.now.sh (username: guestuser, password: guestuserpassword123\$)
+Check it out at https://recipe-developer.vercel.app (username: guestuser, password: guestuserpassword123\$)
 
 ![gif](recipe-developer.gif)
 
@@ -27,7 +27,7 @@ There is also a page to create a new recipe.
 ## TODO
 
 - it would be nice to implement some sort of pagination for the user's recipe list so that all the recipes aren't listed all at once
-- convert Jest unit and integrationn tests to Typescript
+- convert Jest unit and integration tests to Typescript
 
 [aws lambda]: https://aws.amazon.com/lambda/
 [apollo-server]: https://www.apollographql.com/docs/apollo-server/
